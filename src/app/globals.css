@@ -1,26 +1,265 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 80px;
+  /* Decorative absolutely-positioned elements must never create a sideways scroll */
+  overflow-x: hidden;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@media (max-width: 640px) {
+  html {
+    scroll-padding-top: 76px;
   }
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  text-rendering: optimizeLegibility;
+  background-color: #ffffff;
+  color: #111827;
+  overflow-x: hidden;
+}
+
+::selection {
+  background-color: #ede9fe;
+  color: #5b21b6;
+}
+
+/* ---------------------------------------------------------------------------
+   Branded scrollbar — slim, violet, rounded.
+   Kept in @layer base so utilities (e.g. the hidden scrollbar on the product
+   rail) still win over it.
+--------------------------------------------------------------------------- */
+@layer base {
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: #a78bfa transparent;
+  }
+
+  ::-webkit-scrollbar {
+    width: 7px;
+    height: 7px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #a78bfa, #7c3aed);
+    border-radius: 9999px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, #8b5cf6, #6d28d9);
+  }
+
+  ::-webkit-scrollbar-corner {
+    background: transparent;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   VIOLETTE brand system
+   Primary: violet (purple-700) · Dark: near-black (gray-950) · Light: white
+--------------------------------------------------------------------------- */
+
+@layer components {
+  .btn-primary,
+  .btn-light,
+  .btn-outline,
+  .btn-outline-light {
+    @apply inline-flex items-center justify-center gap-2 font-semibold rounded-xl
+      transition-all duration-200 select-none
+      focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500/60 focus-visible:ring-offset-2
+      active:scale-[0.98] disabled:opacity-60 disabled:cursor-not-allowed disabled:active:scale-100;
+  }
+
+  .btn-md {
+    @apply px-6 py-3 text-sm;
+  }
+
+  .btn-lg {
+    @apply px-7 py-3.5 text-[15px];
+  }
+
+  /* Brand violet — main call to action */
+  .btn-primary {
+    @apply bg-gradient-to-b from-purple-600 to-purple-700 text-white
+      shadow-sm shadow-purple-900/25
+      hover:from-purple-700 hover:to-purple-800 hover:shadow-md hover:shadow-purple-900/25;
+  }
+
+  /* White button for dark sections */
+  .btn-light {
+    @apply bg-white text-gray-900 shadow-lg shadow-black/10 hover:bg-purple-50 hover:text-purple-800;
+  }
+
+  /* Quiet outline on light backgrounds */
+  .btn-outline {
+    @apply border border-gray-200 text-gray-700 bg-white/60
+      hover:border-purple-300 hover:text-purple-700 hover:bg-purple-50/60;
+  }
+
+  /* Quiet outline on dark backgrounds */
+  .btn-outline-light {
+    @apply border border-white/30 text-white backdrop-blur-sm hover:bg-white/10 hover:border-white/60;
+  }
+
+  /* ------------------------------------------------------------------
+     Admin design system — dark glass panels shared by all admin pages
+  ------------------------------------------------------------------ */
+  .admin-card {
+    @apply bg-white/[0.04] border border-white/10 rounded-2xl;
+  }
+
+  .admin-input {
+    @apply w-full px-3.5 py-2.5 bg-white/5 border border-white/15 rounded-xl text-sm text-white
+      placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500/40
+      focus:border-purple-400 transition-all;
+  }
+
+  .admin-label {
+    @apply block text-sm font-medium text-gray-300 mb-1.5;
+  }
+
+  .admin-th {
+    @apply text-left px-6 py-3 text-xs font-semibold text-gray-400 uppercase tracking-wider;
+  }
+
+  .admin-td {
+    @apply px-6 py-4 text-sm;
+  }
+
+  /* Selects and date inputs render native popovers — keep options readable */
+  .admin-input option {
+    @apply bg-gray-900 text-white;
+  }
+}
+
+/* Soft fade applied to <body> when the language is switched */
+.lang-fade {
+  animation: lang-fade 0.35s ease;
+}
+
+@keyframes lang-fade {
+  from {
+    opacity: 0.35;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Mobile menu panel entrance */
+@keyframes menu-slide-in {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Staggered entrance for the drawer's items */
+@keyframes menu-item-in {
+  from {
+    opacity: 0;
+    transform: translateX(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+
+/* ---------------------------------------------------------------------------
+   Landing page motion system
+--------------------------------------------------------------------------- */
+
+/* Scroll-reveal (driven by the <Reveal> component via IntersectionObserver).
+   Gated behind `html.js`, which an inline script in the document head sets before
+   first paint. If JavaScript is disabled, blocked or fails, content stays visible
+   instead of being stuck at opacity 0. */
+.js .reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1), transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: var(--reveal-delay, 0ms);
+  will-change: opacity, transform;
+}
+
+.js .reveal-left { transform: translateX(-36px); }
+.js .reveal-right { transform: translateX(36px); }
+.js .reveal-scale { transform: scale(0.94); }
+
+.js .reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .js .reveal,
+  .js .reveal-left,
+  .js .reveal-right,
+  .js .reveal-scale {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+/* Slow float for decorative elements */
+@keyframes float-slow {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-14px); }
+}
+.animate-float-slow { animation: float-slow 6s ease-in-out infinite; }
+.animate-float-slower { animation: float-slow 9s ease-in-out infinite; }
+
+/* Infinite marquee band */
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.animate-marquee {
+  animation: marquee 32s linear infinite;
+}
+
+@media (max-width: 640px) {
+  .animate-marquee {
+    animation-duration: 20s;
+  }
+}
+.marquee-mask {
+  mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+}
+
+/* Animated gradient headline */
+@keyframes gradient-pan {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+.text-gradient-violet {
+  background: linear-gradient(90deg, #7c3aed, #a855f7, #6d28d9, #7c3aed);
+  background-size: 300% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: gradient-pan 6s ease infinite;
+}
+
+/* Soft grid backdrop for light sections */
+.bg-grid-light {
+  background-image:
+    linear-gradient(to right, rgba(17, 24, 39, 0.045) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(17, 24, 39, 0.045) 1px, transparent 1px);
+  background-size: 44px 44px;
 }

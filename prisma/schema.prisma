@@ -1,0 +1,531 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// =============================================
+// ENUMS
+// =============================================
+
+enum Role {
+  GUEST
+  USER
+  COMMERCIAL
+  ADMIN
+}
+
+enum ClientType {
+  RESPIRATORY
+  DIABETIC
+  BOTH
+}
+
+enum OrderStatus {
+  PENDING
+  CONFIRMED
+  PROCESSING
+  SHIPPED
+  DELIVERED
+  CANCELLED
+  RETURNED
+}
+
+// =============================================
+// USER (Companies)
+// =============================================
+
+model User {
+  id               String   @id @default(cuid())
+  email            String   @unique
+  password         String
+  name             String
+  role             Role     @default(USER)
+
+  // Company info
+  companyName      String?
+  matriculeFiscale String?  @unique
+  address          String?
+  city             String?
+  postalCode       String?
+  phone            String?
+  clientType       ClientType?
+
+  isActive         Boolean  @default(true)
+
+  // Self-referential: who created this user
+  createdById      String?
+  createdBy        User?    @relation("CreatedUsers", fields: [createdById], references: [id])
+  createdUsers     User[]   @relation("CreatedUsers")
+
+  cart             Cart?
+  orders           Order[]
+  stockMovements   StockMovement[]
+
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  @@index([role])
+  @@index([email])
+  @@index([createdById])
+}
+
+// =============================================
+// PRODUCTS
+// =============================================
+
+model Category {
+  id          String    @id @default(cuid())
+  nameFr      String
+  nameEn      String
+  slug        String    @unique
+  description String?
+  image       String?
+  order       Int       @default(0)
+  isActive    Boolean   @default(true)
+
+  families    Family[]
+  products    Product[]
+
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model Family {
+  id          String      @id @default(cuid())
+  nameFr      String
+  nameEn      String
+  slug        String      @unique
+  order       Int         @default(0)
+  isActive    Boolean     @default(true)
+
+  categoryId  String
+  category    Category    @relation(fields: [categoryId], references: [id])
+
+  subfamilies Subfamily[]
+  products    Product[]
+
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  @@index([categoryId])
+}
+
+model Subfamily {
+  id         String    @id @default(cuid())
+  nameFr     String
+  nameEn     String
+  slug       String    @unique
+  order      Int       @default(0)
+  isActive   Boolean   @default(true)
+
+  familyId   String
+  family     Family    @relation(fields: [familyId], references: [id])
+
+  products   Product[]
+
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+
+  @@index([familyId])
+}
+
+model Product {
+  id            String   @id @default(cuid())
+  nameFr        String
+  nameEn        String
+  slug          String   @unique
+  descriptionFr String?
+  descriptionEn String?
+  reference     String?  @unique
+
+  // Pricing
+  priceHT       Float
+  taxRate       Float    @default(19) // Tunisia TVA 19%
+  priceTTC      Float
+
+  // Stock
+  stock         Int      @default(0)
+  minStock      Int      @default(0)
+
+  // Media
+  images        String[]
+  thumbnail     String?
+
+  // Category tree
+  categoryId    String
+  category      Category   @relation(fields: [categoryId], references: [id])
+  familyId      String?
+  family        Family?    @relation(fields: [familyId], references: [id])
+  subfamilyId   String?
+  subfamily     Subfamily? @relation(fields: [subfamilyId], references: [id])
+
+  // Featured section on homepage
+  isFeatured    Boolean  @default(false)
+  featuredOrder  Int?
+
+  // Serial number tracking (false for accessories like masks)
+  trackSerial   Boolean  @default(true)
+
+  isActive      Boolean  @default(true)
+
+  // Relations
+  packProducts  PackProduct[]
+  cartItems     CartItem[]
+  orderItems    OrderItem[]
+  units            ProductUnit[]
+  importationItems ImportationItem[]
+  stockMovements   StockMovement[]
+
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([categoryId])
+  @@index([familyId])
+  @@index([subfamilyId])
+  @@index([isFeatured])
+  @@index([slug])
+}
+
+// =============================================
+// PACKS (bundles of products)
+// =============================================
+
+model Pack {
+  id            String   @id @default(cuid())
+  nameFr        String
+  nameEn        String
+  slug          String   @unique
+  descriptionFr String?
+  descriptionEn String?
+
+  // Pricing
+  priceHT       Float
+  taxRate       Float    @default(19)
+  priceTTC      Float
+
+  // Media
+  image         String?
+
+  isActive      Boolean  @default(true)
+
+  // Relations
+  products      PackProduct[]
+  cartItems     CartItem[]
+  orderItems    OrderItem[]
+
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model PackProduct {
+  id        String  @id @default(cuid())
+  packId    String
+  productId String
+  quantity  Int     @default(1)
+
+  pack      Pack    @relation(fields: [packId], references: [id], onDelete: Cascade)
+  product   Product @relation(fields: [productId], references: [id], onDelete: Restrict)
+
+  @@unique([packId, productId])
+}
+
+// =============================================
+// SLIDERS (admin-controlled hero carousel)
+// =============================================
+
+model Slider {
+  id           String   @id @default(cuid())
+  titleFr      String?
+  titleEn      String?
+  subtitleFr   String?
+  subtitleEn   String?
+  image        String
+  link         String?
+  buttonTextFr String?
+  buttonTextEn String?
+  order        Int      @default(0)
+  isActive     Boolean  @default(true)
+
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([order])
+}
+
+// =============================================
+// FEATURED SECTION (homepage manager)
+// =============================================
+
+model FeaturedSection {
+  id         String   @id @default(cuid())
+  titleFr    String?
+  titleEn    String?
+  subtitleFr String?
+  subtitleEn String?
+  isActive   Boolean  @default(true)
+  order      Int      @default(0)
+
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+// =============================================
+// CART
+// =============================================
+
+model Cart {
+  id        String     @id @default(cuid())
+  userId    String     @unique
+  user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  items     CartItem[]
+
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+}
+
+model CartItem {
+  id        String   @id @default(cuid())
+  cartId    String
+  productId String?
+  packId    String?
+  quantity  Int      @default(1)
+
+  cart      Cart     @relation(fields: [cartId], references: [id], onDelete: Cascade)
+  product   Product? @relation(fields: [productId], references: [id])
+  pack      Pack?    @relation(fields: [packId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([cartId, productId])
+  @@unique([cartId, packId])
+}
+
+// =============================================
+// ORDERS
+// =============================================
+
+model Order {
+  id          String      @id @default(cuid())
+  orderNumber String      @unique
+  userId      String
+  user        User        @relation(fields: [userId], references: [id])
+
+  // Totals (snapshot at time of order)
+  totalHT     Float
+  totalTax    Float
+  totalTTC    Float
+
+  status      OrderStatus @default(PENDING)
+  note        String?
+
+  items       OrderItem[]
+  steps       OrderStep[]
+
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  @@index([userId])
+  @@index([status])
+  @@index([orderNumber])
+}
+
+model OrderItem {
+  id        String   @id @default(cuid())
+  orderId   String
+  productId String?
+  packId    String?
+  quantity  Int
+
+  // Price snapshot at time of order
+  nameFr    String
+  nameEn    String
+  priceHT   Float
+  taxRate   Float
+  priceTTC  Float
+
+  order     Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product   Product? @relation(fields: [productId], references: [id], onDelete: SetNull)
+  pack      Pack?    @relation(fields: [packId], references: [id], onDelete: SetNull)
+
+  units     ProductUnit[]
+
+  createdAt DateTime @default(now())
+}
+
+// =============================================
+// Importations & serialized stock
+// =============================================
+
+enum ImportationStatus {
+  DRAFT
+  RECEIVED
+}
+
+model Importation {
+  id            String            @id @default(cuid())
+  reference     String            @unique
+  supplier      String            @default("Yuwell")
+  invoiceNumber String?
+  arrivalDate   DateTime          @default(now())
+  note          String?
+  status        ImportationStatus @default(DRAFT)
+
+  items         ImportationItem[]
+
+  createdAt     DateTime          @default(now())
+  updatedAt     DateTime          @updatedAt
+}
+
+model ImportationItem {
+  id            String      @id @default(cuid())
+  importationId String
+  importation   Importation @relation(fields: [importationId], references: [id], onDelete: Cascade)
+  productId     String
+  product       Product     @relation(fields: [productId], references: [id])
+  quantity      Int
+  // SNs captured while the importation is a draft (one per line for serialized products)
+  serialsDraft  String[]    @default([])
+
+  units         ProductUnit[]
+
+  @@index([importationId])
+  @@index([productId])
+}
+
+enum UnitStatus {
+  IN_STOCK
+  SOLD
+  RETURNED
+  DEFECTIVE
+}
+
+model ProductUnit {
+  id                String           @id @default(cuid())
+  serialNumber      String           @unique
+  productId         String
+  product           Product          @relation(fields: [productId], references: [id])
+  importationItemId String?
+  importationItem   ImportationItem? @relation(fields: [importationItemId], references: [id], onDelete: SetNull)
+
+  status            UnitStatus       @default(IN_STOCK)
+  orderItemId       String?
+  orderItem         OrderItem?       @relation(fields: [orderItemId], references: [id], onDelete: SetNull)
+  soldAt            DateTime?
+
+  createdAt         DateTime         @default(now())
+
+  @@index([productId, status])
+  @@index([orderItemId])
+}
+
+enum StockMovementType {
+  IMPORT
+  SALE
+  ADJUSTMENT
+  RETURN
+}
+
+model StockMovement {
+  id        String            @id @default(cuid())
+  productId String
+  product   Product           @relation(fields: [productId], references: [id])
+  type      StockMovementType
+  delta     Int               // signed quantity change
+  stockAfter Int              // stock level after the movement
+  reference String?           // importation ref, order number...
+  reason    String?
+  userId    String?
+  user      User?             @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  createdAt DateTime          @default(now())
+
+  @@index([productId, createdAt])
+  @@index([type])
+}
+
+// =============================================
+// CONTACT MESSAGES
+// =============================================
+
+model ContactMessage {
+  id         String   @id @default(cuid())
+  name       String
+  email      String
+  phone      String?
+  subject    String?
+  message    String
+  isRead     Boolean  @default(false)
+  isArchived Boolean  @default(false)
+  note       String?  // Admin internal note
+
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([isRead])
+  @@index([createdAt])
+}
+
+// =============================================
+// EVENTS
+// =============================================
+
+model Event {
+  id            String   @id @default(cuid())
+  titleFr       String
+  titleEn       String
+  descriptionFr String?
+  descriptionEn String?
+  location      String?
+  date          DateTime
+  endDate       DateTime?
+  images        String[]
+  thumbnail     String?
+  isActive      Boolean  @default(true)
+  isFeatured    Boolean  @default(false)
+  order         Int      @default(0)
+
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([date])
+  @@index([isActive])
+}
+
+// =============================================
+// SITE SETTINGS
+// =============================================
+
+model SiteSetting {
+  id    String @id @default(cuid())
+  key   String @unique
+  value String // JSON string
+  group String @default("general") // general, contact, social, commerce
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([group])
+}
+
+// =============================================
+// ORDER STEPS (workflow tracking)
+// =============================================
+
+model OrderStep {
+  id        String      @id @default(cuid())
+  orderId   String
+  status    OrderStatus
+  note      String?
+
+  order     Order       @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime    @default(now())
+
+  @@index([orderId])
+}
