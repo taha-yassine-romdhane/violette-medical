@@ -1,6 +1,6 @@
 import bcrypt from "bcrypt";
 import { auth } from "@/auth";
-import { Role } from "@/generated/prisma";
+import { Role } from "@/generated/prisma/client";
 import { NextResponse } from "next/server";
 
 const SALT_ROUNDS = 12;

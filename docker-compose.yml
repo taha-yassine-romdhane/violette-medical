@@ -1,0 +1,22 @@
+services:
+  app:
+    container_name: violette-app
+    build:
+      context: .
+      args:
+        - NEXT_PUBLIC_SITE_URL=${NEXT_PUBLIC_SITE_URL}
+        - NEXT_PUBLIC_UMAMI_WEBSITE_ID=${NEXT_PUBLIC_UMAMI_WEBSITE_ID:-}
+    restart: always
+    # Host network so the app reaches PostgreSQL on 127.0.0.1:5432,
+    # matching espace-nord / espace-elite / o-medical-para.
+    network_mode: "host"
+    env_file:
+      - .env
+    volumes:
+      # Admin-uploaded images must outlive image rebuilds.
+      - /var/violette-uploads:/app/public/uploads
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"

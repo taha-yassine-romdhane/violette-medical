@@ -1,0 +1,38 @@
+# Dependencies
+node_modules
+
+# Build outputs
+.next
+out
+build
+
+# Generated Prisma client — rebuilt inside the image
+src/generated
+
+# Git
+.git
+.gitignore
+
+# Environment files (injected at runtime via env_file, never baked in)
+.env
+.env*
+
+# Uploads — bind-mounted at runtime
+public/uploads
+
+# IDE / OS
+.vscode
+.idea
+.claude
+*.swp
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+
+# Docker
+Dockerfile
+docker-compose*.yml
+.dockerignore

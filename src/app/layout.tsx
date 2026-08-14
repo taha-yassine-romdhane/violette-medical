@@ -10,6 +10,11 @@ const inter = Inter({
 });
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://violettemedical.com";
+
+// Self-hosted Umami analytics. Stays inert until the website is registered in
+// the Umami dashboard and its id is set in .env — no id, no script, no request.
+const umamiWebsiteId = process.env.NEXT_PUBLIC_UMAMI_WEBSITE_ID;
+const umamiSrc = "https://analytics.omedical-para.tn/script.js";
 const siteTitle = "VIOLETTE MEDICAL DISTRIBUTION+ | Représentant Yuwell en Tunisie";
 const siteDescription =
   "Représentant officiel de la gamme respiratoire Yuwell en Tunisie. Vente en gros : CPAP, VNI (BiPAP), Concentrateurs d'Oxygène, Masques & Accessoires, Glucomètres.";
@@ -85,6 +90,9 @@ export default function RootLayout({
             __html: "document.documentElement.classList.add('js')",
           }}
         />
+        {umamiWebsiteId && (
+          <script defer src={umamiSrc} data-website-id={umamiWebsiteId} />
+        )}
       </head>
       <body className={`${inter.className} antialiased`}>
         <SessionProvider>
