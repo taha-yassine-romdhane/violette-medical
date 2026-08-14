@@ -9,17 +9,16 @@ interface CartItem {
   quantity: number;
   product: {
     id: string; nameFr: string; nameEn: string; slug: string;
-    thumbnail: string | null; priceTTC: number; priceHT: number; stock: number; isActive: boolean;
+    thumbnail: string | null; isActive: boolean;
   } | null;
   pack: {
     id: string; nameFr: string; nameEn: string; slug: string;
-    image: string | null; priceTTC: number; priceHT: number; isActive: boolean;
+    image: string | null; isActive: boolean;
   } | null;
 }
 
 export default function CartPage() {
   const [items, setItems] = useState<CartItem[]>([]);
-  const [totalTTC, setTotalTTC] = useState(0);
   const [loading, setLoading] = useState(true);
   const [updating, setUpdating] = useState<Set<string>>(new Set());
   const [ordering, setOrdering] = useState(false);
@@ -32,7 +31,6 @@ export default function CartPage() {
     if (res.ok) {
       const data = await res.json();
       setItems(data.cart.items);
-      setTotalTTC(data.cart.totalTTC);
     }
     setLoading(false);
   }, []);
@@ -67,13 +65,13 @@ export default function CartPage() {
       });
       if (!res.ok) {
         const data = await res.json().catch(() => null);
-        throw new Error(data?.error || "Erreur lors de la commande.");
+        throw new Error(data?.error || "Erreur lors de l'envoi de la demande.");
       }
       const data = await res.json();
       setOrderSuccess({ orderNumber: data.orderNumber, orderId: data.order.id });
       setShowConfirm(false);
     } catch (err: unknown) {
-      setOrderError(err instanceof Error ? err.message : "Erreur lors de la commande.");
+      setOrderError(err instanceof Error ? err.message : "Erreur lors de l'envoi de la demande.");
     } finally {
       setOrdering(false);
     }
@@ -90,13 +88,15 @@ export default function CartPage() {
   if (orderSuccess) {
     return (
       <div className="flex flex-col items-center justify-center py-16 px-4">
-        <div className="w-20 h-20 bg-green-50 rounded-2xl flex items-center justify-center mb-6">
-          <svg className="w-10 h-10 text-green-500" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
+        <div className="w-20 h-20 bg-emerald-50 rounded-2xl flex items-center justify-center mb-6">
+          <svg className="w-10 h-10 text-emerald-500" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
         </div>
-        <h1 className="text-2xl font-bold text-gray-900 mb-2">Commande confirmee !</h1>
-        <p className="text-gray-500 mb-1">Votre commande a ete enregistree avec succes.</p>
+        <h1 className="text-2xl font-bold text-gray-900 mb-2">Demande de devis envoyée !</h1>
+        <p className="text-gray-500 mb-1 text-center max-w-md">
+          Votre demande a bien été enregistrée. Un commercial vous transmettra votre devis dans les plus brefs délais.
+        </p>
         <p className="text-sm text-gray-400 mb-8">
           N° <span className="font-semibold text-purple-700">{orderSuccess.orderNumber}</span>
         </p>
@@ -105,13 +105,13 @@ export default function CartPage() {
             href={`/account/orders/${orderSuccess.orderId}`}
             className="px-6 py-2.5 bg-purple-700 text-white text-sm font-semibold rounded-xl hover:bg-purple-800 transition-colors text-center"
           >
-            Voir ma commande
+            Suivre ma demande
           </Link>
           <Link
             href="/products"
             className="px-6 py-2.5 border border-gray-200 text-gray-700 text-sm font-medium rounded-xl hover:bg-gray-50 transition-colors text-center"
           >
-            Continuer les achats
+            Continuer à parcourir
           </Link>
         </div>
       </div>
@@ -121,16 +121,16 @@ export default function CartPage() {
   return (
     <div>
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-gray-900">Mon panier</h1>
+        <h1 className="text-2xl font-bold text-gray-900">Ma demande de devis</h1>
         <p className="text-sm text-gray-400 mt-1">{items.length} article{items.length !== 1 ? "s" : ""}</p>
       </div>
 
       {items.length === 0 ? (
         <div className="text-center py-16 bg-white rounded-2xl border border-gray-100">
           <svg className="w-14 h-14 mx-auto text-gray-200 mb-4" fill="none" stroke="currentColor" strokeWidth={1.2} viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007zM8.625 10.5a.375.375 0 11-.75 0 .375.375 0 01.75 0zm7.5 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
+            <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
           </svg>
-          <p className="text-gray-500 mb-4">Votre panier est vide.</p>
+          <p className="text-gray-500 mb-4">Votre demande est vide.</p>
           <Link href="/products" className="inline-flex items-center gap-2 px-5 py-2.5 bg-purple-700 text-white text-sm font-semibold rounded-xl hover:bg-purple-800 transition-colors">
             Voir les produits
           </Link>
@@ -143,7 +143,6 @@ export default function CartPage() {
               const entity = item.product || item.pack;
               if (!entity) return null;
               const name = entity.nameFr;
-              const price = entity.priceTTC;
               const thumb = "thumbnail" in entity ? entity.thumbnail : "image" in entity ? entity.image : null;
               const slug = item.product?.slug;
               const isUpdating = updating.has(item.id);
@@ -152,7 +151,7 @@ export default function CartPage() {
                 <div key={item.id} className={`bg-white rounded-xl border border-gray-100 p-4 transition-opacity ${isUpdating ? "opacity-50" : ""}`}>
                   <div className="flex items-start gap-3 sm:gap-4">
                     {/* Thumbnail */}
-                    <div className="w-16 h-16 sm:w-14 sm:h-14 bg-gray-50 rounded-xl overflow-hidden shrink-0 relative border border-gray-100">
+                    <div className="w-16 h-16 sm:w-14 sm:h-14 bg-white rounded-xl overflow-hidden shrink-0 relative border border-gray-100">
                       {thumb ? (
                         <Image src={thumb} alt={name} fill className="object-cover" sizes="64px" />
                       ) : (
@@ -167,11 +166,11 @@ export default function CartPage() {
                     {/* Info */}
                     <div className="flex-1 min-w-0">
                       {slug ? (
-                        <Link href={`/products/${slug}`} className="text-sm font-semibold text-gray-900 hover:text-purple-700 line-clamp-1 transition-colors">{name}</Link>
+                        <Link href={`/products/${slug}`} className="text-sm font-semibold text-gray-900 hover:text-purple-700 line-clamp-2 transition-colors">{name}</Link>
                       ) : (
-                        <p className="text-sm font-semibold text-gray-900 line-clamp-1">{name}</p>
+                        <p className="text-sm font-semibold text-gray-900 line-clamp-2">{name}</p>
                       )}
-                      <p className="text-xs text-gray-400 mt-0.5">{price.toFixed(2)} DT / unite</p>
+                      <p className="text-xs text-purple-600 font-medium mt-0.5">Sur devis</p>
                     </div>
 
                     {/* Remove - desktop */}
@@ -186,30 +185,27 @@ export default function CartPage() {
                     </button>
                   </div>
 
-                  {/* Qty + subtotal row */}
+                  {/* Qty row */}
                   <div className="flex items-center justify-between mt-3 pt-3 border-t border-gray-50">
-                    <div className="flex items-center gap-0.5">
-                      <button
-                        onClick={() => item.quantity > 1 ? updateQuantity(item.id, item.quantity - 1) : removeItem(item.id)}
-                        disabled={isUpdating}
-                        className="w-9 h-9 sm:w-8 sm:h-8 flex items-center justify-center rounded-lg border border-gray-200 text-gray-600 hover:bg-gray-50 active:bg-gray-100 disabled:opacity-40 text-sm font-medium transition-colors"
-                      >
-                        -
-                      </button>
-                      <span className="w-10 text-center text-sm font-semibold text-gray-900 tabular-nums">{item.quantity}</span>
-                      <button
-                        onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                        disabled={isUpdating}
-                        className="w-9 h-9 sm:w-8 sm:h-8 flex items-center justify-center rounded-lg border border-gray-200 text-gray-600 hover:bg-gray-50 active:bg-gray-100 disabled:opacity-40 text-sm font-medium transition-colors"
-                      >
-                        +
-                      </button>
-                    </div>
-
+                    <span className="text-xs text-gray-400 font-medium uppercase tracking-wide">Quantité</span>
                     <div className="flex items-center gap-3">
-                      <p className="text-sm font-bold text-gray-900 tabular-nums">
-                        {(price * item.quantity).toFixed(2)} <span className="text-xs font-normal text-gray-400">DT</span>
-                      </p>
+                      <div className="flex items-center gap-0.5">
+                        <button
+                          onClick={() => item.quantity > 1 ? updateQuantity(item.id, item.quantity - 1) : removeItem(item.id)}
+                          disabled={isUpdating}
+                          className="w-9 h-9 sm:w-8 sm:h-8 flex items-center justify-center rounded-lg border border-gray-200 text-gray-600 hover:bg-gray-50 active:bg-gray-100 disabled:opacity-40 text-sm font-medium transition-colors"
+                        >
+                          -
+                        </button>
+                        <span className="w-10 text-center text-sm font-semibold text-gray-900 tabular-nums">{item.quantity}</span>
+                        <button
+                          onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                          disabled={isUpdating}
+                          className="w-9 h-9 sm:w-8 sm:h-8 flex items-center justify-center rounded-lg border border-gray-200 text-gray-600 hover:bg-gray-50 active:bg-gray-100 disabled:opacity-40 text-sm font-medium transition-colors"
+                        >
+                          +
+                        </button>
+                      </div>
                       {/* Remove - mobile */}
                       <button
                         onClick={() => removeItem(item.id)}
@@ -227,21 +223,22 @@ export default function CartPage() {
             })}
           </div>
 
-          {/* Order summary - sticky on mobile, static sidebar on desktop */}
+          {/* Quote summary - sticky on mobile, static sidebar on desktop */}
           <div className="fixed bottom-0 left-0 right-0 sm:static sm:w-80 lg:w-72 lg:shrink-0 z-30">
             <div className="bg-white sm:rounded-2xl border-t sm:border border-gray-100 p-5 shadow-[0_-4px_20px_rgba(0,0,0,0.08)] sm:shadow-none sm:sticky sm:top-8">
               <div className="hidden sm:block mb-4">
-                <h3 className="text-sm font-semibold text-gray-900">Resume</h3>
+                <h3 className="text-sm font-semibold text-gray-900">Résumé</h3>
               </div>
 
-              <div className="flex items-center justify-between sm:mb-1">
+              <div className="flex items-center justify-between mb-3">
                 <span className="text-sm text-gray-500">{items.length} article{items.length !== 1 ? "s" : ""}</span>
-                <span className="text-sm text-gray-700 tabular-nums">{totalTTC.toFixed(2)} DT</span>
+                <span className="text-sm font-semibold text-purple-700">Sur devis</span>
               </div>
 
-              <div className="hidden sm:flex items-center justify-between py-3 border-t border-gray-100 mt-3">
-                <span className="text-sm font-semibold text-gray-900">Total TTC</span>
-                <span className="text-xl font-bold text-purple-700 tabular-nums">{totalTTC.toFixed(2)} DT</span>
+              <div className="hidden sm:block bg-purple-50 border border-purple-100 rounded-xl p-3 mb-4">
+                <p className="text-xs text-purple-800 leading-relaxed">
+                  Les tarifs professionnels vous seront communiqués dans votre devis après validation par notre équipe.
+                </p>
               </div>
 
               {orderError && (
@@ -250,18 +247,18 @@ export default function CartPage() {
                 </div>
               )}
 
-              <div className="flex sm:flex-col gap-2 mt-3 sm:mt-0">
+              <div className="flex sm:flex-col gap-2 mt-1 sm:mt-0">
                 <button
                   onClick={() => setShowConfirm(true)}
-                  className="flex-1 sm:w-full py-3 bg-purple-700 text-white text-sm font-semibold rounded-xl hover:bg-purple-800 active:bg-purple-900 transition-colors"
+                  className="btn-primary flex-1 sm:w-full py-3 text-sm"
                 >
-                  Commander &middot; {totalTTC.toFixed(2)} DT
+                  Demander mon devis
                 </button>
                 <Link
                   href="/products"
                   className="hidden sm:block text-center py-2.5 text-sm text-gray-500 hover:text-purple-700 transition-colors"
                 >
-                  Continuer les achats
+                  Continuer à parcourir
                 </Link>
               </div>
             </div>
@@ -279,14 +276,13 @@ export default function CartPage() {
             <div className="text-center mb-6">
               <div className="w-12 h-12 bg-purple-50 rounded-2xl flex items-center justify-center mx-auto mb-3">
                 <svg className="w-6 h-6 text-purple-700" fill="none" stroke="currentColor" strokeWidth={1.8} viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                 </svg>
               </div>
-              <h2 className="text-lg font-bold text-gray-900">Confirmer la commande</h2>
+              <h2 className="text-lg font-bold text-gray-900">Envoyer la demande de devis</h2>
               <p className="text-sm text-gray-500 mt-1">
-                {items.length} article{items.length !== 1 ? "s" : ""} pour un total de
+                {items.length} article{items.length !== 1 ? "s" : ""} — un commercial vous répondra avec vos tarifs.
               </p>
-              <p className="text-2xl font-bold text-purple-700 mt-1 tabular-nums">{totalTTC.toFixed(2)} DT</p>
             </div>
 
             {orderError && (
@@ -309,7 +305,7 @@ export default function CartPage() {
                 className="flex-1 py-3 text-sm font-semibold text-white bg-purple-700 rounded-xl hover:bg-purple-800 disabled:opacity-60 flex items-center justify-center gap-2 transition-colors"
               >
                 {ordering && <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />}
-                {ordering ? "En cours..." : "Confirmer"}
+                {ordering ? "Envoi..." : "Envoyer"}
               </button>
             </div>
           </div>

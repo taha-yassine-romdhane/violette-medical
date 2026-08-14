@@ -32,7 +32,7 @@ function getRoleLabel(role: string) {
 /** Small inline flags — Windows has no flag emoji, so these are drawn. */
 function FlagFR({ className = "" }: { className?: string }) {
   return (
-    <svg viewBox="0 0 21 15" className={className} aria-hidden="true">
+    <svg viewBox="0 0 21 15" preserveAspectRatio="xMidYMid slice" className={className} aria-hidden="true">
       <rect width="7" height="15" fill="#002654" />
       <rect x="7" width="7" height="15" fill="#ffffff" />
       <rect x="14" width="7" height="15" fill="#CE1126" />
@@ -42,7 +42,7 @@ function FlagFR({ className = "" }: { className?: string }) {
 
 function FlagEN({ className = "" }: { className?: string }) {
   return (
-    <svg viewBox="0 0 60 30" className={className} aria-hidden="true">
+    <svg viewBox="0 0 60 30" preserveAspectRatio="xMidYMid slice" className={className} aria-hidden="true">
       <rect width="60" height="30" fill="#012169" />
       <path d="M0,0 L60,30 M60,0 L0,30" stroke="#ffffff" strokeWidth="6" />
       <path d="M0,0 L60,30 M60,0 L0,30" stroke="#C8102E" strokeWidth="4" />
@@ -66,7 +66,6 @@ export default function Header() {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [cartCount, setCartCount] = useState(0);
   const [cartItems, setCartItems] = useState<CartPreviewItem[]>([]);
-  const [cartTotal, setCartTotal] = useState(0);
   const [cartLoading, setCartLoading] = useState(false);
   const { data: session, status } = useSession();
   const pathname = usePathname();
@@ -169,7 +168,6 @@ export default function Header() {
       if (res.ok) {
         const data = await res.json();
         setCartItems(data.cart?.items || []);
-        setCartTotal(data.cart?.totalTTC || 0);
         setCartCount(data.itemCount || 0);
       }
     } catch { /* ignore */ }
@@ -245,20 +243,15 @@ export default function Header() {
                 onClick={() => setLanguage(language === "fr" ? "en" : "fr")}
                 aria-label={language === "fr" ? "Passer en anglais" : "Switch to French"}
                 title={language === "fr" ? "English" : "Français"}
-                className="group flex items-center gap-1.5 h-10 pl-2 pr-2.5 rounded-xl border border-gray-200 bg-white hover:border-purple-300 hover:bg-purple-50/40 active:scale-95 transition-all"
+                className="group flex items-center justify-center w-10 h-10 rounded-xl border border-gray-200 bg-white hover:border-purple-300 hover:bg-purple-50/40 active:scale-95 transition-all"
               >
-                <span className="w-[22px] h-[15px] rounded-[3px] overflow-hidden ring-1 ring-gray-900/10 flex shrink-0">
-                  {language === "fr" ? <FlagFR className="w-full h-full" /> : <FlagEN className="w-full h-full" />}
+                <span className="w-6 h-6 rounded-full overflow-hidden ring-1 ring-gray-900/10 flex shrink-0">
+                  {language === "fr" ? (
+                    <FlagFR className="w-full h-full" />
+                  ) : (
+                    <FlagEN className="w-full h-full" />
+                  )}
                 </span>
-                <span className="text-[11px] font-bold tracking-wide text-gray-600 group-hover:text-purple-700 transition-colors">
-                  {language.toUpperCase()}
-                </span>
-                <svg
-                  className="w-3 h-3 text-gray-300 group-hover:text-purple-400 transition-colors"
-                  fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24"
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M8 7h12m0 0l-4-4m4 4l-4 4M16 17H4m0 0l4 4m-4-4l4-4" />
-                </svg>
               </button>
 
               {/* Cart icon + dropdown */}
@@ -339,8 +332,8 @@ export default function Header() {
                                       <p className="text-[13px] font-medium text-gray-800 truncate">{entry.nameFr}</p>
                                       <p className="text-xs text-gray-500">x{item.quantity}</p>
                                     </div>
-                                    <p className="text-[13px] font-semibold text-gray-900 shrink-0 tabular-nums">
-                                      {(entry.priceTTC * item.quantity).toFixed(2)} <span className="text-[10px] font-normal text-gray-500">DT</span>
+                                    <p className="text-[11px] font-semibold text-purple-600 shrink-0">
+                                      {language === "fr" ? "Sur devis" : "On quote"}
                                     </p>
                                   </div>
                                 );
@@ -357,16 +350,17 @@ export default function Header() {
                         {/* Footer */}
                         {cartItems.length > 0 && (
                           <div className="border-t border-gray-100 px-5 py-4 bg-gray-50/40">
-                            <div className="flex items-center justify-between mb-3">
-                              <span className="text-sm text-gray-500">Total TTC</span>
-                              <span className="text-lg font-bold text-purple-700 tabular-nums">{cartTotal.toFixed(2)} DT</span>
-                            </div>
+                            <p className="text-xs text-gray-500 mb-3 leading-relaxed">
+                              {language === "fr"
+                                ? "Vos tarifs seront précisés dans votre devis."
+                                : "Your pricing will be provided in your quote."}
+                            </p>
                             <Link
                               href="/account/cart"
                               onClick={() => setIsCartOpen(false)}
                               className="block w-full text-center py-2.5 bg-gradient-to-b from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white text-sm font-semibold rounded-xl transition-colors"
                             >
-                              Voir le panier
+                              {language === "fr" ? "Voir ma demande" : "View my request"}
                             </Link>
                           </div>
                         )}

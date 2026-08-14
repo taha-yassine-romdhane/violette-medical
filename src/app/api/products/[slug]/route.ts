@@ -10,6 +10,8 @@ export async function GET(
 ) {
   const session = await auth();
   const isAuthenticated = !!session?.user;
+  const role = session?.user?.role;
+  const canSeePrices = role === "ADMIN" || role === "COMMERCIAL";
   const { slug } = await params;
 
   const product = await prisma.product.findUnique({
@@ -25,7 +27,7 @@ export async function GET(
       images: true,
       thumbnail: true,
       isFeatured: true,
-      ...(isAuthenticated
+      ...(canSeePrices
         ? { priceHT: true, taxRate: true, priceTTC: true, stock: true, minStock: true }
         : {}),
       category: { select: { id: true, nameFr: true, nameEn: true, slug: true } },
@@ -59,12 +61,12 @@ export async function GET(
       nameEn: true,
       slug: true,
       thumbnail: true,
-      ...(isAuthenticated ? { priceTTC: true } : {}),
+      ...(canSeePrices ? { priceTTC: true } : {}),
       category: { select: { nameFr: true, nameEn: true, slug: true } },
     },
     take: 4,
     orderBy: { createdAt: "desc" },
   });
 
-  return NextResponse.json({ product, related, isAuthenticated });
+  return NextResponse.json({ product, related, isAuthenticated, canSeePrices });
 }

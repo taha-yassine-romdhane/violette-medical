@@ -7,6 +7,10 @@ export const dynamic = "force-dynamic";
 export async function GET(request: NextRequest) {
   const session = await auth();
   const isAuthenticated = !!session?.user;
+  // Prices are quote-based: only the owner (ADMIN) and sales (COMMERCIAL) ever
+  // receive them. Guests and clients (USER) never see prices on the storefront.
+  const role = session?.user?.role;
+  const canSeePrices = role === "ADMIN" || role === "COMMERCIAL";
 
   const { searchParams } = new URL(request.url);
   const categorySlug = searchParams.get("category");
@@ -54,7 +58,7 @@ export async function GET(request: NextRequest) {
         images: true,
         isFeatured: true,
         // Only include pricing/stock for authenticated users
-        ...(isAuthenticated
+        ...(canSeePrices
           ? { priceHT: true, taxRate: true, priceTTC: true, stock: true }
           : {}),
         category: { select: { id: true, nameFr: true, nameEn: true, slug: true } },
@@ -77,5 +81,6 @@ export async function GET(request: NextRequest) {
       totalPages: Math.ceil(total / limit),
     },
     isAuthenticated,
+    canSeePrices,
   });
 }

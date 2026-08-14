@@ -166,6 +166,24 @@ body {
   to { opacity: 1; }
 }
 
+/* Mobile filter bottom sheet entrance */
+@keyframes sheet-slide-up {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+.animate-sheet-up {
+  animation: sheet-slide-up 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.animate-backdrop-in {
+  animation: fade-in 0.25s ease;
+}
+
 /* Staggered entrance for the drawer's items */
 @keyframes menu-item-in {
   from {
