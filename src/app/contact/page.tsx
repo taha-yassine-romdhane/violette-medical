@@ -190,18 +190,18 @@ export default function ContactPage() {
                       <label className="block text-sm font-medium text-gray-700 mb-1.5">
                         {t.contact.form.name} <span className="text-purple-600">*</span>
                       </label>
-                      <input type="text" name="name" required className={inputClass} />
+                      <input type="text" name="name" required className={inputClass} placeholder="Dr. Ahmed Ben Ali" />
                     </div>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-1.5">
                           {t.contact.form.email} <span className="text-purple-600">*</span>
                         </label>
-                        <input type="email" name="email" required className={inputClass} />
+                        <input type="email" name="email" required className={inputClass} placeholder={language === "fr" ? "votre@email.com" : "your@email.com"} />
                       </div>
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-1.5">{t.contact.form.phone}</label>
-                        <input type="tel" name="phone" className={inputClass} />
+                        <input type="tel" name="phone" className={inputClass} placeholder="+216 XX XXX XXX" />
                       </div>
                     </div>
                     <div>
@@ -219,7 +219,15 @@ export default function ContactPage() {
                       <label className="block text-sm font-medium text-gray-700 mb-1.5">
                         {t.contact.form.message} <span className="text-purple-600">*</span>
                       </label>
-                      <textarea name="message" rows={5} required className={`${inputClass} resize-none`} />
+                      <textarea
+                        name="message"
+                        rows={5}
+                        required
+                        className={`${inputClass} resize-none`}
+                        placeholder={language === "fr"
+                          ? "Décrivez votre besoin : produits souhaités, quantités, votre établissement..."
+                          : "Describe your need: desired products, quantities, your facility..."}
+                      />
                     </div>
                     {error && (
                       <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl text-sm">{error}</div>

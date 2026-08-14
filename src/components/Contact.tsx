@@ -200,13 +200,13 @@ export default function Contact() {
                       <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1.5">
                         {t.contact.form.name} <span className="text-purple-600">*</span>
                       </label>
-                      <input type="text" id="name" name="name" className={inputClass} required />
+                      <input type="text" id="name" name="name" className={inputClass} required placeholder="Dr. Ahmed Ben Ali" />
                     </div>
                     <div>
                       <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1.5">
                         {t.contact.form.email} <span className="text-purple-600">*</span>
                       </label>
-                      <input type="email" id="email" name="email" className={inputClass} required />
+                      <input type="email" id="email" name="email" className={inputClass} required placeholder={fr ? "votre@email.com" : "your@email.com"} />
                     </div>
                   </div>
 
@@ -215,7 +215,7 @@ export default function Contact() {
                       <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-1.5">
                         {t.contact.form.phone}
                       </label>
-                      <input type="tel" id="phone" name="phone" className={inputClass} />
+                      <input type="tel" id="phone" name="phone" className={inputClass} placeholder="+216 XX XXX XXX" />
                     </div>
                     <div>
                       <label htmlFor="subject" className="block text-sm font-medium text-gray-700 mb-1.5">
@@ -235,7 +235,16 @@ export default function Contact() {
                     <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-1.5">
                       {t.contact.form.message} <span className="text-purple-600">*</span>
                     </label>
-                    <textarea id="message" name="message" rows={5} className={`${inputClass} resize-none`} required />
+                    <textarea
+                      id="message"
+                      name="message"
+                      rows={5}
+                      className={`${inputClass} resize-none`}
+                      required
+                      placeholder={fr
+                        ? "Décrivez votre besoin : produits souhaités, quantités, votre établissement..."
+                        : "Describe your need: desired products, quantities, your facility..."}
+                    />
                   </div>
 
                   {error && (
