@@ -57,9 +57,9 @@ export default function Faq() {
       ];
 
   return (
-    <section className="py-16 sm:py-20 lg:py-28 bg-white">
+    <section className="py-12 sm:py-20 lg:py-28 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-5 gap-10 lg:gap-16 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-7 lg:gap-16 items-start">
           {/* Left: heading + photo */}
           <div className="lg:col-span-2 lg:sticky lg:top-28">
             <Reveal>

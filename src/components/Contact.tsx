@@ -102,7 +102,7 @@ export default function Contact() {
     "w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500/30 focus:border-purple-400 focus:bg-white transition-all";
 
   return (
-    <section id="contact" className="relative py-16 sm:py-20 lg:py-28 bg-gray-50/70 overflow-hidden">
+    <section id="contact" className="relative py-12 sm:py-20 lg:py-28 bg-gray-50/70 overflow-hidden">
       <div className="absolute inset-0 bg-grid-light opacity-50 pointer-events-none" />
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 sm:gap-8">
@@ -118,13 +118,13 @@ export default function Contact() {
                 <h2 className="text-xl sm:text-3xl font-bold tracking-tight leading-tight mb-3">
                   {fr ? "Parlons de votre projet" : "Let's talk about your project"}
                 </h2>
-                <p className="text-purple-200 text-sm leading-relaxed mb-9">
+                <p className="text-purple-200 text-sm leading-relaxed mb-7 sm:mb-9">
                   {fr
                     ? "Devis, disponibilité, création de compte professionnel — notre équipe vous répond sous 24 h ouvrées."
                     : "Quotes, availability, professional account creation — our team replies within 24 business hours."}
                 </p>
 
-                <div className="space-y-5">
+                <div className="space-y-4 sm:space-y-5">
                   {contactInfo.map((item, index) => (
                     <div key={index} className="flex items-start gap-4">
                       <div className="w-10 h-10 bg-white/10 rounded-xl flex items-center justify-center flex-shrink-0 text-purple-100">

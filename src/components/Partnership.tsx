@@ -24,9 +24,9 @@ export default function Partnership() {
       ];
 
   return (
-    <section id="partnership" className="relative py-16 sm:py-20 lg:py-28 bg-white overflow-hidden">
+    <section id="partnership" className="relative py-12 sm:py-20 lg:py-28 bg-white overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 sm:gap-14 lg:gap-20 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-9 sm:gap-14 lg:gap-20 items-center">
           {/* Left: copy */}
           <div>
             <Reveal>
@@ -58,7 +58,7 @@ export default function Partnership() {
               </p>
             </Reveal>
 
-            <div className="space-y-3.5 mb-9">
+            <div className="space-y-3 sm:space-y-3.5 mb-7 sm:mb-9">
               {points.map((point, i) => (
                 <Reveal key={point} delay={180 + i * 70}>
                   <div className="flex items-center gap-3.5">

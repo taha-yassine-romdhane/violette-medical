@@ -26,7 +26,7 @@ export default function Footer({ overlap = false }: { overlap?: boolean }) {
       <div className="absolute inset-0 bg-grid-light opacity-[0.05] pointer-events-none" />
 
       <div className={`relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-10 ${overlap ? "pt-32 sm:pt-44" : "pt-14 sm:pt-16"}`}>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 sm:gap-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-12">
           {/* Company Info */}
           <div>
             <Image
@@ -68,10 +68,10 @@ export default function Footer({ overlap = false }: { overlap?: boolean }) {
 
           {/* Quick Links */}
           <div>
-            <h3 className="text-sm font-semibold uppercase tracking-wider text-gray-300 mb-6">
+            <h3 className="text-sm font-semibold uppercase tracking-wider text-gray-300 mb-4 sm:mb-6">
               {t.footer.quickLinks}
             </h3>
-            <ul className="space-y-3.5">
+            <ul className="grid grid-cols-2 gap-x-4 gap-y-2.5 sm:grid-cols-1 sm:gap-y-3.5">
               {quickLinks.map((link) => (
                 <li key={link.href}>
                   <Link
@@ -88,7 +88,7 @@ export default function Footer({ overlap = false }: { overlap?: boolean }) {
 
           {/* Contact Info */}
           <div>
-            <h3 className="text-sm font-semibold uppercase tracking-wider text-gray-300 mb-6">
+            <h3 className="text-sm font-semibold uppercase tracking-wider text-gray-300 mb-4 sm:mb-6">
               {t.footer.contactInfo}
             </h3>
             <ul className="space-y-4 text-gray-400 text-sm">
@@ -127,7 +127,7 @@ export default function Footer({ overlap = false }: { overlap?: boolean }) {
 
           {/* Partnership */}
           <div>
-            <h3 className="text-sm font-semibold uppercase tracking-wider text-gray-300 mb-6">
+            <h3 className="text-sm font-semibold uppercase tracking-wider text-gray-300 mb-4 sm:mb-6">
               {fr ? "Partenaire Officiel" : "Official Partner"}
             </h3>
             <div className="bg-white rounded-xl p-4 inline-block">
@@ -158,7 +158,7 @@ export default function Footer({ overlap = false }: { overlap?: boolean }) {
         </div>
 
         {/* Copyright */}
-        <div className="mt-12 sm:mt-14 pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-3 text-gray-500 text-xs sm:text-sm text-center md:text-left">
+        <div className="mt-10 sm:mt-14 pt-7 sm:pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-3 text-gray-500 text-xs sm:text-sm text-center md:text-left">
           <p>
             &copy; {currentYear} VIOLETTE MEDICAL DISTRIBUTION+. {t.footer.rights}
           </p>

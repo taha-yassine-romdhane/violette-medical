@@ -40,7 +40,7 @@ export default function Events() {
   if (!loading && events.length === 0) return null;
 
   return (
-    <section id="events" className="relative py-16 sm:py-20 lg:py-28 bg-gray-50/70 overflow-hidden">
+    <section id="events" className="relative py-12 sm:py-20 lg:py-28 bg-gray-50/70 overflow-hidden">
       <div className="absolute inset-0 bg-grid-light opacity-50 pointer-events-none" />
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-wrap items-end justify-between gap-5 sm:gap-6 mb-10 sm:mb-12">
@@ -68,10 +68,10 @@ export default function Events() {
           </Reveal>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
+        <div className="flex gap-4 overflow-x-auto pb-3 -mx-4 px-4 snap-x snap-mandatory [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:grid sm:grid-cols-2 lg:grid-cols-3 sm:gap-6 sm:overflow-visible sm:pb-0 sm:mx-0 sm:px-0">
           {loading
             ? Array.from({ length: 3 }).map((_, i) => (
-                <div key={i} className="bg-white rounded-2xl border border-gray-100 overflow-hidden animate-pulse">
+                <div key={i} className="snap-start shrink-0 w-[78vw] max-w-[320px] sm:w-auto sm:max-w-none bg-white rounded-2xl border border-gray-100 overflow-hidden animate-pulse">
                   <div className="aspect-[16/10] bg-gray-100" />
                   <div className="p-5 space-y-3">
                     <div className="h-3 bg-gray-100 rounded w-1/3" />
@@ -85,7 +85,7 @@ export default function Events() {
                 const title = fr ? event.titleFr : event.titleEn;
                 const desc = fr ? event.descriptionFr : event.descriptionEn;
                 return (
-                  <Reveal key={event.id} delay={i * 110} className="h-full">
+                  <Reveal key={event.id} delay={i * 110} className="h-full snap-start shrink-0 w-[78vw] max-w-[320px] sm:w-auto sm:max-w-none">
                     <Link
                       href="/events"
                       className="group flex flex-col h-full bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-xl hover:shadow-purple-900/10 hover:-translate-y-1.5 overflow-hidden transition-all duration-300"
@@ -100,12 +100,13 @@ export default function Events() {
                             className="object-cover group-hover:scale-[1.06] transition-transform duration-500"
                           />
                           {event.isFeatured && (
-                            <span className="absolute top-3 left-3 bg-purple-600 text-white text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wide">
+                            <span className="absolute top-3 left-3 inline-flex items-center gap-1.5 bg-white/90 backdrop-blur-sm text-gray-900 ring-1 ring-gray-900/10 shadow-sm text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wide">
+                              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
                               {fr ? "En vedette" : "Featured"}
                             </span>
                           )}
                           {event.images.length > 1 && (
-                            <span className="absolute bottom-3 right-3 bg-gray-950/70 backdrop-blur-sm text-white text-[11px] font-semibold px-2 py-1 rounded-full flex items-center gap-1">
+                            <span className="absolute bottom-3 right-3 bg-white/90 backdrop-blur-sm text-gray-900 ring-1 ring-gray-900/10 shadow-sm text-[11px] font-semibold px-2 py-1 rounded-full flex items-center gap-1">
                               <svg className="w-3 h-3" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                               </svg>

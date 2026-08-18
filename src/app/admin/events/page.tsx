@@ -143,14 +143,14 @@ function ImageDropZone({
 
   return (
     <div>
-      <label className="block text-sm font-medium text-gray-300 mb-2">{label}</label>
+      <label className="block text-sm font-medium text-gray-700 mb-2">{label}</label>
 
       {/* Existing images preview */}
       {images.length > 0 && (
         <div className={`flex flex-wrap gap-2 mb-3 ${multiple ? "" : ""}`}>
           {images.map((url, idx) => (
             <div key={`${url}-${idx}`} className="relative group">
-              <div className="w-24 h-24 rounded-lg overflow-hidden border border-white/10 bg-white/5 relative">
+              <div className="w-24 h-24 rounded-lg overflow-hidden border border-gray-200 bg-gray-100 relative">
                 <Image src={url} alt="" fill className="object-cover" sizes="96px" />
               </div>
               {/* Overlay actions */}
@@ -210,8 +210,8 @@ function ImageDropZone({
           onClick={() => inputRef.current?.click()}
           className={`relative border-2 border-dashed rounded-xl p-6 text-center cursor-pointer transition-all ${
             dragOver
-              ? "border-purple-400 bg-purple-500/10"
-              : "border-white/20 bg-white/[0.03] hover:border-purple-400/50 hover:bg-purple-500/5"
+              ? "border-gray-500 bg-gray-100"
+              : "border-gray-300 bg-gray-50 hover:border-gray-400 hover:bg-gray-100"
           }`}
         >
           <input
@@ -225,19 +225,19 @@ function ImageDropZone({
 
           {uploading ? (
             <div className="flex flex-col items-center gap-2 py-2">
-              <div className="w-6 h-6 border-2 border-purple-400 border-t-transparent rounded-full animate-spin" />
-              <p className="text-sm text-purple-300 font-medium">Upload en cours...</p>
+              <div className="w-6 h-6 border-2 border-gray-900 border-t-transparent rounded-full animate-spin" />
+              <p className="text-sm text-gray-700 font-medium">Upload en cours...</p>
             </div>
           ) : (
             <div className="flex flex-col items-center gap-2 py-1">
-              <div className="w-10 h-10 rounded-xl bg-purple-500/15 flex items-center justify-center text-purple-300">
+              <div className="w-10 h-10 rounded-xl bg-gray-100 flex items-center justify-center text-gray-700">
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={1.8} viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909M3.75 21h16.5A2.25 2.25 0 0022.5 18.75V5.25A2.25 2.25 0 0020.25 3H3.75A2.25 2.25 0 001.5 5.25v13.5A2.25 2.25 0 003.75 21zM12 9.75a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
                 </svg>
               </div>
               <div>
-                <p className="text-sm text-gray-400">
-                  <span className="text-purple-300 font-medium">Cliquez</span> ou glissez-déposez
+                <p className="text-sm text-gray-500">
+                  <span className="text-gray-900 font-medium">Cliquez</span> ou glissez-déposez
                 </p>
                 <p className="text-xs text-gray-500 mt-0.5">
                   JPG, PNG, WebP ou AVIF &middot; Max 5 Mo {multiple ? "chacun" : ""}
@@ -249,7 +249,7 @@ function ImageDropZone({
       )}
 
       {uploadError && (
-        <p className="text-xs text-red-300 mt-2 flex items-center gap-1">
+        <p className="text-xs text-red-600 mt-2 flex items-center gap-1">
           <svg className="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
           </svg>
@@ -420,7 +420,7 @@ export default function AdminEventsPage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="w-6 h-6 border-2 border-purple-400 border-t-transparent rounded-full animate-spin" />
+        <div className="w-6 h-6 border-2 border-gray-900 border-t-transparent rounded-full animate-spin" />
       </div>
     );
   }
@@ -433,14 +433,14 @@ export default function AdminEventsPage() {
       <div className="flex items-center justify-between mb-6">
         <div>
           <div className="flex items-center gap-3">
-            <h1 className="text-2xl font-bold tracking-tight text-white">Événements</h1>
-            <span className="bg-purple-500/15 text-purple-300 text-xs font-semibold px-2.5 py-1 rounded-full">
+            <h1 className="text-2xl font-bold tracking-tight text-gray-900">Événements</h1>
+            <span className="bg-gray-900 text-white text-xs font-semibold px-2.5 py-1 rounded-full">
               {events.length}
             </span>
           </div>
-          <p className="text-sm text-gray-400 mt-1">
+          <p className="text-sm text-gray-500 mt-1">
             Gérez les événements du site &middot;{" "}
-            <span className="text-purple-300 font-medium">
+            <span className="text-gray-900 font-medium">
               {activeCount} actif{activeCount !== 1 ? "s" : ""}
             </span>{" "}
             sur {events.length}
@@ -458,7 +458,7 @@ export default function AdminEventsPage() {
       </div>
 
       {success && (
-        <div className="bg-emerald-500/10 border border-emerald-500/25 text-emerald-300 px-4 py-3 rounded-xl text-sm mb-6 flex items-center gap-2">
+        <div className="bg-emerald-50 border border-emerald-200 text-emerald-700 px-4 py-3 rounded-xl text-sm mb-6 flex items-center gap-2">
           <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
           </svg>
@@ -467,19 +467,19 @@ export default function AdminEventsPage() {
       )}
 
       {error && !dialogOpen && (
-        <div className="bg-red-500/10 border border-red-500/30 text-red-300 px-4 py-3 rounded-xl text-sm mb-6">
+        <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-xl text-sm mb-6">
           {error}
         </div>
       )}
 
       {/* Events list */}
       {events.length === 0 ? (
-        <div className="text-center py-16 bg-white/[0.03] rounded-xl border-2 border-dashed border-white/15">
-          <svg className="w-12 h-12 mx-auto text-gray-600 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div className="text-center py-16 bg-white rounded-xl border-2 border-dashed border-gray-200">
+          <svg className="w-12 h-12 mx-auto text-gray-300 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
           </svg>
-          <p className="text-gray-400 text-sm mb-4">Aucun événement. Commencez par en créer un.</p>
-          <button onClick={openCreate} className="text-sm text-purple-300 hover:text-purple-200 font-medium">
+          <p className="text-gray-500 text-sm mb-4">Aucun événement. Commencez par en créer un.</p>
+          <button onClick={openCreate} className="text-sm text-gray-900 hover:text-gray-600 font-medium">
             + Ajouter un événement
           </button>
         </div>
@@ -488,19 +488,19 @@ export default function AdminEventsPage() {
           {events.map((ev) => (
             <div
               key={ev.id}
-              className={`bg-white/[0.04] rounded-xl border overflow-hidden flex ${
-                ev.isActive ? "border-white/10" : "border-white/10 opacity-60"
+              className={`bg-white rounded-xl border shadow-sm overflow-hidden flex ${
+                ev.isActive ? "border-gray-200" : "border-gray-200 opacity-60"
               }`}
             >
               {/* Thumbnail */}
-              <div className="relative w-48 min-h-[120px] shrink-0 bg-white/5">
+              <div className="relative w-48 min-h-[120px] shrink-0 bg-gray-100">
                 {ev.thumbnail ? (
                   <Image src={ev.thumbnail} alt={ev.titleFr} fill className="object-cover" sizes="192px" />
                 ) : ev.images.length > 0 ? (
                   <Image src={ev.images[0]} alt={ev.titleFr} fill className="object-cover" sizes="192px" />
                 ) : (
                   <div className="flex items-center justify-center h-full">
-                    <svg className="w-10 h-10 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-10 h-10 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                     </svg>
                   </div>
@@ -511,12 +511,12 @@ export default function AdminEventsPage() {
               <div className="flex-1 p-4 flex flex-col justify-between min-w-0">
                 <div>
                   <div className="flex items-center gap-2 mb-1 flex-wrap">
-                    <h3 className="text-sm font-semibold text-white truncate">{ev.titleFr}</h3>
+                    <h3 className="text-sm font-semibold text-gray-900 truncate">{ev.titleFr}</h3>
                     <span
                       className={`shrink-0 px-2 py-0.5 text-[10px] font-semibold rounded-full cursor-pointer ${
                         ev.isActive
-                          ? "bg-emerald-500/15 text-emerald-300 hover:bg-emerald-500/25"
-                          : "bg-red-500/15 text-red-300 hover:bg-red-500/25"
+                          ? "bg-emerald-50 text-emerald-700 hover:bg-emerald-100"
+                          : "bg-red-50 text-red-600 hover:bg-red-100"
                       }`}
                       onClick={() => toggleActive(ev)}
                       title="Cliquer pour basculer"
@@ -526,8 +526,8 @@ export default function AdminEventsPage() {
                     <span
                       className={`shrink-0 px-2 py-0.5 text-[10px] font-semibold rounded-full cursor-pointer ${
                         ev.isFeatured
-                          ? "bg-yellow-500/15 text-yellow-300 hover:bg-yellow-500/25"
-                          : "bg-white/10 text-gray-400 hover:bg-white/15"
+                          ? "bg-amber-50 text-amber-700 hover:bg-amber-100"
+                          : "bg-gray-100 text-gray-500 hover:bg-gray-200"
                       }`}
                       onClick={() => toggleFeatured(ev)}
                       title="Cliquer pour basculer"
@@ -535,7 +535,7 @@ export default function AdminEventsPage() {
                       {ev.isFeatured ? "En vedette" : "Normal"}
                     </span>
                   </div>
-                  <div className="flex items-center gap-3 text-xs text-gray-400 mt-1">
+                  <div className="flex items-center gap-3 text-xs text-gray-500 mt-1">
                     <span className="flex items-center gap-1">
                       <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
@@ -564,12 +564,12 @@ export default function AdminEventsPage() {
                 </div>
 
                 {/* Actions */}
-                <div className="flex items-center justify-end mt-3 pt-3 border-t border-white/10">
+                <div className="flex items-center justify-end mt-3 pt-3 border-t border-gray-100">
                   <div className="flex gap-3">
-                    <button onClick={() => openEdit(ev)} className="text-xs text-purple-300 hover:text-purple-200 font-medium">
+                    <button onClick={() => openEdit(ev)} className="text-xs text-gray-900 hover:text-gray-600 font-medium">
                       Modifier
                     </button>
-                    <button onClick={() => handleDelete(ev.id)} className="text-xs text-red-400 hover:text-red-300 font-medium">
+                    <button onClick={() => handleDelete(ev.id)} className="text-xs text-red-600 hover:text-red-500 font-medium">
                       Supprimer
                     </button>
                   </div>
@@ -584,18 +584,18 @@ export default function AdminEventsPage() {
       {events.filter((e) => e.isActive).length > 0 && (
         <div className="mt-8">
           <div className="flex items-center justify-between mb-3">
-            <h2 className="text-sm font-semibold text-gray-300 flex items-center gap-2">
-              <svg className="w-4 h-4 text-purple-300" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+            <h2 className="text-sm font-semibold text-gray-700 flex items-center gap-2">
+              <svg className="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.64 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.64 0-8.573-3.007-9.963-7.178z" />
                 <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
               </svg>
               Aperçu en direct
             </h2>
-            <div className="flex gap-1 bg-white/10 rounded-lg p-0.5">
+            <div className="flex gap-1 bg-gray-100 rounded-lg p-0.5">
               <button
                 onClick={() => setPreviewTab("fr")}
                 className={`px-3 py-1 text-xs font-medium rounded-md transition-colors ${
-                  previewTab === "fr" ? "bg-purple-600 text-white" : "text-gray-400 hover:text-white"
+                  previewTab === "fr" ? "bg-purple-600 text-white" : "text-gray-500 hover:text-gray-900"
                 }`}
               >
                 FR
@@ -603,7 +603,7 @@ export default function AdminEventsPage() {
               <button
                 onClick={() => setPreviewTab("en")}
                 className={`px-3 py-1 text-xs font-medium rounded-md transition-colors ${
-                  previewTab === "en" ? "bg-purple-600 text-white" : "text-gray-400 hover:text-white"
+                  previewTab === "en" ? "bg-purple-600 text-white" : "text-gray-500 hover:text-gray-900"
                 }`}
               >
                 EN
@@ -612,14 +612,14 @@ export default function AdminEventsPage() {
           </div>
 
           {/* Preview: Events section like homepage */}
-          <div className="rounded-xl overflow-hidden border border-white/10 bg-gray-950">
+          <div className="rounded-xl overflow-hidden border border-gray-200 bg-white shadow-sm">
             <div className="px-6 py-8">
               {/* Section header preview */}
               <div className="text-center mb-6">
-                <h3 className="text-xl font-bold text-white mb-1">
+                <h3 className="text-xl font-bold text-gray-900 mb-1">
                   {previewTab === "fr" ? "Nos Événements" : "Our Events"}
                 </h3>
-                <p className="text-sm text-purple-300 font-medium">
+                <p className="text-sm text-gray-700 font-medium">
                   {previewTab === "fr" ? "Retrouvez-nous lors de nos événements" : "Meet us at our events"}
                 </p>
               </div>
@@ -636,7 +636,7 @@ export default function AdminEventsPage() {
                         i === 0 ? "col-span-2 row-span-2" : ""
                       }`}
                     >
-                      <div className={`relative ${i === 0 ? "h-52" : "h-24"} bg-white/10`}>
+                      <div className={`relative ${i === 0 ? "h-52" : "h-24"} bg-gray-100`}>
                         {img ? (
                           <Image
                             src={img}
@@ -646,17 +646,17 @@ export default function AdminEventsPage() {
                             sizes={i === 0 ? "400px" : "200px"}
                           />
                         ) : (
-                          <div className="w-full h-full flex items-center justify-center text-gray-600">
+                          <div className="w-full h-full flex items-center justify-center text-gray-300">
                             <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                             </svg>
                           </div>
                         )}
                         {/* Hover overlay with title */}
-                        <div className="absolute inset-0 bg-purple-900/0 group-hover:bg-purple-900/60 transition-colors duration-200 flex items-end">
+                        <div className="absolute inset-0 bg-gray-900/0 group-hover:bg-gray-900/60 transition-colors duration-200 flex items-end">
                           <div className="p-2 w-full opacity-0 group-hover:opacity-100 transition-opacity duration-200">
                             <p className="text-white text-xs font-medium truncate">{title}</p>
-                            <p className="text-purple-200 text-[10px]">
+                            <p className="text-gray-300 text-[10px]">
                               {new Date(ev.date).toLocaleDateString("fr-FR", { day: "numeric", month: "short", year: "numeric" })}
                             </p>
                           </div>
@@ -680,15 +680,15 @@ export default function AdminEventsPage() {
                   const desc = previewTab === "en" ? (ev.descriptionEn || ev.descriptionFr) : ev.descriptionFr;
                   const img = ev.thumbnail || ev.images[0];
                   return (
-                    <div key={ev.id} className="bg-white/[0.04] rounded-lg border border-white/10 p-3 flex gap-3">
+                    <div key={ev.id} className="bg-gray-50 rounded-lg border border-gray-200 p-3 flex gap-3">
                       {img && (
-                        <div className="relative w-16 h-16 rounded-lg overflow-hidden shrink-0 bg-white/10">
+                        <div className="relative w-16 h-16 rounded-lg overflow-hidden shrink-0 bg-gray-100">
                           <Image src={img} alt={title} fill className="object-cover" sizes="64px" />
                         </div>
                       )}
                       <div className="flex-1 min-w-0">
-                        <h4 className="text-xs font-semibold text-white truncate">{title}</h4>
-                        <div className="flex items-center gap-2 text-[10px] text-gray-400 mt-0.5">
+                        <h4 className="text-xs font-semibold text-gray-900 truncate">{title}</h4>
+                        <div className="flex items-center gap-2 text-[10px] text-gray-500 mt-0.5">
                           <span>
                             {new Date(ev.date).toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" })}
                           </span>
@@ -710,11 +710,11 @@ export default function AdminEventsPage() {
             </div>
 
             {/* Browser frame bottom bar */}
-            <div className="border-t border-white/10 bg-white/[0.03] px-4 py-2 flex items-center justify-between">
-              <p className="text-[10px] text-gray-400">
+            <div className="border-t border-gray-200 bg-gray-50 px-4 py-2 flex items-center justify-between">
+              <p className="text-[10px] text-gray-500">
                 {events.filter((e) => e.isActive).length} événement{events.filter((e) => e.isActive).length !== 1 ? "s" : ""} actif{events.filter((e) => e.isActive).length !== 1 ? "s" : ""}
               </p>
-              <p className="text-[10px] text-gray-400">localhost:3000/events</p>
+              <p className="text-[10px] text-gray-500">localhost:3000/events</p>
             </div>
           </div>
         </div>
@@ -724,16 +724,16 @@ export default function AdminEventsPage() {
       <dialog
         ref={dialogRef}
         onClose={() => setDialogOpen(false)}
-        className="fixed inset-0 m-auto w-full max-w-2xl h-fit max-h-[90vh] rounded-2xl bg-gray-900 border border-white/10 p-0 shadow-2xl shadow-black/50 backdrop:bg-black/60 backdrop:backdrop-blur-sm overflow-y-auto"
+        className="fixed inset-0 m-auto w-full max-w-2xl h-fit max-h-[90vh] rounded-2xl bg-white border border-gray-200 p-0 shadow-2xl shadow-gray-900/10 backdrop:bg-gray-900/40 backdrop:backdrop-blur-sm overflow-y-auto"
       >
         <div className="p-6">
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-lg font-semibold text-white">
+            <h2 className="text-lg font-semibold text-gray-900">
               {editingId ? "Modifier l'événement" : "Nouvel événement"}
             </h2>
             <button
               onClick={() => setDialogOpen(false)}
-              className="w-8 h-8 rounded-lg flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/10"
+              className="w-8 h-8 rounded-lg flex items-center justify-center text-gray-400 hover:text-gray-900 hover:bg-gray-100"
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -742,7 +742,7 @@ export default function AdminEventsPage() {
           </div>
 
           {error && (
-            <div className="bg-red-500/10 border border-red-500/30 text-red-300 px-4 py-3 rounded-xl text-sm mb-4">
+            <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-xl text-sm mb-4">
               {error}
             </div>
           )}
@@ -750,11 +750,11 @@ export default function AdminEventsPage() {
           <form onSubmit={handleSubmit} className="space-y-5">
             {/* Titles */}
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">Titre *</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Titre *</label>
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <div className="flex items-center gap-1.5 mb-1">
-                    <span className="text-[10px] font-semibold text-gray-400 uppercase">FR</span>
+                    <span className="text-[10px] font-semibold text-gray-500 uppercase">FR</span>
                   </div>
                   <input
                     type="text"
@@ -767,7 +767,7 @@ export default function AdminEventsPage() {
                 </div>
                 <div>
                   <div className="flex items-center gap-1.5 mb-1">
-                    <span className="text-[10px] font-semibold text-gray-400 uppercase">EN</span>
+                    <span className="text-[10px] font-semibold text-gray-500 uppercase">EN</span>
                   </div>
                   <input
                     type="text"
@@ -782,11 +782,11 @@ export default function AdminEventsPage() {
 
             {/* Descriptions */}
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">Description</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Description</label>
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <div className="flex items-center gap-1.5 mb-1">
-                    <span className="text-[10px] font-semibold text-gray-400 uppercase">FR</span>
+                    <span className="text-[10px] font-semibold text-gray-500 uppercase">FR</span>
                   </div>
                   <textarea
                     value={formData.descriptionFr}
@@ -798,7 +798,7 @@ export default function AdminEventsPage() {
                 </div>
                 <div>
                   <div className="flex items-center gap-1.5 mb-1">
-                    <span className="text-[10px] font-semibold text-gray-400 uppercase">EN</span>
+                    <span className="text-[10px] font-semibold text-gray-500 uppercase">EN</span>
                   </div>
                   <textarea
                     value={formData.descriptionEn}
@@ -813,7 +813,7 @@ export default function AdminEventsPage() {
 
             {/* Location */}
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-1">Lieu (optionnel)</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Lieu (optionnel)</label>
               <input
                 type="text"
                 value={formData.location}
@@ -825,11 +825,11 @@ export default function AdminEventsPage() {
 
             {/* Dates */}
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">Dates *</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Dates *</label>
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <div className="flex items-center gap-1.5 mb-1">
-                    <span className="text-[10px] font-semibold text-gray-400 uppercase">Début</span>
+                    <span className="text-[10px] font-semibold text-gray-500 uppercase">Début</span>
                   </div>
                   <input
                     type="datetime-local"
@@ -841,7 +841,7 @@ export default function AdminEventsPage() {
                 </div>
                 <div>
                   <div className="flex items-center gap-1.5 mb-1">
-                    <span className="text-[10px] font-semibold text-gray-400 uppercase">Fin (optionnel)</span>
+                    <span className="text-[10px] font-semibold text-gray-500 uppercase">Fin (optionnel)</span>
                   </div>
                   <input
                     type="datetime-local"
@@ -873,12 +873,12 @@ export default function AdminEventsPage() {
 
             {/* Order */}
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-1">Ordre d&apos;affichage</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Ordre d&apos;affichage</label>
               <input
                 type="number"
                 value={formData.order}
                 onChange={(e) => set("order", parseInt(e.target.value) || 0)}
-                className="w-24 px-3 py-2.5 bg-white/5 border border-white/15 rounded-xl text-sm text-white focus:outline-none focus:ring-2 focus:ring-purple-500/40 focus:border-purple-400"
+                className="w-24 px-3 py-2.5 bg-white border border-gray-300 rounded-xl text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-900/15 focus:border-gray-500"
               />
             </div>
 
@@ -892,10 +892,10 @@ export default function AdminEventsPage() {
                     onChange={(e) => set("isActive", e.target.checked)}
                     className="sr-only peer"
                   />
-                  <div className="w-9 h-5 bg-white/20 rounded-full peer-checked:bg-purple-600 transition-colors" />
+                  <div className="w-9 h-5 bg-gray-300 rounded-full peer-checked:bg-purple-600 transition-colors" />
                   <div className="absolute top-0.5 left-0.5 w-4 h-4 bg-white rounded-full shadow-sm peer-checked:translate-x-4 transition-transform" />
                 </div>
-                <span className="text-sm text-gray-300">Actif</span>
+                <span className="text-sm text-gray-700">Actif</span>
               </label>
               <label className="flex items-center gap-3 cursor-pointer">
                 <div className="relative">
@@ -905,19 +905,19 @@ export default function AdminEventsPage() {
                     onChange={(e) => set("isFeatured", e.target.checked)}
                     className="sr-only peer"
                   />
-                  <div className="w-9 h-5 bg-white/20 rounded-full peer-checked:bg-yellow-500 transition-colors" />
+                  <div className="w-9 h-5 bg-gray-300 rounded-full peer-checked:bg-amber-500 transition-colors" />
                   <div className="absolute top-0.5 left-0.5 w-4 h-4 bg-white rounded-full shadow-sm peer-checked:translate-x-4 transition-transform" />
                 </div>
-                <span className="text-sm text-gray-300">En vedette</span>
+                <span className="text-sm text-gray-700">En vedette</span>
               </label>
             </div>
 
             {/* Actions */}
-            <div className="flex justify-end gap-3 pt-2 border-t border-white/10">
+            <div className="flex justify-end gap-3 pt-2 border-t border-gray-200">
               <button
                 type="button"
                 onClick={() => setDialogOpen(false)}
-                className="px-4 py-2.5 text-sm font-medium text-gray-300 hover:bg-white/5 hover:text-white rounded-lg transition-colors"
+                className="px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-100 hover:text-gray-900 rounded-lg transition-colors"
               >
                 Annuler
               </button>

@@ -97,9 +97,9 @@ export default function AdminStockPage() {
   }
 
   function getStockStatus(item: StockItem): { label: string; color: string; bg: string; dot: string } {
-    if (item.stock <= 0) return { label: "Rupture", color: "text-red-300", bg: "bg-red-500/15 border-red-500/30", dot: "bg-red-400" };
-    if (item.stock <= item.minStock) return { label: "Bas", color: "text-amber-300", bg: "bg-amber-500/15 border-amber-500/30", dot: "bg-amber-400" };
-    return { label: "OK", color: "text-emerald-300", bg: "bg-emerald-500/15 border-emerald-500/30", dot: "bg-emerald-400" };
+    if (item.stock <= 0) return { label: "Rupture", color: "text-red-700", bg: "bg-red-50 border-red-200", dot: "bg-red-500" };
+    if (item.stock <= item.minStock) return { label: "Bas", color: "text-amber-700", bg: "bg-amber-50 border-amber-200", dot: "bg-amber-500" };
+    return { label: "OK", color: "text-emerald-700", bg: "bg-emerald-50 border-emerald-200", dot: "bg-emerald-500" };
   }
 
   function getStockBarPercent(item: StockItem): number {
@@ -122,7 +122,7 @@ export default function AdminStockPage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="w-6 h-6 border-2 border-purple-400 border-t-transparent rounded-full animate-spin" />
+        <div className="w-6 h-6 border-2 border-gray-400 border-t-transparent rounded-full animate-spin" />
       </div>
     );
   }
@@ -137,8 +137,8 @@ export default function AdminStockPage() {
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
         </svg>
       ),
-      color: "bg-white/[0.04] text-gray-300 border-white/10",
-      activeColor: "bg-white/10 text-white border-white/30 ring-2 ring-white/20",
+      color: "bg-white text-gray-700 border-gray-200",
+      activeColor: "bg-gray-100 text-gray-900 border-gray-400 ring-2 ring-gray-900/10",
     },
     {
       key: "out",
@@ -149,8 +149,8 @@ export default function AdminStockPage() {
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
         </svg>
       ),
-      color: "bg-red-500/10 text-red-300 border-red-500/25",
-      activeColor: "bg-red-500/20 text-red-200 border-red-400/60 ring-2 ring-red-500/30",
+      color: "bg-red-50 text-red-700 border-red-200",
+      activeColor: "bg-red-100 text-red-800 border-red-400 ring-2 ring-red-500/20",
     },
     {
       key: "low",
@@ -161,8 +161,8 @@ export default function AdminStockPage() {
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 17h8m0 0V9m0 8l-8-8-4 4-6-6" />
         </svg>
       ),
-      color: "bg-amber-500/10 text-amber-300 border-amber-500/25",
-      activeColor: "bg-amber-500/20 text-amber-200 border-amber-400/60 ring-2 ring-amber-500/30",
+      color: "bg-amber-50 text-amber-700 border-amber-200",
+      activeColor: "bg-amber-100 text-amber-800 border-amber-400 ring-2 ring-amber-500/20",
     },
     {
       key: "ok",
@@ -173,8 +173,8 @@ export default function AdminStockPage() {
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
         </svg>
       ),
-      color: "bg-emerald-500/10 text-emerald-300 border-emerald-500/25",
-      activeColor: "bg-emerald-500/20 text-emerald-200 border-emerald-400/60 ring-2 ring-emerald-500/30",
+      color: "bg-emerald-50 text-emerald-700 border-emerald-200",
+      activeColor: "bg-emerald-100 text-emerald-800 border-emerald-400 ring-2 ring-emerald-500/20",
     },
   ];
 
@@ -183,13 +183,13 @@ export default function AdminStockPage() {
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-white">Gestion du stock</h1>
-          <p className="text-sm text-gray-400 mt-1">Surveillez et mettez à jour les niveaux de stock</p>
+          <h1 className="text-2xl font-bold tracking-tight text-gray-900">Gestion du stock</h1>
+          <p className="text-sm text-gray-500 mt-1">Surveillez et mettez à jour les niveaux de stock</p>
         </div>
         <div className="flex items-center gap-2">
           <Link
             href="/admin/stock/movements"
-            className="px-4 py-2.5 rounded-xl text-sm font-medium text-gray-300 hover:bg-white/5 hover:text-white border border-white/15 transition-colors"
+            className="px-4 py-2.5 rounded-xl text-sm font-medium text-gray-700 hover:bg-gray-50 hover:text-gray-900 border border-gray-300 transition-colors"
           >
             Mouvements
           </Link>
@@ -201,7 +201,7 @@ export default function AdminStockPage() {
           <div className="flex items-center gap-3">
             <button
               onClick={() => setEditValues({})}
-              className="px-4 py-2.5 rounded-xl text-sm font-medium text-gray-300 hover:bg-white/5 hover:text-white border border-white/15 transition-colors"
+              className="px-4 py-2.5 rounded-xl text-sm font-medium text-gray-700 hover:bg-gray-50 hover:text-gray-900 border border-gray-300 transition-colors"
             >
               Annuler tout
             </button>
@@ -228,7 +228,7 @@ export default function AdminStockPage() {
             className={`rounded-xl p-4 border text-left transition-all ${filter === card.key ? card.activeColor : card.color}`}
           >
             <div className="flex items-center justify-between mb-2">
-              <div className="w-9 h-9 rounded-lg bg-white/10 flex items-center justify-center">
+              <div className="w-9 h-9 rounded-lg bg-gray-900/5 flex items-center justify-center">
                 {card.icon}
               </div>
               {filter === card.key && card.key !== "all" && (
@@ -243,7 +243,7 @@ export default function AdminStockPage() {
 
       {/* Success / error toasts */}
       {success && (
-        <div className="bg-emerald-500/10 border border-emerald-500/25 text-emerald-300 px-4 py-3 rounded-xl text-sm mb-6 flex items-center gap-2">
+        <div className="bg-emerald-50 border border-emerald-200 text-emerald-700 px-4 py-3 rounded-xl text-sm mb-6 flex items-center gap-2">
           <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
@@ -251,7 +251,7 @@ export default function AdminStockPage() {
         </div>
       )}
       {error && (
-        <div className="bg-red-500/10 border border-red-500/30 text-red-300 px-4 py-3 rounded-xl text-sm mb-6 flex items-center gap-2">
+        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl text-sm mb-6 flex items-center gap-2">
           <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
@@ -273,7 +273,7 @@ export default function AdminStockPage() {
             className="admin-input pl-10 pr-9"
           />
           {search && (
-            <button onClick={() => setSearch("")} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-300">
+            <button onClick={() => setSearch("")} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700">
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
               </svg>
@@ -285,7 +285,7 @@ export default function AdminStockPage() {
       {/* Stock list */}
       <div className="admin-card overflow-hidden">
         {/* Table header */}
-        <div className="grid grid-cols-[1fr_120px_100px_80px_60px] gap-4 px-5 py-3 bg-white/[0.03] border-b border-white/10 text-xs font-semibold text-gray-400 uppercase tracking-wider">
+        <div className="grid grid-cols-[1fr_120px_100px_80px_60px] gap-4 px-5 py-3 bg-gray-50 border-b border-gray-200 text-xs font-semibold text-gray-500 uppercase tracking-wider">
           <span>Produit</span>
           <span>Niveau de stock</span>
           <span>Stock / Min</span>
@@ -296,13 +296,13 @@ export default function AdminStockPage() {
         {/* Items */}
         {filtered.length === 0 ? (
           <div className="px-6 py-12 text-center">
-            <svg className="w-10 h-10 text-gray-600 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-10 h-10 text-gray-300 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
             </svg>
-            <p className="text-sm text-gray-400">Aucun produit trouvé.</p>
+            <p className="text-sm text-gray-500">Aucun produit trouvé.</p>
           </div>
         ) : (
-          <div className="divide-y divide-white/5">
+          <div className="divide-y divide-gray-100">
             {filtered.map((item) => {
               const editing = editValues[item.id];
               const status = getStockStatus(item);
@@ -314,12 +314,12 @@ export default function AdminStockPage() {
                 <div
                   key={item.id}
                   className={`grid grid-cols-[1fr_120px_100px_80px_60px] gap-4 px-5 py-3.5 items-center transition-colors ${
-                    editing ? "bg-purple-500/10" : "hover:bg-white/[0.03]"
+                    editing ? "bg-gray-100" : "hover:bg-gray-50"
                   }`}
                 >
                   {/* Product info */}
                   <div className="flex items-center gap-3 min-w-0">
-                    <div className="w-9 h-9 rounded-lg bg-white border border-white/10 flex-shrink-0 overflow-hidden flex items-center justify-center">
+                    <div className="w-9 h-9 rounded-lg bg-white border border-gray-200 flex-shrink-0 overflow-hidden flex items-center justify-center">
                       {img ? (
                         <img src={img} alt="" className="w-full h-full object-cover" />
                       ) : (
@@ -329,7 +329,7 @@ export default function AdminStockPage() {
                       )}
                     </div>
                     <div className="min-w-0">
-                      <p className="text-sm font-medium text-white truncate">{item.nameFr}</p>
+                      <p className="text-sm font-medium text-gray-900 truncate">{item.nameFr}</p>
                       <div className="flex items-center gap-2 mt-0.5">
                         {item.reference && (
                           <span className="text-[11px] text-gray-500 font-mono">{item.reference}</span>
@@ -342,7 +342,7 @@ export default function AdminStockPage() {
                   {/* Stock bar */}
                   <div className="flex items-center">
                     <div className="w-full">
-                      <div className="h-2 bg-white/10 rounded-full overflow-hidden">
+                      <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
                         <div
                           className={`h-full rounded-full transition-all ${barColor}`}
                           style={{ width: `${barPercent}%` }}
@@ -359,19 +359,19 @@ export default function AdminStockPage() {
                           type="number"
                           value={editing.stock}
                           onChange={(e) => setEditValues((prev) => ({ ...prev, [item.id]: { ...prev[item.id], stock: e.target.value } }))}
-                          className="w-14 px-1.5 py-1 bg-white/5 border border-purple-400/50 rounded text-xs text-white text-center focus:ring-2 focus:ring-purple-500/40 outline-none"
+                          className="w-14 px-1.5 py-1 bg-white border border-gray-400 rounded text-xs text-gray-900 text-center focus:ring-2 focus:ring-gray-900/15 outline-none"
                         />
                         <span className="text-gray-600 text-xs">/</span>
                         <input
                           type="number"
                           value={editing.minStock}
                           onChange={(e) => setEditValues((prev) => ({ ...prev, [item.id]: { ...prev[item.id], minStock: e.target.value } }))}
-                          className="w-14 px-1.5 py-1 bg-white/5 border border-white/15 rounded text-xs text-white text-center focus:ring-2 focus:ring-purple-500/40 outline-none"
+                          className="w-14 px-1.5 py-1 bg-white border border-gray-300 rounded text-xs text-gray-900 text-center focus:ring-2 focus:ring-gray-900/15 outline-none"
                         />
                       </div>
                     ) : (
                       <div className="flex items-center gap-1">
-                        <span className={`text-sm font-semibold ${item.stock <= 0 ? "text-red-300" : item.stock <= item.minStock ? "text-amber-300" : "text-white"}`}>
+                        <span className={`text-sm font-semibold ${item.stock <= 0 ? "text-red-600" : item.stock <= item.minStock ? "text-amber-600" : "text-gray-900"}`}>
                           {item.stock}
                         </span>
                         <span className="text-gray-600 text-xs">/</span>
@@ -393,7 +393,7 @@ export default function AdminStockPage() {
                     {editing ? (
                       <button
                         onClick={() => cancelEdit(item.id)}
-                        className="w-8 h-8 rounded-lg flex items-center justify-center text-gray-500 hover:bg-white/10 hover:text-white transition-colors"
+                        className="w-8 h-8 rounded-lg flex items-center justify-center text-gray-500 hover:bg-gray-100 hover:text-gray-900 transition-colors"
                         title="Annuler"
                       >
                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -403,7 +403,7 @@ export default function AdminStockPage() {
                     ) : (
                       <button
                         onClick={() => startEdit(item.id, item.stock, item.minStock)}
-                        className="w-8 h-8 rounded-lg flex items-center justify-center text-gray-500 hover:bg-white/10 hover:text-purple-300 transition-colors"
+                        className="w-8 h-8 rounded-lg flex items-center justify-center text-gray-500 hover:bg-gray-100 hover:text-gray-900 transition-colors"
                         title="Modifier le stock"
                       >
                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -420,13 +420,13 @@ export default function AdminStockPage() {
 
         {/* Footer summary */}
         {filtered.length > 0 && (
-          <div className="px-5 py-3 bg-white/[0.03] border-t border-white/10 flex items-center justify-between">
+          <div className="px-5 py-3 bg-gray-50 border-t border-gray-200 flex items-center justify-between">
             <span className="text-xs text-gray-500">
               {filtered.length} produit{filtered.length > 1 ? "s" : ""} affiché{filtered.length > 1 ? "s" : ""}
               {filter !== "all" && ` (filtre: ${statCards.find((c) => c.key === filter)?.label})`}
             </span>
             {editCount > 0 && (
-              <span className="text-xs text-purple-300 font-medium">
+              <span className="text-xs text-gray-900 font-medium">
                 {editCount} modification{editCount > 1 ? "s" : ""} en attente
               </span>
             )}

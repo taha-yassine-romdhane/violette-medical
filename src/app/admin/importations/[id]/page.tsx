@@ -206,7 +206,7 @@ export default function AdminImportationDetailPage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="w-6 h-6 border-2 border-purple-400 border-t-transparent rounded-full animate-spin" />
+        <div className="w-6 h-6 border-2 border-gray-400 border-t-transparent rounded-full animate-spin" />
       </div>
     );
   }
@@ -214,8 +214,8 @@ export default function AdminImportationDetailPage() {
   if (!imp) {
     return (
       <div className="text-center py-20">
-        <p className="text-gray-400">Importation introuvable.</p>
-        <Link href="/admin/importations" className="text-purple-300 hover:text-purple-200 text-sm font-medium">
+        <p className="text-gray-500">Importation introuvable.</p>
+        <Link href="/admin/importations" className="text-gray-900 hover:text-gray-600 text-sm font-medium">
           Retour aux importations
         </Link>
       </div>
@@ -231,21 +231,21 @@ export default function AdminImportationDetailPage() {
       <div className="flex flex-wrap items-center justify-between gap-3 mb-6">
         <div>
           <div className="flex items-center gap-3">
-            <Link href="/admin/importations" className="text-gray-500 hover:text-white transition-colors">
+            <Link href="/admin/importations" className="text-gray-500 hover:text-gray-900 transition-colors">
               <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
               </svg>
             </Link>
-            <h1 className="text-2xl font-bold tracking-tight text-white font-mono">{imp.reference}</h1>
+            <h1 className="text-2xl font-bold tracking-tight text-gray-900 font-mono">{imp.reference}</h1>
             <span
               className={`inline-flex px-2.5 py-1 text-xs font-semibold rounded-full ${
-                isDraft ? "bg-yellow-500/15 text-yellow-300" : "bg-emerald-500/15 text-emerald-300"
+                isDraft ? "bg-amber-50 text-amber-700" : "bg-emerald-50 text-emerald-700"
               }`}
             >
               {isDraft ? "Brouillon" : "Réceptionnée"}
             </span>
           </div>
-          <p className="text-sm text-gray-400 mt-1">
+          <p className="text-sm text-gray-500 mt-1">
             {isDraft
               ? "Ajoutez les produits reçus, saisissez les N° de série, puis réceptionnez."
               : "Importation réceptionnée — lecture seule."}
@@ -256,14 +256,14 @@ export default function AdminImportationDetailPage() {
           <div className="flex gap-2">
             <button
               onClick={handleDelete}
-              className="px-4 py-2.5 text-sm font-medium bg-red-500/10 border border-red-500/30 text-red-300 hover:bg-red-500/20 rounded-xl transition-colors"
+              className="px-4 py-2.5 text-sm font-medium bg-red-50 border border-red-200 text-red-600 hover:bg-red-100 rounded-xl transition-colors"
             >
               Supprimer
             </button>
             <button
               onClick={() => saveDraft()}
               disabled={saving}
-              className="px-4 py-2.5 text-sm font-medium border border-white/15 text-gray-300 rounded-xl hover:bg-white/5 hover:text-white transition-colors disabled:opacity-50"
+              className="px-4 py-2.5 text-sm font-medium border border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 hover:text-gray-900 transition-colors disabled:opacity-50"
             >
               {saving ? "Enregistrement..." : "Enregistrer le brouillon"}
             </button>
@@ -278,19 +278,19 @@ export default function AdminImportationDetailPage() {
       </div>
 
       {flash && (
-        <div className="bg-emerald-500/10 border border-emerald-500/25 text-emerald-300 px-4 py-3 rounded-xl text-sm mb-5">
+        <div className="bg-emerald-50 border border-emerald-200 text-emerald-700 px-4 py-3 rounded-xl text-sm mb-5">
           {flash}
         </div>
       )}
       {error && (
-        <div className="bg-red-500/10 border border-red-500/30 text-red-300 px-4 py-3 rounded-xl text-sm mb-5">
+        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl text-sm mb-5">
           {error}
         </div>
       )}
 
       {/* Importation header info */}
       <div className="admin-card p-6 mb-6">
-        <h2 className="text-sm font-semibold text-gray-300 uppercase tracking-wide mb-4">Informations</h2>
+        <h2 className="text-sm font-semibold text-gray-700 uppercase tracking-wide mb-4">Informations</h2>
         {isDraft ? (
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
             <div>
@@ -303,7 +303,7 @@ export default function AdminImportationDetailPage() {
             </div>
             <div>
               <label className="admin-label">Date d&apos;arrivée</label>
-              <input type="date" value={header.arrivalDate} onChange={(e) => setHeader({ ...header, arrivalDate: e.target.value })} className="admin-input [color-scheme:dark]" />
+              <input type="date" value={header.arrivalDate} onChange={(e) => setHeader({ ...header, arrivalDate: e.target.value })} className="admin-input [color-scheme:light]" />
             </div>
             <div>
               <label className="admin-label">Note</label>
@@ -312,10 +312,10 @@ export default function AdminImportationDetailPage() {
           </div>
         ) : (
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 text-sm">
-            <div><p className="text-gray-500 text-xs uppercase tracking-wider mb-1">Fournisseur</p><p className="text-white font-medium">{imp.supplier}</p></div>
-            <div><p className="text-gray-500 text-xs uppercase tracking-wider mb-1">N° de facture</p><p className="text-white font-medium">{imp.invoiceNumber || "—"}</p></div>
-            <div><p className="text-gray-500 text-xs uppercase tracking-wider mb-1">Date d&apos;arrivée</p><p className="text-white font-medium">{new Date(imp.arrivalDate).toLocaleDateString("fr-TN")}</p></div>
-            <div><p className="text-gray-500 text-xs uppercase tracking-wider mb-1">Note</p><p className="text-white font-medium">{imp.note || "—"}</p></div>
+            <div><p className="text-gray-500 text-xs uppercase tracking-wider mb-1">Fournisseur</p><p className="text-gray-900 font-medium">{imp.supplier}</p></div>
+            <div><p className="text-gray-500 text-xs uppercase tracking-wider mb-1">N° de facture</p><p className="text-gray-900 font-medium">{imp.invoiceNumber || "—"}</p></div>
+            <div><p className="text-gray-500 text-xs uppercase tracking-wider mb-1">Date d&apos;arrivée</p><p className="text-gray-900 font-medium">{new Date(imp.arrivalDate).toLocaleDateString("fr-TN")}</p></div>
+            <div><p className="text-gray-500 text-xs uppercase tracking-wider mb-1">Note</p><p className="text-gray-900 font-medium">{imp.note || "—"}</p></div>
           </div>
         )}
       </div>
@@ -323,13 +323,13 @@ export default function AdminImportationDetailPage() {
       {/* Lines */}
       <div className="admin-card p-6">
         <div className="flex items-center justify-between mb-5">
-          <h2 className="text-sm font-semibold text-gray-300 uppercase tracking-wide">
+          <h2 className="text-sm font-semibold text-gray-700 uppercase tracking-wide">
             Produits ({lines.length} ligne{lines.length !== 1 ? "s" : ""} · {totalQty} unité{totalQty !== 1 ? "s" : ""})
           </h2>
           {isDraft && (
             <button
               onClick={addLine}
-              className="px-3.5 py-2 text-xs font-semibold border border-white/15 text-gray-300 rounded-xl hover:bg-white/5 hover:text-white transition-colors"
+              className="px-3.5 py-2 text-xs font-semibold border border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 hover:text-gray-900 transition-colors"
             >
               + Ajouter une ligne
             </button>
@@ -338,11 +338,11 @@ export default function AdminImportationDetailPage() {
 
         {isDraft ? (
           lines.length === 0 ? (
-            <div className="text-center py-10 border border-dashed border-white/15 rounded-xl">
-              <p className="text-gray-400 text-sm">Aucune ligne. Ajoutez les produits reçus dans cette importation.</p>
+            <div className="text-center py-10 border border-dashed border-gray-300 rounded-xl">
+              <p className="text-gray-500 text-sm">Aucune ligne. Ajoutez les produits reçus dans cette importation.</p>
               <p className="text-gray-500 text-xs mt-1.5">
                 Produit déjà au catalogue ? Sélectionnez-le. Nouveau modèle ?{" "}
-                <Link href="/admin/products" className="text-purple-300 hover:text-purple-200">Créez-le d&apos;abord ici</Link>.
+                <Link href="/admin/products" className="text-gray-900 underline hover:text-gray-600">Créez-le d&apos;abord ici</Link>.
               </p>
             </div>
           ) : (
@@ -352,7 +352,7 @@ export default function AdminImportationDetailPage() {
                 const serialCount = parseSerials(line.serialsText).length;
                 const serialMismatch = product?.trackSerial && serialCount !== line.quantity;
                 return (
-                  <div key={i} className="border border-white/10 rounded-xl p-4 bg-white/[0.02]">
+                  <div key={i} className="border border-gray-200 rounded-xl p-4 bg-gray-50/50">
                     <div className="grid lg:grid-cols-12 gap-4">
                       {/* Product select */}
                       <div className="lg:col-span-5">
@@ -371,12 +371,12 @@ export default function AdminImportationDetailPage() {
                         </select>
                         {product && (
                           <p className="text-xs text-gray-500 mt-1.5">
-                            Stock actuel : <span className="text-gray-300 tabular-nums">{product.stock}</span>
+                            Stock actuel : <span className="text-gray-700 tabular-nums">{product.stock}</span>
                             {" · "}
                             {product.trackSerial ? (
-                              <span className="text-purple-300">Suivi par N° de série</span>
+                              <span className="text-gray-900">Suivi par N° de série</span>
                             ) : (
-                              <span className="text-gray-400">Quantité seule (accessoire)</span>
+                              <span className="text-gray-500">Quantité seule (accessoire)</span>
                             )}
                           </p>
                         )}
@@ -400,7 +400,7 @@ export default function AdminImportationDetailPage() {
                           <>
                             <label className="admin-label">
                               N° de série{" "}
-                              <span className={serialMismatch ? "text-yellow-300" : "text-emerald-300"}>
+                              <span className={serialMismatch ? "text-amber-600" : "text-emerald-600"}>
                                 ({serialCount}/{line.quantity})
                               </span>
                             </label>
@@ -409,7 +409,7 @@ export default function AdminImportationDetailPage() {
                               onChange={(e) => updateLine(i, { serialsText: e.target.value })}
                               rows={3}
                               placeholder={"Un N° de série par ligne :\nSN-001\nSN-002"}
-                              className={`admin-input resize-y font-mono text-xs ${serialMismatch ? "border-yellow-500/40" : ""}`}
+                              className={`admin-input resize-y font-mono text-xs ${serialMismatch ? "border-amber-400" : ""}`}
                             />
                           </>
                         ) : product ? (
@@ -425,7 +425,7 @@ export default function AdminImportationDetailPage() {
                       <div className="lg:col-span-1 flex lg:items-start lg:justify-end">
                         <button
                           onClick={() => removeLine(i)}
-                          className="p-2 text-gray-500 hover:text-red-300 hover:bg-red-500/10 rounded-lg transition-colors"
+                          className="p-2 text-gray-500 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
                           title="Retirer la ligne"
                         >
                           <svg className="w-4.5 h-4.5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
@@ -443,18 +443,18 @@ export default function AdminImportationDetailPage() {
           /* Received: read-only lines with units */
           <div className="space-y-4">
             {imp.items.map((item) => (
-              <div key={item.id} className="border border-white/10 rounded-xl p-4 bg-white/[0.02]">
+              <div key={item.id} className="border border-gray-200 rounded-xl p-4 bg-gray-50/50">
                 <div className="flex items-center gap-3 mb-3">
-                  <div className="w-10 h-10 rounded-lg bg-white overflow-hidden shrink-0">
+                  <div className="w-10 h-10 rounded-lg bg-white border border-gray-200 overflow-hidden shrink-0">
                     {item.product.thumbnail && (
                       <Image src={item.product.thumbnail} alt="" width={40} height={40} className="w-full h-full object-cover" />
                     )}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm font-semibold text-white truncate">{item.product.nameFr}</p>
+                    <p className="text-sm font-semibold text-gray-900 truncate">{item.product.nameFr}</p>
                     <p className="text-xs text-gray-500 font-mono">{item.product.reference}</p>
                   </div>
-                  <span className="text-sm text-white font-semibold tabular-nums shrink-0">
+                  <span className="text-sm text-gray-900 font-semibold tabular-nums shrink-0">
                     +{item.quantity}
                   </span>
                 </div>
@@ -465,10 +465,10 @@ export default function AdminImportationDetailPage() {
                         key={u.id}
                         className={`px-2 py-0.5 text-[11px] font-mono rounded-md border ${
                           u.status === "IN_STOCK"
-                            ? "bg-emerald-500/10 text-emerald-300 border-emerald-500/20"
+                            ? "bg-emerald-50 text-emerald-700 border-emerald-200"
                             : u.status === "SOLD"
-                            ? "bg-purple-500/10 text-purple-300 border-purple-500/20"
-                            : "bg-gray-500/10 text-gray-300 border-gray-500/20"
+                            ? "bg-gray-900 text-white border-gray-900"
+                            : "bg-gray-100 text-gray-700 border-gray-200"
                         }`}
                         title={u.status === "IN_STOCK" ? "En stock" : u.status === "SOLD" ? "Vendu" : u.status}
                       >

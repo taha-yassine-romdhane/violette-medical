@@ -184,7 +184,7 @@ export default function AdminMessagesPage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="w-6 h-6 border-2 border-purple-400 border-t-transparent rounded-full animate-spin" />
+        <div className="w-6 h-6 border-2 border-gray-900 border-t-transparent rounded-full animate-spin" />
       </div>
     );
   }
@@ -193,7 +193,7 @@ export default function AdminMessagesPage() {
     <div className="h-[calc(100vh-8rem)] flex flex-col">
       {/* Toast */}
       {toast && (
-        <div className="fixed top-4 right-4 z-50 bg-gray-900 border border-white/15 text-white px-4 py-2.5 rounded-xl text-sm shadow-2xl shadow-black/50 flex items-center gap-2 animate-[fadeIn_0.2s_ease-out]">
+        <div className="fixed top-4 right-4 z-50 bg-gray-900 border border-gray-700 text-white px-4 py-2.5 rounded-xl text-sm shadow-2xl shadow-gray-900/20 flex items-center gap-2 animate-[fadeIn_0.2s_ease-out]">
           <svg className="w-4 h-4 text-emerald-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
           </svg>
@@ -204,10 +204,10 @@ export default function AdminMessagesPage() {
       {/* Header */}
       <div className="flex items-center justify-between mb-5 shrink-0">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-white">Messages</h1>
-          <p className="text-sm text-gray-400 mt-0.5">
+          <h1 className="text-2xl font-bold tracking-tight text-gray-900">Messages</h1>
+          <p className="text-sm text-gray-500 mt-0.5">
             {unreadCount > 0 ? (
-              <><span className="text-purple-300 font-medium">{unreadCount} non lu{unreadCount > 1 ? "s" : ""}</span> &middot; </>
+              <><span className="text-gray-900 font-medium">{unreadCount} non lu{unreadCount > 1 ? "s" : ""}</span> &middot; </>
             ) : null}
             {messages.length} message{messages.length !== 1 ? "s" : ""} &middot; {thisWeek} cette semaine
           </p>
@@ -215,7 +215,7 @@ export default function AdminMessagesPage() {
         {unreadCount > 0 && (
           <button
             onClick={markAllRead}
-            className="text-sm text-purple-300 hover:text-purple-200 font-medium flex items-center gap-1.5 transition-colors"
+            className="text-sm text-gray-900 hover:text-gray-600 font-medium flex items-center gap-1.5 transition-colors"
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
@@ -228,36 +228,36 @@ export default function AdminMessagesPage() {
       {/* Stats */}
       <div className="grid grid-cols-3 gap-3 mb-5 shrink-0">
         <div className="admin-card p-3.5 flex items-center gap-3">
-          <div className="w-10 h-10 bg-blue-500/15 rounded-lg flex items-center justify-center">
-            <svg className="w-5 h-5 text-blue-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div className="w-10 h-10 bg-blue-50 rounded-lg flex items-center justify-center">
+            <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
             </svg>
           </div>
           <div>
-            <p className="text-xl font-bold text-white tabular-nums">{messages.length}</p>
-            <p className="text-xs text-gray-400">Total</p>
+            <p className="text-xl font-bold text-gray-900 tabular-nums">{messages.length}</p>
+            <p className="text-xs text-gray-500">Total</p>
           </div>
         </div>
         <div className="admin-card p-3.5 flex items-center gap-3">
-          <div className="w-10 h-10 bg-purple-500/15 rounded-lg flex items-center justify-center">
-            <svg className="w-5 h-5 text-purple-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div className="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center">
+            <svg className="w-5 h-5 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z" />
             </svg>
           </div>
           <div>
-            <p className="text-xl font-bold text-white tabular-nums">{unreadCount}</p>
-            <p className="text-xs text-gray-400">Non lus</p>
+            <p className="text-xl font-bold text-gray-900 tabular-nums">{unreadCount}</p>
+            <p className="text-xs text-gray-500">Non lus</p>
           </div>
         </div>
         <div className="admin-card p-3.5 flex items-center gap-3">
-          <div className="w-10 h-10 bg-emerald-500/15 rounded-lg flex items-center justify-center">
-            <svg className="w-5 h-5 text-emerald-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div className="w-10 h-10 bg-emerald-50 rounded-lg flex items-center justify-center">
+            <svg className="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
             </svg>
           </div>
           <div>
-            <p className="text-xl font-bold text-white tabular-nums">{thisWeek}</p>
-            <p className="text-xs text-gray-400">Cette semaine</p>
+            <p className="text-xl font-bold text-gray-900 tabular-nums">{thisWeek}</p>
+            <p className="text-xs text-gray-500">Cette semaine</p>
           </div>
         </div>
       </div>
@@ -265,9 +265,9 @@ export default function AdminMessagesPage() {
       {/* Inbox area */}
       <div className="flex-1 flex admin-card overflow-hidden min-h-0">
         {/* Left: Message list */}
-        <div className="w-[380px] shrink-0 border-r border-white/10 flex flex-col">
+        <div className="w-[380px] shrink-0 border-r border-gray-200 flex flex-col">
           {/* Search + filters */}
-          <div className="p-3 border-b border-white/10 space-y-2">
+          <div className="p-3 border-b border-gray-200 space-y-2">
             <div className="relative">
               <svg className="w-4 h-4 text-gray-500 absolute left-3 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -291,14 +291,14 @@ export default function AdminMessagesPage() {
                   onClick={() => { setFilter(tab.value); setSelectedId(null); }}
                   className={`px-3 py-1.5 text-xs font-medium rounded-lg border transition-colors flex items-center gap-1.5 ${
                     filter === tab.value
-                      ? "bg-purple-500/15 text-purple-300 border-purple-400/40"
-                      : "border-white/10 text-gray-400 hover:bg-white/5 hover:text-white"
+                      ? "bg-gray-900 text-white border-gray-900"
+                      : "border-gray-200 text-gray-500 hover:bg-gray-50 hover:text-gray-900"
                   }`}
                 >
                   {tab.label}
                   {"count" in tab && tab.count !== undefined && tab.count > 0 && (
                     <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded-full ${
-                      filter === tab.value ? "bg-purple-500/30 text-purple-200" : "bg-white/10 text-gray-400"
+                      filter === tab.value ? "bg-white/20 text-white" : "bg-gray-100 text-gray-500"
                     }`}>
                       {tab.count}
                     </span>
@@ -312,10 +312,10 @@ export default function AdminMessagesPage() {
           <div className="flex-1 overflow-y-auto">
             {filtered.length === 0 ? (
               <div className="flex flex-col items-center justify-center h-full text-center px-6">
-                <svg className="w-10 h-10 text-gray-600 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-10 h-10 text-gray-300 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                 </svg>
-                <p className="text-sm text-gray-400">
+                <p className="text-sm text-gray-500">
                   {search ? "Aucun résultat." : "Aucun message."}
                 </p>
               </div>
@@ -324,20 +324,20 @@ export default function AdminMessagesPage() {
                 <button
                   key={msg.id}
                   onClick={() => setSelectedId(msg.id)}
-                  className={`w-full text-left px-4 py-3.5 border-b border-white/5 transition-colors ${
+                  className={`w-full text-left px-4 py-3.5 border-b border-gray-100 transition-colors ${
                     selectedId === msg.id
-                      ? "bg-purple-500/10 border-l-2 border-l-purple-400"
+                      ? "bg-gray-100 border-l-2 border-l-gray-900"
                       : !msg.isRead
-                        ? "bg-purple-500/[0.06] hover:bg-white/[0.03]"
-                        : "hover:bg-white/[0.03]"
+                        ? "bg-gray-50 hover:bg-gray-100"
+                        : "hover:bg-gray-50"
                   }`}
                 >
                   <div className="flex items-start justify-between gap-2 mb-1">
                     <div className="flex items-center gap-2 min-w-0">
                       {!msg.isRead && (
-                        <div className="w-2 h-2 rounded-full bg-purple-500 shrink-0" />
+                        <div className="w-2 h-2 rounded-full bg-gray-900 shrink-0" />
                       )}
-                      <span className={`text-sm truncate text-white ${!msg.isRead ? "font-semibold" : ""}`}>
+                      <span className={`text-sm truncate text-gray-900 ${!msg.isRead ? "font-semibold" : ""}`}>
                         {msg.name}
                       </span>
                     </div>
@@ -346,15 +346,15 @@ export default function AdminMessagesPage() {
                     </span>
                   </div>
                   {msg.subject && (
-                    <p className="text-xs font-medium text-gray-300 truncate mb-0.5">{msg.subject}</p>
+                    <p className="text-xs font-medium text-gray-700 truncate mb-0.5">{msg.subject}</p>
                   )}
-                  <p className="text-xs text-gray-400 truncate">{msg.message}</p>
+                  <p className="text-xs text-gray-500 truncate">{msg.message}</p>
                   {msg.note && (
                     <div className="flex items-center gap-1 mt-1.5">
-                      <svg className="w-3 h-3 text-amber-400" fill="currentColor" viewBox="0 0 24 24">
+                      <svg className="w-3 h-3 text-amber-500" fill="currentColor" viewBox="0 0 24 24">
                         <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/>
                       </svg>
-                      <span className="text-[11px] text-amber-300 truncate">{msg.note}</span>
+                      <span className="text-[11px] text-amber-700 truncate">{msg.note}</span>
                     </div>
                   )}
                 </button>
@@ -367,31 +367,31 @@ export default function AdminMessagesPage() {
         <div className="flex-1 flex flex-col min-w-0">
           {!selected ? (
             <div className="flex-1 flex flex-col items-center justify-center text-center px-8">
-              <div className="w-16 h-16 bg-white/5 rounded-2xl flex items-center justify-center mb-4">
-                <svg className="w-8 h-8 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="w-16 h-16 bg-gray-100 rounded-2xl flex items-center justify-center mb-4">
+                <svg className="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                 </svg>
               </div>
-              <p className="text-gray-400 text-sm">Sélectionnez un message pour le lire</p>
+              <p className="text-gray-500 text-sm">Sélectionnez un message pour le lire</p>
             </div>
           ) : (
             <>
               {/* Detail header */}
-              <div className="px-6 py-4 border-b border-white/10 shrink-0">
+              <div className="px-6 py-4 border-b border-gray-200 shrink-0">
                 <div className="flex items-start justify-between">
                   <div className="min-w-0">
-                    <h2 className="text-lg font-semibold text-white truncate">
+                    <h2 className="text-lg font-semibold text-gray-900 truncate">
                       {selected.subject || "Sans sujet"}
                     </h2>
                     <div className="flex items-center gap-3 mt-1">
                       <div className="flex items-center gap-2">
-                        <div className="w-8 h-8 bg-purple-500/15 rounded-full flex items-center justify-center">
-                          <span className="text-sm font-semibold text-purple-300">
+                        <div className="w-8 h-8 bg-gray-900 rounded-full flex items-center justify-center">
+                          <span className="text-sm font-semibold text-white">
                             {selected.name.charAt(0).toUpperCase()}
                           </span>
                         </div>
                         <div>
-                          <p className="text-sm font-medium text-white">{selected.name}</p>
+                          <p className="text-sm font-medium text-gray-900">{selected.name}</p>
                           <p className="text-xs text-gray-500">{selected.email}</p>
                         </div>
                       </div>
@@ -400,7 +400,7 @@ export default function AdminMessagesPage() {
                   <div className="flex items-center gap-1 shrink-0">
                     <button
                       onClick={() => toggleRead(selected)}
-                      className="p-2 text-gray-500 hover:text-white hover:bg-white/5 rounded-lg transition-colors"
+                      className="p-2 text-gray-500 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
                       title={selected.isRead ? "Marquer non lu" : "Marquer lu"}
                     >
                       {selected.isRead ? (
@@ -415,7 +415,7 @@ export default function AdminMessagesPage() {
                     </button>
                     <button
                       onClick={() => toggleArchive(selected)}
-                      className="p-2 text-gray-500 hover:text-white hover:bg-white/5 rounded-lg transition-colors"
+                      className="p-2 text-gray-500 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
                       title={selected.isArchived ? "Désarchiver" : "Archiver"}
                     >
                       <svg className="w-4.5 h-4.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -424,7 +424,7 @@ export default function AdminMessagesPage() {
                     </button>
                     <a
                       href={`mailto:${selected.email}?subject=Re: ${encodeURIComponent(selected.subject || "Votre message")}`}
-                      className="p-2 text-gray-500 hover:text-purple-300 hover:bg-purple-500/10 rounded-lg transition-colors"
+                      className="p-2 text-gray-500 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
                       title="Répondre par email"
                     >
                       <svg className="w-4.5 h-4.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -434,7 +434,7 @@ export default function AdminMessagesPage() {
                     </a>
                     <button
                       onClick={() => deleteMessage(selected)}
-                      className="p-2 text-gray-500 hover:text-red-300 hover:bg-red-500/10 rounded-lg transition-colors"
+                      className="p-2 text-gray-500 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
                       title="Supprimer"
                     >
                       <svg className="w-4.5 h-4.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -452,7 +452,7 @@ export default function AdminMessagesPage() {
                       <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                       </svg>
-                      <a href={`tel:${selected.phone}`} className="hover:text-purple-300 transition-colors">{selected.phone}</a>
+                      <a href={`tel:${selected.phone}`} className="hover:text-gray-900 transition-colors">{selected.phone}</a>
                     </span>
                   )}
                 </div>
@@ -460,8 +460,8 @@ export default function AdminMessagesPage() {
 
               {/* Message body */}
               <div className="flex-1 overflow-y-auto px-6 py-5">
-                <div className="bg-white/[0.03] border border-white/10 rounded-xl p-5 mb-6">
-                  <p className="text-sm text-gray-300 whitespace-pre-wrap leading-relaxed">
+                <div className="bg-gray-50 border border-gray-200 rounded-xl p-5 mb-6">
+                  <p className="text-sm text-gray-700 whitespace-pre-wrap leading-relaxed">
                     {selected.message}
                   </p>
                 </div>
@@ -469,10 +469,10 @@ export default function AdminMessagesPage() {
                 {/* Internal note */}
                 <div>
                   <div className="flex items-center gap-2 mb-2">
-                    <svg className="w-4 h-4 text-amber-400" fill="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-4 h-4 text-amber-500" fill="currentColor" viewBox="0 0 24 24">
                       <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/>
                     </svg>
-                    <label className="text-sm font-medium text-gray-300">Note interne</label>
+                    <label className="text-sm font-medium text-gray-700">Note interne</label>
                   </div>
                   <textarea
                     value={noteValue}

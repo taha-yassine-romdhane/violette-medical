@@ -18,8 +18,8 @@ const statusLabels: Record<string, string> = {
 const statusColors: Record<string, string> = {
   PENDING: "bg-yellow-100 text-yellow-700 border-yellow-300",
   CONFIRMED: "bg-blue-100 text-blue-700 border-blue-300",
-  PROCESSING: "bg-indigo-100 text-indigo-700 border-indigo-300",
-  SHIPPED: "bg-purple-100 text-purple-700 border-purple-300",
+  PROCESSING: "bg-sky-100 text-sky-700 border-sky-300",
+  SHIPPED: "bg-teal-100 text-teal-700 border-teal-300",
   DELIVERED: "bg-green-100 text-green-700 border-green-300",
   CANCELLED: "bg-red-100 text-red-700 border-red-300",
   RETURNED: "bg-gray-100 text-gray-700 border-gray-300",
@@ -28,8 +28,8 @@ const statusColors: Record<string, string> = {
 const statusDotColors: Record<string, string> = {
   PENDING: "bg-yellow-500",
   CONFIRMED: "bg-blue-500",
-  PROCESSING: "bg-indigo-500",
-  SHIPPED: "bg-purple-500",
+  PROCESSING: "bg-sky-500",
+  SHIPPED: "bg-teal-500",
   DELIVERED: "bg-green-500",
   CANCELLED: "bg-red-500",
   RETURNED: "bg-gray-500",

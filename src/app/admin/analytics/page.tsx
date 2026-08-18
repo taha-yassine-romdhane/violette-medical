@@ -32,7 +32,7 @@ const statusLabels: Record<string, string> = {
   RETURNED: "Retournée",
 };
 
-const COLORS = ["#7c3aed", "#2563eb", "#059669", "#d97706", "#dc2626", "#6366f1", "#64748b"];
+const COLORS = ["#111827", "#2563eb", "#059669", "#d97706", "#dc2626", "#0891b2", "#9ca3af"];
 
 export default function AdminAnalyticsPage() {
   const [data, setData] = useState<AnalyticsData | null>(null);
@@ -47,7 +47,7 @@ export default function AdminAnalyticsPage() {
   useEffect(() => { fetchData(); }, [fetchData]);
 
   if (loading || !data) {
-    return <div className="flex items-center justify-center h-64"><div className="w-6 h-6 border-2 border-purple-400 border-t-transparent rounded-full animate-spin" /></div>;
+    return <div className="flex items-center justify-center h-64"><div className="w-6 h-6 border-2 border-gray-900 border-t-transparent rounded-full animate-spin" /></div>;
   }
 
   const { kpis, charts } = data;
@@ -55,18 +55,18 @@ export default function AdminAnalyticsPage() {
   return (
     <div>
       <div className="mb-6">
-        <h1 className="text-2xl font-bold tracking-tight text-white">Analytique</h1>
-        <p className="text-sm text-gray-400 mt-1">Vue d'ensemble des performances</p>
+        <h1 className="text-2xl font-bold tracking-tight text-gray-900">Analytique</h1>
+        <p className="text-sm text-gray-500 mt-1">Vue d'ensemble des performances</p>
       </div>
 
       {/* KPI cards */}
       <div className="grid grid-cols-2 lg:grid-cols-5 gap-4 mb-8">
         {[
-          { label: "CA total", value: `${kpis.totalRevenue.toFixed(2)} TND`, color: "bg-purple-500/15 text-purple-300 border border-purple-400/20" },
-          { label: "CA mensuel", value: `${kpis.monthlyRevenue.toFixed(2)} TND`, color: "bg-blue-500/15 text-blue-300 border border-blue-400/20" },
-          { label: "Commandes/mois", value: kpis.monthlyOrders, color: "bg-emerald-500/15 text-emerald-300 border border-emerald-400/20" },
-          { label: "Panier moyen", value: `${kpis.avgOrderValue.toFixed(2)} TND`, color: "bg-amber-500/15 text-amber-300 border border-amber-400/20" },
-          { label: "Nouveaux clients", value: kpis.newClients, color: "bg-indigo-500/15 text-indigo-300 border border-indigo-400/20" },
+          { label: "CA total", value: `${kpis.totalRevenue.toFixed(2)} TND`, color: "bg-gray-900 text-white border border-gray-900" },
+          { label: "CA mensuel", value: `${kpis.monthlyRevenue.toFixed(2)} TND`, color: "bg-blue-50 text-blue-700 border border-blue-200/60" },
+          { label: "Commandes/mois", value: kpis.monthlyOrders, color: "bg-emerald-50 text-emerald-700 border border-emerald-200/60" },
+          { label: "Panier moyen", value: `${kpis.avgOrderValue.toFixed(2)} TND`, color: "bg-amber-50 text-amber-700 border border-amber-200/60" },
+          { label: "Nouveaux clients", value: kpis.newClients, color: "bg-sky-50 text-sky-700 border border-sky-200/60" },
         ].map((kpi) => (
           <div key={kpi.label} className={`rounded-xl p-4 ${kpi.color}`}>
             <p className="text-xl font-bold">{kpi.value}</p>
@@ -79,23 +79,23 @@ export default function AdminAnalyticsPage() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Monthly revenue */}
         <div className="admin-card p-6">
-          <h2 className="text-sm font-semibold text-gray-300 uppercase tracking-wide mb-4">Revenu mensuel</h2>
+          <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-4">Revenu mensuel</h2>
           <ResponsiveContainer width="100%" height={280}>
             <BarChart data={charts.revenueByMonth}>
-              <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.08)" />
-              <XAxis dataKey="month" tick={{ fontSize: 12, fill: "#9ca3af" }} />
-              <YAxis tick={{ fontSize: 12, fill: "#9ca3af" }} />
-              <Tooltip formatter={(value) => [`${Number(value).toFixed(2)} TND`, "Revenu"]} contentStyle={{ backgroundColor: "#111827", border: "1px solid rgba(255,255,255,0.15)", borderRadius: 12, color: "#fff" }} />
-              <Bar dataKey="revenue" fill="#7c3aed" radius={[4, 4, 0, 0]} />
+              <CartesianGrid strokeDasharray="3 3" stroke="rgba(17,24,39,0.08)" />
+              <XAxis dataKey="month" tick={{ fontSize: 12, fill: "#6b7280" }} />
+              <YAxis tick={{ fontSize: 12, fill: "#6b7280" }} />
+              <Tooltip formatter={(value) => [`${Number(value).toFixed(2)} TND`, "Revenu"]} contentStyle={{ backgroundColor: "#ffffff", border: "1px solid #e5e7eb", borderRadius: 12, color: "#111827", boxShadow: "0 4px 12px rgba(17,24,39,0.08)" }} />
+              <Bar dataKey="revenue" fill="#111827" radius={[4, 4, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
         </div>
 
         {/* Orders by status */}
         <div className="admin-card p-6">
-          <h2 className="text-sm font-semibold text-gray-300 uppercase tracking-wide mb-4">Commandes par statut</h2>
+          <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-4">Commandes par statut</h2>
           {charts.ordersByStatus.length === 0 ? (
-            <p className="text-sm text-gray-400 text-center py-12">Pas de données.</p>
+            <p className="text-sm text-gray-500 text-center py-12">Pas de données.</p>
           ) : (
             <ResponsiveContainer width="100%" height={280}>
               <PieChart>
@@ -112,7 +112,7 @@ export default function AdminAnalyticsPage() {
                     <Cell key={index} fill={COLORS[index % COLORS.length]} />
                   ))}
                 </Pie>
-                <Tooltip contentStyle={{ backgroundColor: "#111827", border: "1px solid rgba(255,255,255,0.15)", borderRadius: 12, color: "#fff" }} />
+                <Tooltip contentStyle={{ backgroundColor: "#ffffff", border: "1px solid #e5e7eb", borderRadius: 12, color: "#111827", boxShadow: "0 4px 12px rgba(17,24,39,0.08)" }} />
               </PieChart>
             </ResponsiveContainer>
           )}
@@ -120,17 +120,17 @@ export default function AdminAnalyticsPage() {
 
         {/* Top products */}
         <div className="admin-card p-6">
-          <h2 className="text-sm font-semibold text-gray-300 uppercase tracking-wide mb-4">Top 5 produits</h2>
+          <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-4">Top 5 produits</h2>
           {charts.topProducts.length === 0 ? (
-            <p className="text-sm text-gray-400 text-center py-12">Pas de données.</p>
+            <p className="text-sm text-gray-500 text-center py-12">Pas de données.</p>
           ) : (
             <ResponsiveContainer width="100%" height={280}>
               <BarChart data={charts.topProducts} layout="vertical">
-                <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.08)" />
-                <XAxis type="number" tick={{ fontSize: 12, fill: "#9ca3af" }} />
-                <YAxis type="category" dataKey="name" width={120} tick={{ fontSize: 11, fill: "#9ca3af" }} />
-                <Tooltip contentStyle={{ backgroundColor: "#111827", border: "1px solid rgba(255,255,255,0.15)", borderRadius: 12, color: "#fff" }} />
-                <Bar dataKey="quantity" fill="#2563eb" radius={[0, 4, 4, 0]} />
+                <CartesianGrid strokeDasharray="3 3" stroke="rgba(17,24,39,0.08)" />
+                <XAxis type="number" tick={{ fontSize: 12, fill: "#6b7280" }} />
+                <YAxis type="category" dataKey="name" width={120} tick={{ fontSize: 11, fill: "#6b7280" }} />
+                <Tooltip contentStyle={{ backgroundColor: "#ffffff", border: "1px solid #e5e7eb", borderRadius: 12, color: "#111827", boxShadow: "0 4px 12px rgba(17,24,39,0.08)" }} />
+                <Bar dataKey="quantity" fill="#4b5563" radius={[0, 4, 4, 0]} />
               </BarChart>
             </ResponsiveContainer>
           )}
@@ -138,17 +138,17 @@ export default function AdminAnalyticsPage() {
 
         {/* Revenue by commercial */}
         <div className="admin-card p-6">
-          <h2 className="text-sm font-semibold text-gray-300 uppercase tracking-wide mb-4">CA par commercial</h2>
+          <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-4">CA par commercial</h2>
           {charts.revenueByCommercial.length === 0 ? (
-            <p className="text-sm text-gray-400 text-center py-12">Pas de données.</p>
+            <p className="text-sm text-gray-500 text-center py-12">Pas de données.</p>
           ) : (
             <ResponsiveContainer width="100%" height={280}>
               <BarChart data={charts.revenueByCommercial}>
-                <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.08)" />
-                <XAxis dataKey="name" tick={{ fontSize: 12, fill: "#9ca3af" }} />
-                <YAxis tick={{ fontSize: 12, fill: "#9ca3af" }} />
-                <Tooltip formatter={(value) => [`${Number(value).toFixed(2)} TND`, "CA"]} contentStyle={{ backgroundColor: "#111827", border: "1px solid rgba(255,255,255,0.15)", borderRadius: 12, color: "#fff" }} />
-                <Bar dataKey="revenue" fill="#059669" radius={[4, 4, 0, 0]} />
+                <CartesianGrid strokeDasharray="3 3" stroke="rgba(17,24,39,0.08)" />
+                <XAxis dataKey="name" tick={{ fontSize: 12, fill: "#6b7280" }} />
+                <YAxis tick={{ fontSize: 12, fill: "#6b7280" }} />
+                <Tooltip formatter={(value) => [`${Number(value).toFixed(2)} TND`, "CA"]} contentStyle={{ backgroundColor: "#ffffff", border: "1px solid #e5e7eb", borderRadius: 12, color: "#111827", boxShadow: "0 4px 12px rgba(17,24,39,0.08)" }} />
+                <Bar dataKey="revenue" fill="#6b7280" radius={[4, 4, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
           )}

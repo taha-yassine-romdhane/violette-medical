@@ -206,7 +206,7 @@ export default function AdminHeroPage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="w-6 h-6 border-2 border-purple-400 border-t-transparent rounded-full animate-spin" />
+        <div className="w-6 h-6 border-2 border-gray-900 border-t-transparent rounded-full animate-spin" />
       </div>
     );
   }
@@ -218,10 +218,10 @@ export default function AdminHeroPage() {
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-white">Hero / Slider</h1>
-          <p className="text-sm text-gray-400 mt-1">
+          <h1 className="text-2xl font-bold tracking-tight text-gray-900">Hero / Slider</h1>
+          <p className="text-sm text-gray-500 mt-1">
             Gérez le carrousel de la page d&apos;accueil &middot;{" "}
-            <span className="text-purple-300 font-medium">{activeCount} actif{activeCount !== 1 ? "s" : ""}</span>
+            <span className="text-gray-900 font-medium">{activeCount} actif{activeCount !== 1 ? "s" : ""}</span>
             {" "} sur {sliders.length} slide{sliders.length !== 1 ? "s" : ""}
           </p>
         </div>
@@ -237,7 +237,7 @@ export default function AdminHeroPage() {
       </div>
 
       {success && (
-        <div className="bg-emerald-500/10 border border-emerald-500/25 text-emerald-300 px-4 py-3 rounded-xl text-sm mb-6 flex items-center gap-2">
+        <div className="bg-emerald-50 border border-emerald-200 text-emerald-700 px-4 py-3 rounded-xl text-sm mb-6 flex items-center gap-2">
           <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
           </svg>
@@ -246,19 +246,19 @@ export default function AdminHeroPage() {
       )}
 
       {error && !dialogOpen && (
-        <div className="bg-red-500/10 border border-red-500/30 text-red-300 px-4 py-3 rounded-xl text-sm mb-6">
+        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl text-sm mb-6">
           {error}
         </div>
       )}
 
       {/* Slider cards */}
       {sliders.length === 0 ? (
-        <div className="text-center py-16 bg-white/[0.03] rounded-xl border-2 border-dashed border-white/15">
-          <svg className="w-12 h-12 mx-auto text-gray-600 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div className="text-center py-16 bg-gray-50 rounded-xl border-2 border-dashed border-gray-300">
+          <svg className="w-12 h-12 mx-auto text-gray-500 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
           </svg>
-          <p className="text-gray-400 text-sm mb-4">Aucun slide. Commencez par en créer un.</p>
-          <button onClick={openCreate} className="text-sm text-purple-300 hover:text-purple-200 font-medium">
+          <p className="text-gray-500 text-sm mb-4">Aucun slide. Commencez par en créer un.</p>
+          <button onClick={openCreate} className="text-sm text-gray-900 hover:text-gray-600 font-medium">
             + Ajouter un slide
           </button>
         </div>
@@ -267,12 +267,12 @@ export default function AdminHeroPage() {
           {sliders.map((s, index) => (
             <div
               key={s.id}
-              className={`bg-white/[0.04] rounded-xl border overflow-hidden flex ${
-                s.isActive ? "border-white/10" : "border-white/10 opacity-60"
+              className={`bg-white shadow-sm rounded-xl border overflow-hidden flex ${
+                s.isActive ? "border-gray-200" : "border-gray-200 opacity-60"
               }`}
             >
               {/* Image */}
-              <div className="relative w-48 min-h-[120px] shrink-0 bg-white/5">
+              <div className="relative w-48 min-h-[120px] shrink-0 bg-gray-100">
                 <Image
                   src={s.image}
                   alt={s.titleFr || "Slide"}
@@ -289,14 +289,14 @@ export default function AdminHeroPage() {
               <div className="flex-1 p-4 flex flex-col justify-between min-w-0">
                 <div>
                   <div className="flex items-center gap-2 mb-1">
-                    <h3 className="text-sm font-semibold text-white truncate">
+                    <h3 className="text-sm font-semibold text-gray-900 truncate">
                       {s.titleFr || "Sans titre"}
                     </h3>
                     <span
                       className={`shrink-0 px-2 py-0.5 text-[10px] font-semibold rounded-full cursor-pointer ${
                         s.isActive
-                          ? "bg-emerald-500/15 text-emerald-300 hover:bg-emerald-500/25"
-                          : "bg-red-500/15 text-red-300 hover:bg-red-500/25"
+                          ? "bg-emerald-50 text-emerald-700 hover:bg-emerald-100"
+                          : "bg-red-50 text-red-700 hover:bg-red-100"
                       }`}
                       onClick={() => toggleActive(s)}
                       title="Cliquer pour basculer"
@@ -305,20 +305,20 @@ export default function AdminHeroPage() {
                     </span>
                   </div>
                   {s.subtitleFr && (
-                    <p className="text-xs text-gray-400 truncate">{s.subtitleFr}</p>
+                    <p className="text-xs text-gray-500 truncate">{s.subtitleFr}</p>
                   )}
                   {s.link && (
-                    <p className="text-xs text-purple-300 truncate mt-1">{s.link}</p>
+                    <p className="text-xs text-gray-700 truncate mt-1">{s.link}</p>
                   )}
                 </div>
 
                 {/* Actions */}
-                <div className="flex items-center justify-between mt-3 pt-3 border-t border-white/10">
+                <div className="flex items-center justify-between mt-3 pt-3 border-t border-gray-200">
                   <div className="flex gap-1">
                     <button
                       onClick={() => moveSlider(index, "up")}
                       disabled={index === 0}
-                      className="w-7 h-7 flex items-center justify-center rounded text-gray-400 hover:bg-white/10 hover:text-white disabled:opacity-30 transition-colors"
+                      className="w-7 h-7 flex items-center justify-center rounded text-gray-500 hover:bg-gray-100 hover:text-gray-900 disabled:opacity-30 transition-colors"
                       title="Monter"
                     >
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -328,7 +328,7 @@ export default function AdminHeroPage() {
                     <button
                       onClick={() => moveSlider(index, "down")}
                       disabled={index === sliders.length - 1}
-                      className="w-7 h-7 flex items-center justify-center rounded text-gray-400 hover:bg-white/10 hover:text-white disabled:opacity-30 transition-colors"
+                      className="w-7 h-7 flex items-center justify-center rounded text-gray-500 hover:bg-gray-100 hover:text-gray-900 disabled:opacity-30 transition-colors"
                       title="Descendre"
                     >
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -337,10 +337,10 @@ export default function AdminHeroPage() {
                     </button>
                   </div>
                   <div className="flex gap-3">
-                    <button onClick={() => openEdit(s)} className="text-xs text-purple-300 hover:text-purple-200 font-medium">
+                    <button onClick={() => openEdit(s)} className="text-xs text-gray-900 hover:text-gray-600 font-medium">
                       Modifier
                     </button>
-                    <button onClick={() => handleDelete(s.id)} className="text-xs text-red-400 hover:text-red-300 font-medium">
+                    <button onClick={() => handleDelete(s.id)} className="text-xs text-red-600 hover:text-red-700 font-medium">
                       Supprimer
                     </button>
                   </div>
@@ -355,12 +355,12 @@ export default function AdminHeroPage() {
       {sliders.filter((s) => s.isActive).length > 0 && (
         <div className="mt-8">
           <div className="flex items-center justify-between mb-3">
-            <h2 className="text-sm font-semibold text-gray-300">Aperçu en direct</h2>
-            <div className="flex gap-1 bg-white/10 rounded-lg p-0.5">
+            <h2 className="text-sm font-semibold text-gray-700">Aperçu en direct</h2>
+            <div className="flex gap-1 bg-gray-100 rounded-lg p-0.5">
               <button
                 onClick={() => setPreviewTab("fr")}
                 className={`px-3 py-1 text-xs font-medium rounded-md transition-colors ${
-                  previewTab === "fr" ? "bg-purple-600 text-white" : "text-gray-400 hover:text-white"
+                  previewTab === "fr" ? "bg-purple-600 text-white" : "text-gray-500 hover:text-gray-900"
                 }`}
               >
                 FR
@@ -368,14 +368,14 @@ export default function AdminHeroPage() {
               <button
                 onClick={() => setPreviewTab("en")}
                 className={`px-3 py-1 text-xs font-medium rounded-md transition-colors ${
-                  previewTab === "en" ? "bg-purple-600 text-white" : "text-gray-400 hover:text-white"
+                  previewTab === "en" ? "bg-purple-600 text-white" : "text-gray-500 hover:text-gray-900"
                 }`}
               >
                 EN
               </button>
             </div>
           </div>
-          <div className="rounded-xl overflow-hidden border border-white/10">
+          <div className="rounded-xl overflow-hidden border border-gray-200">
             <div className="relative h-64 bg-gray-950">
               {sliders.filter((s) => s.isActive).map((s, i) => (
                 i === 0 && (
@@ -429,16 +429,16 @@ export default function AdminHeroPage() {
       <dialog
         ref={dialogRef}
         onClose={() => setDialogOpen(false)}
-        className="fixed inset-0 m-auto w-full max-w-2xl h-fit max-h-[90vh] rounded-2xl bg-gray-900 border border-white/10 p-0 shadow-2xl shadow-black/50 backdrop:bg-black/60 backdrop:backdrop-blur-sm overflow-y-auto"
+        className="fixed inset-0 m-auto w-full max-w-2xl h-fit max-h-[90vh] rounded-2xl bg-white border border-gray-200 p-0 shadow-2xl shadow-gray-900/10 backdrop:bg-gray-900/40 backdrop:backdrop-blur-sm overflow-y-auto"
       >
         <div className="p-6">
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-lg font-semibold text-white">
+            <h2 className="text-lg font-semibold text-gray-900">
               {editingId ? "Modifier le slide" : "Nouveau slide"}
             </h2>
             <button
               onClick={() => setDialogOpen(false)}
-              className="w-8 h-8 rounded-lg flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/10"
+              className="w-8 h-8 rounded-lg flex items-center justify-center text-gray-500 hover:text-gray-900 hover:bg-gray-100"
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -447,7 +447,7 @@ export default function AdminHeroPage() {
           </div>
 
           {error && (
-            <div className="bg-red-500/10 border border-red-500/30 text-red-300 px-4 py-3 rounded-xl text-sm mb-4">
+            <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl text-sm mb-4">
               {error}
             </div>
           )}
@@ -455,9 +455,9 @@ export default function AdminHeroPage() {
           <form onSubmit={handleSubmit} className="space-y-5">
             {/* Image Upload */}
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">Image *</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Image *</label>
               {formData.image ? (
-                <div className="relative rounded-xl overflow-hidden border border-white/10 bg-white/5">
+                <div className="relative rounded-xl overflow-hidden border border-gray-200 bg-gray-100">
                   <div className="relative h-48">
                     <Image
                       src={formData.image}
@@ -492,22 +492,22 @@ export default function AdminHeroPage() {
                   onClick={() => fileInputRef.current?.click()}
                   className={`border-2 border-dashed rounded-xl p-8 text-center cursor-pointer transition-colors ${
                     dragOver
-                      ? "border-purple-400 bg-purple-500/10"
-                      : "border-white/20 hover:border-purple-400/50 hover:bg-purple-500/5"
+                      ? "border-gray-500 bg-gray-100"
+                      : "border-gray-300 hover:border-gray-400 hover:bg-gray-50"
                   }`}
                 >
                   {uploading ? (
                     <div className="flex flex-col items-center gap-2">
-                      <div className="w-8 h-8 border-2 border-purple-400 border-t-transparent rounded-full animate-spin" />
-                      <p className="text-sm text-gray-400">Upload en cours...</p>
+                      <div className="w-8 h-8 border-2 border-gray-900 border-t-transparent rounded-full animate-spin" />
+                      <p className="text-sm text-gray-500">Upload en cours...</p>
                     </div>
                   ) : (
                     <>
-                      <svg className="w-10 h-10 mx-auto text-gray-600 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <svg className="w-10 h-10 mx-auto text-gray-500 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                       </svg>
-                      <p className="text-sm text-gray-400 mb-1">
-                        Glissez une image ici ou <span className="text-purple-300 font-medium">parcourir</span>
+                      <p className="text-sm text-gray-500 mb-1">
+                        Glissez une image ici ou <span className="text-gray-900 font-medium">parcourir</span>
                       </p>
                       <p className="text-xs text-gray-500">JPG, PNG, WebP ou AVIF · Max 5 Mo</p>
                     </>
@@ -525,11 +525,11 @@ export default function AdminHeroPage() {
 
             {/* Titles */}
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">Titre</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Titre</label>
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <div className="flex items-center gap-1.5 mb-1">
-                    <span className="text-[10px] font-semibold text-gray-400 uppercase">FR</span>
+                    <span className="text-[10px] font-semibold text-gray-500 uppercase">FR</span>
                   </div>
                   <input
                     type="text"
@@ -541,7 +541,7 @@ export default function AdminHeroPage() {
                 </div>
                 <div>
                   <div className="flex items-center gap-1.5 mb-1">
-                    <span className="text-[10px] font-semibold text-gray-400 uppercase">EN</span>
+                    <span className="text-[10px] font-semibold text-gray-500 uppercase">EN</span>
                   </div>
                   <input
                     type="text"
@@ -556,11 +556,11 @@ export default function AdminHeroPage() {
 
             {/* Subtitles */}
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">Sous-titre</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Sous-titre</label>
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <div className="flex items-center gap-1.5 mb-1">
-                    <span className="text-[10px] font-semibold text-gray-400 uppercase">FR</span>
+                    <span className="text-[10px] font-semibold text-gray-500 uppercase">FR</span>
                   </div>
                   <input
                     type="text"
@@ -572,7 +572,7 @@ export default function AdminHeroPage() {
                 </div>
                 <div>
                   <div className="flex items-center gap-1.5 mb-1">
-                    <span className="text-[10px] font-semibold text-gray-400 uppercase">EN</span>
+                    <span className="text-[10px] font-semibold text-gray-500 uppercase">EN</span>
                   </div>
                   <input
                     type="text"
@@ -587,7 +587,7 @@ export default function AdminHeroPage() {
 
             {/* Link */}
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-1">Lien (optionnel)</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Lien (optionnel)</label>
               <input
                 type="text"
                 value={formData.link}
@@ -599,11 +599,11 @@ export default function AdminHeroPage() {
 
             {/* Button Text */}
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">Texte du bouton</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Texte du bouton</label>
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <div className="flex items-center gap-1.5 mb-1">
-                    <span className="text-[10px] font-semibold text-gray-400 uppercase">FR</span>
+                    <span className="text-[10px] font-semibold text-gray-500 uppercase">FR</span>
                   </div>
                   <input
                     type="text"
@@ -615,7 +615,7 @@ export default function AdminHeroPage() {
                 </div>
                 <div>
                   <div className="flex items-center gap-1.5 mb-1">
-                    <span className="text-[10px] font-semibold text-gray-400 uppercase">EN</span>
+                    <span className="text-[10px] font-semibold text-gray-500 uppercase">EN</span>
                   </div>
                   <input
                     type="text"
@@ -637,18 +637,18 @@ export default function AdminHeroPage() {
                   onChange={(e) => set("isActive", e.target.checked)}
                   className="sr-only peer"
                 />
-                <div className="w-9 h-5 bg-white/20 rounded-full peer-checked:bg-purple-600 transition-colors" />
+                <div className="w-9 h-5 bg-gray-300 rounded-full peer-checked:bg-purple-600 transition-colors" />
                 <div className="absolute top-0.5 left-0.5 w-4 h-4 bg-white rounded-full shadow-sm peer-checked:translate-x-4 transition-transform" />
               </div>
-              <span className="text-sm text-gray-300">Visible sur le site</span>
+              <span className="text-sm text-gray-700">Visible sur le site</span>
             </label>
 
             {/* Actions */}
-            <div className="flex justify-end gap-3 pt-2 border-t border-white/10">
+            <div className="flex justify-end gap-3 pt-2 border-t border-gray-200">
               <button
                 type="button"
                 onClick={() => setDialogOpen(false)}
-                className="px-4 py-2.5 text-sm font-medium text-gray-300 hover:bg-white/5 hover:text-white rounded-lg transition-colors"
+                className="px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50 hover:text-gray-900 rounded-lg transition-colors"
               >
                 Annuler
               </button>

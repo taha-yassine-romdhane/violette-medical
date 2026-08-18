@@ -68,8 +68,8 @@ export default function AdminImportationsPage() {
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-white">Importations</h1>
-          <p className="text-sm text-gray-400 mt-1">
+          <h1 className="text-2xl font-bold tracking-tight text-gray-900">Importations</h1>
+          <p className="text-sm text-gray-500 mt-1">
             Réceptionnez vos arrivages fournisseur et enregistrez les numéros de série
           </p>
         </div>
@@ -84,9 +84,9 @@ export default function AdminImportationsPage() {
       {/* Stats */}
       <div className="grid grid-cols-3 gap-4 mb-6">
         {[
-          { label: "Brouillons", value: draftCount, cls: "bg-yellow-500/15 text-yellow-300 border-yellow-400/20" },
-          { label: "Réceptionnées", value: receivedCount, cls: "bg-emerald-500/15 text-emerald-300 border-emerald-400/20" },
-          { label: "Unités importées", value: totalUnits, cls: "bg-purple-500/15 text-purple-300 border-purple-400/20" },
+          { label: "Brouillons", value: draftCount, cls: "bg-amber-50 text-amber-700 border-amber-200" },
+          { label: "Réceptionnées", value: receivedCount, cls: "bg-emerald-50 text-emerald-700 border-emerald-200" },
+          { label: "Unités importées", value: totalUnits, cls: "bg-white text-gray-900 border-gray-200 shadow-sm" },
         ].map((c) => (
           <div key={c.label} className={`rounded-xl border p-5 ${c.cls}`}>
             <p className="text-2xl font-bold tabular-nums">{c.value}</p>
@@ -99,7 +99,7 @@ export default function AdminImportationsPage() {
       <div className="admin-card overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full min-w-[720px]">
-            <thead className="bg-white/[0.03] border-b border-white/10">
+            <thead className="bg-gray-50 border-b border-gray-200">
               <tr>
                 <th className="admin-th">Référence</th>
                 <th className="admin-th">Fournisseur</th>
@@ -111,20 +111,20 @@ export default function AdminImportationsPage() {
                 <th className="admin-th"></th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-white/5">
+            <tbody className="divide-y divide-gray-100">
               {loading ? (
                 <tr>
                   <td colSpan={8} className="px-6 py-12 text-center">
-                    <div className="w-6 h-6 border-2 border-purple-400 border-t-transparent rounded-full animate-spin mx-auto" />
+                    <div className="w-6 h-6 border-2 border-gray-400 border-t-transparent rounded-full animate-spin mx-auto" />
                   </td>
                 </tr>
               ) : importations.length === 0 ? (
                 <tr>
                   <td colSpan={8} className="px-6 py-14 text-center">
-                    <svg className="w-12 h-12 mx-auto text-gray-600 mb-3" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
+                    <svg className="w-12 h-12 mx-auto text-gray-300 mb-3" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
                     </svg>
-                    <p className="text-gray-400 font-medium">Aucune importation pour le moment</p>
+                    <p className="text-gray-500 font-medium">Aucune importation pour le moment</p>
                     <p className="text-gray-500 text-sm mt-1">
                       Créez votre première importation pour réceptionner du stock.
                     </p>
@@ -132,25 +132,25 @@ export default function AdminImportationsPage() {
                 </tr>
               ) : (
                 importations.map((imp) => (
-                  <tr key={imp.id} className="hover:bg-white/[0.03] transition-colors">
+                  <tr key={imp.id} className="hover:bg-gray-50 transition-colors">
                     <td className="admin-td">
-                      <Link href={`/admin/importations/${imp.id}`} className="font-mono font-semibold text-purple-300 hover:text-purple-200 transition-colors">
+                      <Link href={`/admin/importations/${imp.id}`} className="font-mono font-semibold text-gray-900 hover:text-gray-600 transition-colors">
                         {imp.reference}
                       </Link>
                     </td>
-                    <td className="admin-td text-white">{imp.supplier}</td>
-                    <td className="admin-td text-gray-400">{imp.invoiceNumber || "—"}</td>
-                    <td className="admin-td text-gray-300">
+                    <td className="admin-td text-gray-900">{imp.supplier}</td>
+                    <td className="admin-td text-gray-500">{imp.invoiceNumber || "—"}</td>
+                    <td className="admin-td text-gray-700">
                       {new Date(imp.arrivalDate).toLocaleDateString("fr-TN")}
                     </td>
-                    <td className="admin-td text-gray-300 tabular-nums">{imp.lineCount}</td>
-                    <td className="admin-td text-white font-semibold tabular-nums">{imp.totalQuantity}</td>
+                    <td className="admin-td text-gray-700 tabular-nums">{imp.lineCount}</td>
+                    <td className="admin-td text-gray-900 font-semibold tabular-nums">{imp.totalQuantity}</td>
                     <td className="admin-td">
                       <span
                         className={`inline-flex px-2.5 py-1 text-xs font-semibold rounded-full ${
                           imp.status === "RECEIVED"
-                            ? "bg-emerald-500/15 text-emerald-300"
-                            : "bg-yellow-500/15 text-yellow-300"
+                            ? "bg-emerald-50 text-emerald-700"
+                            : "bg-amber-50 text-amber-700"
                         }`}
                       >
                         {imp.status === "RECEIVED" ? "Réceptionnée" : "Brouillon"}
@@ -159,7 +159,7 @@ export default function AdminImportationsPage() {
                     <td className="admin-td text-right">
                       <Link
                         href={`/admin/importations/${imp.id}`}
-                        className="text-xs font-medium text-purple-300 hover:text-purple-200 transition-colors"
+                        className="text-xs font-medium text-gray-900 hover:text-gray-600 transition-colors"
                       >
                         {imp.status === "DRAFT" ? "Continuer" : "Détails"}
                       </Link>
@@ -175,10 +175,10 @@ export default function AdminImportationsPage() {
       {/* Create modal */}
       {showCreate && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-          <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setShowCreate(false)} />
-          <div className="relative w-full max-w-md bg-gray-900 border border-white/10 rounded-2xl shadow-2xl shadow-black/50 p-6">
-            <h2 className="text-lg font-bold text-white mb-1">Nouvelle importation</h2>
-            <p className="text-sm text-gray-400 mb-5">
+          <div className="absolute inset-0 bg-gray-900/40 backdrop-blur-sm" onClick={() => setShowCreate(false)} />
+          <div className="relative w-full max-w-md bg-white border border-gray-200 rounded-2xl shadow-2xl shadow-gray-900/10 p-6">
+            <h2 className="text-lg font-bold text-gray-900 mb-1">Nouvelle importation</h2>
+            <p className="text-sm text-gray-500 mb-5">
               La référence sera générée automatiquement. Vous ajouterez les produits à l&apos;étape suivante.
             </p>
 
@@ -208,7 +208,7 @@ export default function AdminImportationsPage() {
                   type="date"
                   value={form.arrivalDate}
                   onChange={(e) => setForm({ ...form, arrivalDate: e.target.value })}
-                  className="admin-input [color-scheme:dark]"
+                  className="admin-input [color-scheme:light]"
                 />
               </div>
               <div>
@@ -223,7 +223,7 @@ export default function AdminImportationsPage() {
             </div>
 
             {error && (
-              <div className="mt-4 bg-red-500/10 border border-red-500/30 text-red-300 px-4 py-2.5 rounded-xl text-sm">
+              <div className="mt-4 bg-red-50 border border-red-200 text-red-700 px-4 py-2.5 rounded-xl text-sm">
                 {error}
               </div>
             )}
@@ -231,7 +231,7 @@ export default function AdminImportationsPage() {
             <div className="flex gap-2 mt-6">
               <button
                 onClick={() => setShowCreate(false)}
-                className="flex-1 px-4 py-2.5 text-sm font-medium border border-white/15 text-gray-300 rounded-xl hover:bg-white/5 hover:text-white transition-colors"
+                className="flex-1 px-4 py-2.5 text-sm font-medium border border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 hover:text-gray-900 transition-colors"
               >
                 Annuler
               </button>

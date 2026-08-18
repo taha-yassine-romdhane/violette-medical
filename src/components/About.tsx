@@ -26,9 +26,9 @@ export default function About() {
   ];
 
   return (
-    <section id="about" className="relative py-16 sm:py-20 lg:py-28 bg-white overflow-hidden">
+    <section id="about" className="relative py-12 sm:py-20 lg:py-28 bg-white overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 sm:gap-14 lg:gap-20 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-9 sm:gap-14 lg:gap-20 items-center">
           {/* Left: copy + checklist */}
           <div>
             <Reveal>
@@ -53,10 +53,10 @@ export default function About() {
               </h2>
             </Reveal>
             <Reveal delay={140}>
-              <p className="text-gray-500 leading-relaxed mb-8">{t.about.description}</p>
+              <p className="text-gray-500 leading-relaxed mb-6 sm:mb-8">{t.about.description}</p>
             </Reveal>
 
-            <div className="space-y-5 mb-9">
+            <div className="space-y-4 sm:space-y-5 mb-7 sm:mb-9">
               {features.map((f, i) => (
                 <Reveal key={f.title} delay={180 + i * 90}>
                   <div className="flex gap-4 group">
@@ -86,7 +86,7 @@ export default function About() {
 
           {/* Right: floating photo collage + stat card */}
           <Reveal variant="right" delay={150}>
-            <div className="relative h-[340px] sm:h-[460px] lg:h-[520px]">
+            <div className="relative h-[300px] sm:h-[460px] lg:h-[520px]">
               {/* Main photo */}
               <div className="absolute top-0 right-0 w-[72%] aspect-[4/3] rounded-3xl overflow-hidden shadow-2xl shadow-purple-900/15 ring-1 ring-gray-900/5 z-10">
                 <Image

@@ -51,8 +51,8 @@ export default function Hero() {
         <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-white to-transparent" />
       </div>
 
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 sm:pt-14 lg:pt-20 pb-14 sm:pb-16 lg:pb-24">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 sm:gap-14 lg:gap-10 items-center">
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 sm:pt-14 lg:pt-20 pb-11 sm:pb-16 lg:pb-24">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-9 sm:gap-14 lg:gap-10 items-center">
           {/* ------------------------------------------------ Left: statement */}
           <div>
             <Reveal>

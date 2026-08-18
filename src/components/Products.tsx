@@ -82,7 +82,7 @@ export default function Products() {
   ];
 
   return (
-    <section id="products" className="relative py-16 sm:py-20 lg:py-28 bg-gray-50/70 overflow-hidden">
+    <section id="products" className="relative py-12 sm:py-20 lg:py-28 bg-gray-50/70 overflow-hidden">
       <div className="absolute inset-0 bg-grid-light opacity-60 pointer-events-none" />
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <SectionHeading
@@ -93,7 +93,7 @@ export default function Products() {
         />
 
         {/* Family cards */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-5 mb-12 sm:mb-16">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-5 mb-10 sm:mb-16">
           {families.map((f, i) => (
             <Reveal key={f.title} delay={i * 90} className="h-full">
               <Link
@@ -104,8 +104,8 @@ export default function Products() {
                   {f.icon}
                 </div>
                 <h3 className="font-bold text-gray-900 text-[15px] sm:text-base mb-1.5 leading-snug">{f.title}</h3>
-                <p className="text-[13px] sm:text-sm text-gray-500 leading-relaxed mb-4">{f.desc}</p>
-                <span className="inline-flex items-center gap-1.5 text-[13px] font-semibold text-purple-600 group-hover:gap-2.5 transition-all">
+                <p className="text-[13px] sm:text-sm text-gray-500 leading-relaxed mb-0 sm:mb-4">{f.desc}</p>
+                <span className="hidden sm:inline-flex items-center gap-1.5 text-[13px] font-semibold text-purple-600 group-hover:gap-2.5 transition-all">
                   {fr ? "Découvrir" : "Discover"}
                   <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
@@ -179,7 +179,7 @@ export default function Products() {
                         />
                       )}
                       {product.reference && (
-                        <span className="absolute top-3 left-3 bg-gray-950/80 backdrop-blur-sm text-white text-[11px] font-semibold px-2.5 py-1 rounded-full tracking-wide">
+                        <span className="absolute top-3 left-3 bg-white/90 backdrop-blur-sm text-gray-900 ring-1 ring-gray-900/10 shadow-sm text-[11px] font-semibold px-2.5 py-1 rounded-full tracking-wide">
                           {product.reference}
                         </span>
                       )}

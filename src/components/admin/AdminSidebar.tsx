@@ -187,25 +187,25 @@ export default function AdminSidebar() {
 
   return (
     <aside
-      className={`fixed left-0 top-0 bottom-0 bg-gray-900 border-r border-white/10 z-40 flex flex-col transition-all duration-200 ${
+      className={`fixed left-0 top-0 bottom-0 bg-white border-r border-gray-200 z-40 flex flex-col transition-all duration-200 ${
         collapsed ? "w-[72px]" : "w-64"
       }`}
     >
       {/* Logo */}
-      <div className={`border-b border-white/10 flex items-center ${collapsed ? "justify-center p-4" : "p-6"}`}>
+      <div className={`border-b border-gray-100 flex items-center ${collapsed ? "justify-center p-4" : "p-6"}`}>
         <Link href="/admin" className="flex items-center gap-3 min-w-0">
           {collapsed ? (
             <Image src="/favicons/favicon-32x32.png" alt="Violette Medical" width={32} height={32} className="w-8 h-8" />
           ) : (
-            <Image src="/logo.PNG" alt="Violette Medical" width={140} height={40} className="h-8 w-auto brightness-0 invert" />
+            <Image src="/logo.PNG" alt="Violette Medical" width={140} height={40} className="h-8 w-auto" />
           )}
         </Link>
       </div>
 
       {/* Admin badge */}
       {!collapsed && (
-        <div className="px-6 py-3 border-b border-white/10">
-          <span className="inline-flex px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider bg-purple-500/15 text-purple-300 rounded-full">
+        <div className="px-6 py-3 border-b border-gray-100">
+          <span className="inline-flex px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider bg-gray-900 text-white rounded-full">
             Admin
           </span>
         </div>
@@ -217,9 +217,9 @@ export default function AdminSidebar() {
           <div key={group.title} className={gi > 0 ? "mt-2" : ""}>
             {/* Section header */}
             {collapsed ? (
-              gi > 0 ? <div className="my-2 mx-2 border-t border-white/10" /> : null
+              gi > 0 ? <div className="my-2 mx-2 border-t border-gray-100" /> : null
             ) : (
-              <p className="px-3 pt-3 pb-1.5 text-[10px] font-semibold uppercase tracking-wider text-gray-500">
+              <p className="px-3 pt-3 pb-1.5 text-[10px] font-semibold uppercase tracking-wider text-gray-400">
                 {group.title}
               </p>
             )}
@@ -236,11 +236,11 @@ export default function AdminSidebar() {
                       collapsed ? "justify-center px-2 py-2.5" : "px-3 py-2"
                     } ${
                       active
-                        ? "bg-purple-500/15 text-purple-300"
-                        : "text-gray-400 hover:bg-white/5 hover:text-white"
+                        ? "bg-gray-900 text-white"
+                        : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"
                     }`}
                   >
-                    <span className={active ? "text-purple-300" : "text-gray-500"}>
+                    <span className={active ? "text-white" : "text-gray-400"}>
                       {item.icon}
                     </span>
                     {!collapsed && <span className="truncate">{item.label}</span>}
@@ -253,10 +253,10 @@ export default function AdminSidebar() {
       </nav>
 
       {/* Collapse toggle */}
-      <div className={`border-t border-white/10 p-3 ${collapsed ? "flex justify-center" : ""}`}>
+      <div className={`border-t border-gray-100 p-3 ${collapsed ? "flex justify-center" : ""}`}>
         <button
           onClick={toggle}
-          className={`flex items-center gap-3 rounded-lg text-sm font-medium text-gray-500 hover:text-white hover:bg-white/5 transition-colors ${
+          className={`flex items-center gap-3 rounded-lg text-sm font-medium text-gray-500 hover:text-gray-900 hover:bg-gray-100 transition-colors ${
             collapsed ? "w-10 h-10 justify-center" : "w-full px-3 py-2.5"
           }`}
           title={collapsed ? "Ouvrir le menu" : "Réduire le menu"}

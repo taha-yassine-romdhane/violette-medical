@@ -47,13 +47,13 @@ const statusLabels: Record<string, string> = {
 };
 
 const statusColors: Record<string, string> = {
-  PENDING: "bg-yellow-500/15 text-yellow-300 border-yellow-500/30",
-  CONFIRMED: "bg-blue-500/15 text-blue-300 border-blue-500/30",
-  PROCESSING: "bg-indigo-500/15 text-indigo-300 border-indigo-500/30",
-  SHIPPED: "bg-purple-500/15 text-purple-300 border-purple-500/30",
-  DELIVERED: "bg-emerald-500/15 text-emerald-300 border-emerald-500/30",
-  CANCELLED: "bg-red-500/15 text-red-300 border-red-500/30",
-  RETURNED: "bg-gray-500/15 text-gray-300 border-gray-500/30",
+  PENDING: "bg-amber-50 text-amber-700 border-amber-200",
+  CONFIRMED: "bg-blue-50 text-blue-700 border-blue-200",
+  PROCESSING: "bg-sky-50 text-sky-700 border-sky-200",
+  SHIPPED: "bg-gray-100 text-gray-900 border-gray-400",
+  DELIVERED: "bg-emerald-50 text-emerald-700 border-emerald-200",
+  CANCELLED: "bg-red-50 text-red-600 border-red-200",
+  RETURNED: "bg-gray-100 text-gray-600 border-gray-200",
 };
 
 export default function AdminOrdersPage() {
@@ -176,8 +176,8 @@ export default function AdminOrdersPage() {
     <div>
       {/* Header */}
       <div className="mb-6">
-        <h1 className="text-2xl font-bold tracking-tight text-white">Commandes</h1>
-        <p className="text-sm text-gray-400 mt-1">Gérez les commandes et leurs statuts</p>
+        <h1 className="text-2xl font-bold tracking-tight text-gray-900">Commandes</h1>
+        <p className="text-sm text-gray-500 mt-1">Gérez les commandes et leurs statuts</p>
       </div>
 
       {/* Filters */}
@@ -199,8 +199,8 @@ export default function AdminOrdersPage() {
             onClick={() => setStatusFilter("")}
             className={`px-3 py-2 text-xs font-semibold rounded-lg border transition-colors ${
               !statusFilter
-                ? "bg-purple-500/15 text-purple-300 border-purple-400/40"
-                : "border-white/10 text-gray-400 hover:text-white hover:bg-white/5"
+                ? "bg-gray-900 text-white border-gray-900"
+                : "border-gray-200 text-gray-500 hover:text-gray-900 hover:bg-gray-50"
             }`}
           >
             Toutes
@@ -212,7 +212,7 @@ export default function AdminOrdersPage() {
               className={`px-3 py-2 text-xs font-semibold rounded-lg border transition-colors ${
                 statusFilter === s
                   ? statusColors[s]
-                  : "border-white/10 text-gray-400 hover:text-white hover:bg-white/5"
+                  : "border-gray-200 text-gray-500 hover:text-gray-900 hover:bg-gray-50"
               }`}
             >
               {statusLabels[s]}
@@ -226,7 +226,7 @@ export default function AdminOrdersPage() {
       <div className="admin-card overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full min-w-[800px]">
-            <thead className="bg-white/[0.03] border-b border-white/10">
+            <thead className="bg-gray-50 border-b border-gray-200">
               <tr>
                 <th className="admin-th">N° Commande</th>
                 <th className="admin-th">Client</th>
@@ -237,51 +237,51 @@ export default function AdminOrdersPage() {
                 <th className="admin-th"></th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-white/5">
+            <tbody className="divide-y divide-gray-100">
               {loading ? (
                 <tr>
                   <td colSpan={7} className="px-6 py-12 text-center">
-                    <div className="w-6 h-6 border-2 border-purple-400 border-t-transparent rounded-full animate-spin mx-auto" />
+                    <div className="w-6 h-6 border-2 border-gray-900 border-t-transparent rounded-full animate-spin mx-auto" />
                   </td>
                 </tr>
               ) : orders.length === 0 ? (
                 <tr>
-                  <td colSpan={7} className="px-6 py-10 text-center text-gray-400">
+                  <td colSpan={7} className="px-6 py-10 text-center text-gray-500">
                     Aucune commande trouvée.
                   </td>
                 </tr>
               ) : (
                 orders.map((order) => (
                   <>
-                    <tr key={order.id} className="hover:bg-white/[0.03] transition-colors">
-                      <td className="admin-td font-mono font-medium text-white">{order.orderNumber}</td>
+                    <tr key={order.id} className="hover:bg-gray-50 transition-colors">
+                      <td className="admin-td font-mono font-medium text-gray-900">{order.orderNumber}</td>
                       <td className="admin-td">
-                        <div className="text-sm font-medium text-white">{order.user.name}</div>
+                        <div className="text-sm font-medium text-gray-900">{order.user.name}</div>
                         <div className="text-xs text-gray-500">{order.user.companyName || order.user.email}</div>
                       </td>
-                      <td className="admin-td text-gray-300">{order._count.items}</td>
-                      <td className="admin-td font-semibold text-white tabular-nums">{order.totalTTC.toFixed(2)} TND</td>
+                      <td className="admin-td text-gray-700">{order._count.items}</td>
+                      <td className="admin-td font-semibold text-gray-900 tabular-nums">{order.totalTTC.toFixed(2)} TND</td>
                       <td className="admin-td">
                         <select
                           value={order.status}
                           disabled={updating === order.id}
                           onChange={(e) => updateStatus(order.id, e.target.value)}
-                          className={`text-xs font-semibold rounded-full border px-2.5 py-1.5 cursor-pointer focus:outline-none focus:ring-2 focus:ring-purple-500/40 disabled:opacity-50 bg-transparent ${statusColors[order.status] || "border-white/15 text-gray-300"}`}
+                          className={`text-xs font-semibold rounded-full border px-2.5 py-1.5 cursor-pointer focus:outline-none focus:ring-2 focus:ring-gray-900/15 disabled:opacity-50 bg-transparent ${statusColors[order.status] || "border-gray-300 text-gray-700"}`}
                         >
                           {STATUSES.map((s) => (
-                            <option key={s} value={s} className="bg-gray-900 text-white">
+                            <option key={s} value={s} className="bg-white text-gray-900">
                               {statusLabels[s]}
                             </option>
                           ))}
                         </select>
                       </td>
-                      <td className="admin-td text-gray-400">
+                      <td className="admin-td text-gray-500">
                         {new Date(order.createdAt).toLocaleDateString("fr-TN")}
                       </td>
                       <td className="admin-td text-right">
                         <button
                           onClick={() => toggleDetail(order.id)}
-                          className="text-xs font-medium text-purple-300 hover:text-purple-200 transition-colors"
+                          className="text-xs font-medium text-gray-900 hover:text-gray-600 transition-colors"
                         >
                           {expanded === order.id ? "Fermer" : "Détails"}
                         </button>
@@ -291,22 +291,22 @@ export default function AdminOrdersPage() {
                     {/* Detail row */}
                     {expanded === order.id && (
                       <tr key={`${order.id}-detail`}>
-                        <td colSpan={7} className="px-6 py-5 bg-white/[0.02]">
+                        <td colSpan={7} className="px-6 py-5 bg-gray-50">
                           {detailLoading ? (
-                            <div className="w-5 h-5 border-2 border-purple-400 border-t-transparent rounded-full animate-spin mx-auto my-4" />
+                            <div className="w-5 h-5 border-2 border-gray-900 border-t-transparent rounded-full animate-spin mx-auto my-4" />
                           ) : detail ? (
                             <div className="grid lg:grid-cols-3 gap-6">
                               {/* Client info */}
                               <div>
                                 <p className="text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-2">Client</p>
-                                <p className="text-sm text-white font-medium">{detail.user.name}</p>
-                                {detail.user.companyName && <p className="text-sm text-gray-400">{detail.user.companyName}</p>}
-                                <p className="text-sm text-gray-400">{detail.user.email}</p>
-                                {detail.user.phone && <p className="text-sm text-gray-400">{detail.user.phone}</p>}
+                                <p className="text-sm text-gray-900 font-medium">{detail.user.name}</p>
+                                {detail.user.companyName && <p className="text-sm text-gray-500">{detail.user.companyName}</p>}
+                                <p className="text-sm text-gray-500">{detail.user.email}</p>
+                                {detail.user.phone && <p className="text-sm text-gray-500">{detail.user.phone}</p>}
                                 {detail.note && (
-                                  <div className="mt-3 bg-yellow-500/10 border border-yellow-500/20 rounded-lg px-3 py-2">
-                                    <p className="text-[11px] font-bold text-yellow-300/80 uppercase tracking-wider mb-0.5">Note</p>
-                                    <p className="text-sm text-yellow-100/90">{detail.note}</p>
+                                  <div className="mt-3 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2">
+                                    <p className="text-[11px] font-bold text-amber-700 uppercase tracking-wider mb-0.5">Note</p>
+                                    <p className="text-sm text-amber-800">{detail.note}</p>
                                   </div>
                                 )}
                               </div>
@@ -318,17 +318,17 @@ export default function AdminOrdersPage() {
                                 </p>
                                 <div className="space-y-1.5">
                                   {detail.items.map((item) => (
-                                    <div key={item.id} className="bg-white/[0.03] border border-white/10 rounded-lg px-3.5 py-2.5">
+                                    <div key={item.id} className="bg-white border border-gray-200 rounded-lg px-3.5 py-2.5">
                                       <div className="flex items-center justify-between">
                                         <div className="min-w-0">
-                                          <p className="text-sm text-white font-medium truncate">{item.nameFr}</p>
+                                          <p className="text-sm text-gray-900 font-medium truncate">{item.nameFr}</p>
                                           {item.product?.reference && (
                                             <p className="text-xs text-gray-500 font-mono">{item.product.reference}</p>
                                           )}
                                         </div>
                                         <div className="flex items-center gap-4 shrink-0 text-sm">
-                                          <span className="text-gray-400">x{item.quantity}</span>
-                                          <span className="text-white font-semibold tabular-nums w-24 text-right">
+                                          <span className="text-gray-500">x{item.quantity}</span>
+                                          <span className="text-gray-900 font-semibold tabular-nums w-24 text-right">
                                             {(item.priceTTC * item.quantity).toFixed(2)} TND
                                           </span>
                                         </div>
@@ -336,24 +336,24 @@ export default function AdminOrdersPage() {
 
                                       {/* Serial numbers for serialized products */}
                                       {item.product?.trackSerial && (
-                                        <div className="mt-2 pt-2 border-t border-white/5">
+                                        <div className="mt-2 pt-2 border-t border-gray-100">
                                           <div className="flex items-center justify-between gap-2 flex-wrap">
                                             <div className="flex items-center gap-1.5 flex-wrap">
                                               <span className="text-[11px] font-bold text-gray-500 uppercase tracking-wider">
                                                 N° de série ({item.units.length}/{item.quantity})
                                               </span>
                                               {item.units.map((u) => (
-                                                <span key={u.id} className="px-2 py-0.5 text-[11px] font-mono rounded-md bg-purple-500/10 text-purple-300 border border-purple-500/20">
+                                                <span key={u.id} className="px-2 py-0.5 text-[11px] font-mono rounded-md bg-gray-100 text-gray-700 border border-gray-200">
                                                   {u.serialNumber}
                                                 </span>
                                               ))}
                                               {item.units.length === 0 && (
-                                                <span className="text-[11px] text-yellow-300/80">Aucun attribué</span>
+                                                <span className="text-[11px] text-amber-600">Aucun attribué</span>
                                               )}
                                             </div>
                                             <button
                                               onClick={() => openSerialPicker(detail.id, item.id)}
-                                              className="text-xs font-medium text-purple-300 hover:text-purple-200 transition-colors shrink-0"
+                                              className="text-xs font-medium text-gray-900 hover:text-gray-600 transition-colors shrink-0"
                                             >
                                               {serialPicker === item.id ? "Fermer" : "Attribuer"}
                                             </button>
@@ -361,9 +361,9 @@ export default function AdminOrdersPage() {
 
                                           {/* Picker */}
                                           {serialPicker === item.id && (
-                                            <div className="mt-2.5 bg-gray-900 border border-white/10 rounded-lg p-3">
+                                            <div className="mt-2.5 bg-white border border-gray-200 rounded-lg p-3 shadow-sm">
                                               {availableUnits.length === 0 && !serialError ? (
-                                                <p className="text-xs text-gray-400">
+                                                <p className="text-xs text-gray-500">
                                                   Aucune unité en stock pour ce produit — réceptionnez une importation d&apos;abord.
                                                 </p>
                                               ) : (
@@ -389,8 +389,8 @@ export default function AdminOrdersPage() {
                                                             checked
                                                               ? "bg-purple-600 text-white border-purple-500"
                                                               : full
-                                                              ? "bg-white/5 text-gray-600 border-white/10 cursor-not-allowed"
-                                                              : "bg-white/5 text-gray-300 border-white/15 hover:border-purple-400/50 hover:text-white"
+                                                              ? "bg-gray-50 text-gray-300 border-gray-200 cursor-not-allowed"
+                                                              : "bg-white text-gray-700 border-gray-300 hover:border-gray-500 hover:text-gray-900"
                                                           }`}
                                                         >
                                                           {u.serialNumber}
@@ -413,7 +413,7 @@ export default function AdminOrdersPage() {
                                                 </>
                                               )}
                                               {serialError && (
-                                                <p className="text-xs text-red-300 mt-2">{serialError}</p>
+                                                <p className="text-xs text-red-600 mt-2">{serialError}</p>
                                               )}
                                             </div>
                                           )}
@@ -422,15 +422,15 @@ export default function AdminOrdersPage() {
                                     </div>
                                   ))}
                                 </div>
-                                <div className="flex justify-end gap-6 mt-3 pt-3 border-t border-white/10 text-sm">
-                                  <span className="text-gray-400">HT: <span className="text-gray-200 tabular-nums">{detail.totalHT.toFixed(2)}</span></span>
-                                  <span className="text-gray-400">TVA: <span className="text-gray-200 tabular-nums">{detail.totalTax.toFixed(2)}</span></span>
-                                  <span className="text-gray-400">TTC: <span className="text-purple-300 font-bold tabular-nums">{detail.totalTTC.toFixed(2)} TND</span></span>
+                                <div className="flex justify-end gap-6 mt-3 pt-3 border-t border-gray-200 text-sm">
+                                  <span className="text-gray-500">HT: <span className="text-gray-900 tabular-nums">{detail.totalHT.toFixed(2)}</span></span>
+                                  <span className="text-gray-500">TVA: <span className="text-gray-900 tabular-nums">{detail.totalTax.toFixed(2)}</span></span>
+                                  <span className="text-gray-500">TTC: <span className="text-gray-900 font-bold tabular-nums">{detail.totalTTC.toFixed(2)} TND</span></span>
                                 </div>
                               </div>
                             </div>
                           ) : (
-                            <p className="text-sm text-gray-400 text-center py-2">Erreur de chargement.</p>
+                            <p className="text-sm text-gray-500 text-center py-2">Erreur de chargement.</p>
                           )}
                         </td>
                       </tr>

@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useLanguage } from "@/context/LanguageContext";
+import { useQuoteCart } from "@/context/QuoteCartContext";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Reveal from "@/components/motion/Reveal";
@@ -47,6 +48,24 @@ export default function ProductsPage() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [expandedCats, setExpandedCats] = useState<Set<string>>(new Set());
   const [filterOpen, setFilterOpen] = useState(false);
+  const quoteCart = useQuoteCart();
+  const [addedId, setAddedId] = useState<string | null>(null);
+
+  /** One-tap add to the guest quote basket from a product card. */
+  function quickAdd(e: React.MouseEvent, p: Product) {
+    e.preventDefault();
+    e.stopPropagation();
+    quoteCart.add({
+      id: p.id,
+      slug: p.slug,
+      nameFr: p.nameFr,
+      nameEn: p.nameEn,
+      reference: p.reference,
+      thumbnail: p.thumbnail,
+    });
+    setAddedId(p.id);
+    setTimeout(() => setAddedId((cur) => (cur === p.id ? null : cur)), 1500);
+  }
 
   useEffect(() => {
     const t = setTimeout(() => setSearchDebounced(search), 300);
@@ -453,7 +472,7 @@ export default function ProductsPage() {
                               </div>
                             )}
                             {p.reference && (
-                              <span className="absolute top-2 left-2 sm:top-3 sm:left-3 bg-gray-950/80 backdrop-blur-sm text-white text-[10px] sm:text-[11px] font-semibold px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-full tracking-wide">
+                              <span className="absolute top-2 left-2 sm:top-3 sm:left-3 bg-white/90 backdrop-blur-sm text-gray-900 ring-1 ring-gray-900/10 shadow-sm text-[10px] sm:text-[11px] font-semibold px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-full tracking-wide">
                                 {p.reference}
                               </span>
                             )}
@@ -487,9 +506,28 @@ export default function ProductsPage() {
                                 </svg>
                                 {language === "fr" ? "Sur devis" : "On quote"}
                               </span>
-                              <svg className="w-4 h-4 text-gray-300 group-hover:text-purple-600 group-hover:translate-x-0.5 transition-all shrink-0" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                              </svg>
+                              {!isAuthenticated ? (
+                                <button
+                                  onClick={(e) => quickAdd(e, p)}
+                                  aria-label={language === "fr" ? "Ajouter au devis" : "Add to quote"}
+                                  title={language === "fr" ? "Ajouter au devis" : "Add to quote"}
+                                  className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center shrink-0 transition-all active:scale-90 ${
+                                    addedId === p.id
+                                      ? "bg-emerald-500 text-white"
+                                      : "bg-gray-900 text-white hover:bg-gray-700"
+                                  }`}
+                                >
+                                  {addedId === p.id ? (
+                                    <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
+                                  ) : (
+                                    <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>
+                                  )}
+                                </button>
+                              ) : (
+                                <svg className="w-4 h-4 text-gray-300 group-hover:text-purple-600 group-hover:translate-x-0.5 transition-all shrink-0" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                                </svg>
+                              )}
                             </div>
                           </div>
                         </Link>

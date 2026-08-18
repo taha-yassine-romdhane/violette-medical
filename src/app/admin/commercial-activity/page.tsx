@@ -60,17 +60,17 @@ export default async function CommercialActivityPage() {
   return (
     <div>
       <div className="mb-6">
-        <h1 className="text-2xl font-bold tracking-tight text-white">Activité Commerciaux</h1>
-        <p className="text-sm text-gray-400 mt-1">Performance de l'équipe commerciale</p>
+        <h1 className="text-2xl font-bold tracking-tight text-gray-900">Activité Commerciaux</h1>
+        <p className="text-sm text-gray-500 mt-1">Performance de l'équipe commerciale</p>
       </div>
 
       {/* Summary cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
         {[
-          { label: "Commerciaux", value: totalCommercials, color: "bg-blue-500/15 text-blue-300 border border-blue-400/20" },
-          { label: "Clients total", value: totalClients, color: "bg-emerald-500/15 text-emerald-300 border border-emerald-400/20" },
-          { label: "CA total", value: `${totalRevenue.toFixed(2)} TND`, color: "bg-purple-500/15 text-purple-300 border border-purple-400/20" },
-          { label: "Commandes ce mois", value: monthlyOrdersTotal, color: "bg-amber-500/15 text-amber-300 border border-amber-400/20" },
+          { label: "Commerciaux", value: totalCommercials, color: "bg-blue-50 text-blue-700 border border-blue-200/60" },
+          { label: "Clients total", value: totalClients, color: "bg-emerald-50 text-emerald-700 border border-emerald-200/60" },
+          { label: "CA total", value: `${totalRevenue.toFixed(2)} TND`, color: "bg-gray-900 text-white border border-gray-900" },
+          { label: "Commandes ce mois", value: monthlyOrdersTotal, color: "bg-amber-50 text-amber-700 border border-amber-200/60" },
         ].map((card) => (
           <div key={card.label} className={`rounded-xl p-5 ${card.color}`}>
             <p className="text-2xl font-bold">{card.value}</p>
@@ -82,7 +82,7 @@ export default async function CommercialActivityPage() {
       {/* Performance table */}
       <div className="admin-card overflow-hidden">
         <table className="w-full">
-          <thead className="bg-white/[0.03] border-b border-white/10">
+          <thead className="bg-gray-50 border-b border-gray-200">
             <tr>
               <th className="admin-th">Commercial</th>
               <th className="admin-th">Clients</th>
@@ -93,25 +93,25 @@ export default async function CommercialActivityPage() {
               <th className="admin-th">Statut</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-white/5">
+          <tbody className="divide-y divide-gray-100">
             {performance.length === 0 ? (
-              <tr><td colSpan={7} className="px-6 py-8 text-center text-gray-400">Aucun commercial.</td></tr>
+              <tr><td colSpan={7} className="px-6 py-8 text-center text-gray-500">Aucun commercial.</td></tr>
             ) : (
               performance.map((p) => (
-                <tr key={p.email} className="hover:bg-white/[0.03] transition-colors">
+                <tr key={p.email} className="hover:bg-gray-50 transition-colors">
                   <td className="px-6 py-4">
                     <div>
-                      <p className="text-sm font-medium text-white">{p.name}</p>
+                      <p className="text-sm font-medium text-gray-900">{p.name}</p>
                       <p className="text-xs text-gray-500">{p.email}</p>
                     </div>
                   </td>
-                  <td className="px-6 py-4 text-sm text-white font-medium tabular-nums">{p.clientCount}</td>
-                  <td className="px-6 py-4 text-sm text-gray-300 tabular-nums">{p.totalOrders}</td>
-                  <td className="px-6 py-4 text-sm text-white font-medium tabular-nums">{p.totalRevenue.toFixed(2)} TND</td>
-                  <td className="px-6 py-4 text-sm text-gray-300 tabular-nums">{p.monthlyRevenue.toFixed(2)} TND</td>
-                  <td className="px-6 py-4 text-sm text-gray-300 tabular-nums">{p.monthlyOrders}</td>
+                  <td className="px-6 py-4 text-sm text-gray-900 font-medium tabular-nums">{p.clientCount}</td>
+                  <td className="px-6 py-4 text-sm text-gray-700 tabular-nums">{p.totalOrders}</td>
+                  <td className="px-6 py-4 text-sm text-gray-900 font-medium tabular-nums">{p.totalRevenue.toFixed(2)} TND</td>
+                  <td className="px-6 py-4 text-sm text-gray-700 tabular-nums">{p.monthlyRevenue.toFixed(2)} TND</td>
+                  <td className="px-6 py-4 text-sm text-gray-700 tabular-nums">{p.monthlyOrders}</td>
                   <td className="px-6 py-4">
-                    <span className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${p.isActive ? "bg-emerald-500/15 text-emerald-300" : "bg-red-500/15 text-red-300"}`}>
+                    <span className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${p.isActive ? "bg-emerald-50 text-emerald-700" : "bg-red-50 text-red-700"}`}>
                       {p.isActive ? "Actif" : "Inactif"}
                     </span>
                   </td>

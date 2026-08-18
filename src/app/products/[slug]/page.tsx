@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useLanguage } from "@/context/LanguageContext";
+import { useQuoteCart } from "@/context/QuoteCartContext";
 import { useParams } from "next/navigation";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -26,6 +27,7 @@ interface RelatedProduct {
 
 export default function ProductDetailPage() {
   const { language, t } = useLanguage();
+  const quoteCart = useQuoteCart();
   const params = useParams();
   const slug = params.slug as string;
 
@@ -78,6 +80,25 @@ export default function ProductDetailPage() {
 
   const getDesc = (p: Product) =>
     language === "en" ? p.descriptionEn || p.descriptionFr : p.descriptionFr;
+
+  /** Guest flow — add to the local quote basket (no account needed). */
+  function addToDevis() {
+    if (!product) return;
+    quoteCart.add(
+      {
+        id: product.id,
+        slug: product.slug,
+        nameFr: product.nameFr,
+        nameEn: product.nameEn,
+        reference: product.reference,
+        thumbnail: product.thumbnail || product.images[0] || null,
+      },
+      qty
+    );
+    setAddedMsg(language === "fr" ? "Ajouté à votre demande de devis !" : "Added to your quote request!");
+    setTimeout(() => setAddedMsg(""), 3000);
+    setQty(1);
+  }
 
   async function addToCart(productId: string) {
     setAdding(true);
@@ -162,7 +183,7 @@ export default function ProductDetailPage() {
   return (
     <>
       <Header />
-      <main className={`pt-20 min-h-screen bg-white ${showStickyBar && canSeePrices && product.priceTTC !== undefined && product.stock !== undefined && product.stock > 0 ? "pb-20 md:pb-0" : ""}`}>
+      <main className={`pt-20 min-h-screen bg-white ${showStickyBar && ((canSeePrices && product.priceTTC !== undefined && product.stock !== undefined && product.stock > 0) || (!isAuthenticated && !canSeePrices)) ? "pb-20 md:pb-0" : ""}`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           {/* Breadcrumb */}
           <div className="flex items-center gap-1.5 text-sm text-gray-400 mb-6 flex-wrap">
@@ -201,7 +222,8 @@ export default function ProductDetailPage() {
                   </div>
                 )}
                 {product.isFeatured && (
-                  <div className="absolute top-3 left-3 bg-purple-600 text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide">
+                  <div className="absolute top-3 left-3 inline-flex items-center gap-1.5 bg-white/90 backdrop-blur-sm text-gray-900 ring-1 ring-gray-900/10 shadow-sm text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
                     {language === "fr" ? "Produit vedette" : "Featured product"}
                   </div>
                 )}
@@ -341,14 +363,35 @@ export default function ProductDetailPage() {
                         </Link>
                       </div>
                     ) : (
-                      /* Guest */
-                      <div className="flex gap-2 pt-4 border-t border-gray-200">
-                        <Link href="/contact" className="btn-primary flex-1 px-4 py-2.5 text-sm">
-                          {language === "fr" ? "Demander un devis" : "Request a quote"}
-                        </Link>
-                        <Link href="/signin" className="btn-outline flex-1 px-4 py-2.5 text-sm">
-                          {language === "fr" ? "Espace client" : "Client area"}
-                        </Link>
+                      /* Guest — build a quote basket without an account */
+                      <div className="pt-4 border-t border-gray-200">
+                        <div className="flex items-center gap-3">
+                          {qtyStepper()}
+                          <button onClick={addToDevis} className="btn-primary flex-1 px-5 py-2.5 text-sm">
+                            <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>
+                            {language === "fr" ? "Ajouter au devis" : "Add to quote"}
+                          </button>
+                        </div>
+                        {addedMsg && (
+                          <p className="text-sm text-emerald-600 font-medium mt-3 flex items-center gap-1.5">
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
+                            {addedMsg}
+                          </p>
+                        )}
+                        <div className="mt-3 flex items-center justify-between gap-3">
+                          <Link href="/devis" className="inline-flex items-center gap-1.5 text-xs font-semibold text-gray-700 hover:text-gray-900 transition-colors">
+                            {language === "fr" ? "Voir ma demande" : "View my request"}
+                            {quoteCart.count > 0 && (
+                              <span className="min-w-[18px] h-[18px] bg-gray-900 text-white text-[10px] font-bold rounded-full flex items-center justify-center px-1">
+                                {quoteCart.count}
+                              </span>
+                            )}
+                            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+                          </Link>
+                          <Link href="/signin" className="text-xs font-semibold text-gray-400 hover:text-gray-700 transition-colors">
+                            {language === "fr" ? "Espace client" : "Client area"}
+                          </Link>
+                        </div>
                       </div>
                     )}
                   </div>
@@ -419,6 +462,33 @@ export default function ProductDetailPage() {
       </main>
 
       {/* Mobile sticky add-to-cart bar */}
+      {/* Mobile sticky bar — guest quote flow */}
+      {!isAuthenticated && !canSeePrices && showStickyBar && (
+        <div className="fixed bottom-0 left-0 right-0 md:hidden z-40 bg-white/95 backdrop-blur-md border-t border-gray-200 shadow-[0_-4px_24px_rgba(0,0,0,0.08)] px-4 py-3">
+          <div className="flex items-center gap-3">
+            {qtyStepper(true)}
+            <button onClick={addToDevis} className="btn-primary flex-1 py-2.5 text-sm">
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>
+              {language === "fr" ? "Ajouter au devis" : "Add to quote"}
+            </button>
+            {quoteCart.count > 0 && (
+              <Link
+                href="/devis"
+                aria-label={language === "fr" ? "Voir ma demande" : "View my request"}
+                className="relative w-10 h-10 rounded-xl border border-gray-200 bg-white text-gray-700 flex items-center justify-center shrink-0"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={1.8} viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007z" />
+                </svg>
+                <span className="absolute -top-1 -right-1 min-w-[16px] h-4 bg-gray-900 text-white text-[9px] font-bold rounded-full flex items-center justify-center px-1">
+                  {quoteCart.count}
+                </span>
+              </Link>
+            )}
+          </div>
+        </div>
+      )}
+
       {canSeePrices && product.priceTTC !== undefined && product.stock !== undefined && product.stock > 0 && showStickyBar && (
         <div className="fixed bottom-0 left-0 right-0 md:hidden z-40 bg-white/95 backdrop-blur-md border-t border-gray-200 shadow-[0_-4px_24px_rgba(0,0,0,0.08)] px-4 py-3">
           <div className="flex items-center gap-3">

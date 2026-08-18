@@ -426,7 +426,7 @@ export default function AboutPage() {
                           <span className="relative whitespace-nowrap">
                             ensemble
                             <svg className="absolute -bottom-1.5 left-0 w-full" viewBox="0 0 200 9" fill="none" preserveAspectRatio="none">
-                              <path d="M2 7C50 2 150 2 198 7" stroke="#c4b5fd" strokeWidth="3" strokeLinecap="round" opacity="0.7" />
+                              <path d="M2 7C50 2 150 2 198 7" stroke="#d1d5db" strokeWidth="3" strokeLinecap="round" opacity="0.7" />
                             </svg>
                           </span>
                         </>
@@ -436,7 +436,7 @@ export default function AboutPage() {
                           <span className="relative whitespace-nowrap">
                             together
                             <svg className="absolute -bottom-1.5 left-0 w-full" viewBox="0 0 200 9" fill="none" preserveAspectRatio="none">
-                              <path d="M2 7C50 2 150 2 198 7" stroke="#c4b5fd" strokeWidth="3" strokeLinecap="round" opacity="0.7" />
+                              <path d="M2 7C50 2 150 2 198 7" stroke="#d1d5db" strokeWidth="3" strokeLinecap="round" opacity="0.7" />
                             </svg>
                           </span>
                         </>

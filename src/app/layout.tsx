@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { LanguageProvider } from "@/context/LanguageContext";
+import { QuoteCartProvider } from "@/context/QuoteCartContext";
 import SessionProvider from "@/components/auth/SessionProvider";
 import DevTools from "@/components/DevTools";
 
@@ -72,7 +73,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#7c3aed",
+  themeColor: "#111827",
 };
 
 export default function RootLayout({
@@ -97,8 +98,10 @@ export default function RootLayout({
       <body className={`${inter.className} antialiased`}>
         <SessionProvider>
           <LanguageProvider>
-            {children}
-            {process.env.NODE_ENV === "development" && <DevTools />}
+            <QuoteCartProvider>
+              {children}
+              {process.env.NODE_ENV === "development" && <DevTools />}
+            </QuoteCartProvider>
           </LanguageProvider>
         </SessionProvider>
       </body>

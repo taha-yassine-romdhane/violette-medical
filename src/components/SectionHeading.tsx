@@ -18,7 +18,7 @@ export default function SectionHeading({
 }: SectionHeadingProps) {
   const centered = align === "center";
   return (
-    <div className={`max-w-3xl mb-10 sm:mb-12 ${centered ? "mx-auto text-center" : ""}`}>
+    <div className={`max-w-3xl mb-8 sm:mb-12 ${centered ? "mx-auto text-center" : ""}`}>
       <Reveal>
         <span className={`flex items-center gap-3 text-xs font-bold uppercase tracking-[0.22em] text-purple-700 mb-4 ${centered ? "justify-center" : ""}`}>
           <span className="w-8 h-px bg-purple-300" />

@@ -85,15 +85,15 @@ export default function AdminSettingsPage() {
   }
 
   if (loading) {
-    return <div className="flex items-center justify-center h-64"><div className="w-6 h-6 border-2 border-purple-400 border-t-transparent rounded-full animate-spin" /></div>;
+    return <div className="flex items-center justify-center h-64"><div className="w-6 h-6 border-2 border-gray-900 border-t-transparent rounded-full animate-spin" /></div>;
   }
 
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-white">Paramètres</h1>
-          <p className="text-sm text-gray-400 mt-1">Configuration du site</p>
+          <h1 className="text-2xl font-bold tracking-tight text-gray-900">Paramètres</h1>
+          <p className="text-sm text-gray-500 mt-1">Configuration du site</p>
         </div>
         <button
           onClick={handleSave}
@@ -104,12 +104,12 @@ export default function AdminSettingsPage() {
         </button>
       </div>
 
-      {success && <div className="bg-emerald-500/10 border border-emerald-500/25 text-emerald-300 px-4 py-3 rounded-xl text-sm mb-6">{success}</div>}
+      {success && <div className="bg-emerald-50 border border-emerald-200 text-emerald-700 px-4 py-3 rounded-xl text-sm mb-6">{success}</div>}
 
       <div className="space-y-6">
         {settingsConfig.map((section) => (
           <div key={section.group} className="admin-card p-6">
-            <h2 className="text-sm font-semibold text-gray-300 uppercase tracking-wide mb-4">{section.title}</h2>
+            <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-4">{section.title}</h2>
             <div className="space-y-4">
               {section.fields.map((field) => (
                 <div key={field.key}>
