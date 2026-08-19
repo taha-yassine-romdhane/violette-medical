@@ -15,7 +15,10 @@ echo "==> Pulling latest code"
 git pull --ff-only
 
 echo "==> Installing dependencies"
-npm ci
+# --include=dev is required: .env sets NODE_ENV=production, which would
+# otherwise make npm skip devDependencies — and prisma.config.ts needs
+# dotenv, while the seed needs tsx.
+npm ci --include=dev
 
 echo "==> Generating Prisma client"
 npx prisma generate
