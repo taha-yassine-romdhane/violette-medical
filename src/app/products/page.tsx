@@ -142,13 +142,51 @@ export default function ProductsPage() {
   );
 
   function renderCategoryTree() {
+    // Empty branches are noise — only show what actually contains products.
+    const visibleCategories = categories.filter((c) => c._count.products > 0);
+
     return (
       <>
+        {/* Guest CTA — compact, above the filter */}
+        {!isAuthenticated && (
+          <div className="mb-4 bg-purple-50 border border-purple-100 rounded-2xl p-4">
+            <p className="text-[13px] text-gray-900 font-semibold mb-1">
+              {language === "fr" ? "Besoin d'un devis ?" : "Need a quote?"}
+            </p>
+            <p className="text-[11px] text-gray-500 leading-snug mb-3">
+              {language === "fr"
+                ? "Ajoutez vos produits avec le bouton « + » et envoyez votre demande — réponse sous 24 h."
+                : "Add your products with the “+” button and send your request — reply within 24 h."}
+            </p>
+            <div className="flex gap-2">
+              <Link href="/devis" className="btn-primary flex-1 px-3 py-2 text-xs">
+                {language === "fr" ? "Ma demande" : "My request"}
+                {quoteCart.count > 0 && (
+                  <span className="min-w-[16px] h-4 bg-white/20 text-white text-[9px] font-bold rounded-full flex items-center justify-center px-1">
+                    {quoteCart.count}
+                  </span>
+                )}
+              </Link>
+              <Link href="/signin" className="btn-outline flex-1 px-3 py-2 text-xs">
+                {language === "fr" ? "Espace client" : "Client area"}
+              </Link>
+            </div>
+          </div>
+        )}
+
         <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
-          <div className="px-4 py-3 border-b border-gray-100">
+          <div className="px-4 py-3 border-b border-gray-100 flex items-center justify-between">
             <h3 className="text-xs font-semibold uppercase tracking-wider text-gray-400">
               {language === "fr" ? "Catégories" : "Categories"}
             </h3>
+            {activeFilterCount > 0 && (
+              <button
+                onClick={() => { setActiveCat(""); setActiveFam(""); setActiveSf(""); }}
+                className="text-[11px] font-semibold text-gray-400 hover:text-red-600 transition-colors"
+              >
+                {language === "fr" ? "Réinitialiser" : "Reset"}
+              </button>
+            )}
           </div>
           <nav className="p-2">
             <button
@@ -158,61 +196,88 @@ export default function ProductsPage() {
               }`}
             >
               {language === "fr" ? "Tous les produits" : "All products"}
-              <span className="text-gray-400 ml-1 text-xs">({total})</span>
             </button>
 
-            {categories.map((cat) => {
+            {visibleCategories.map((cat) => {
               const isActive = activeCat === cat.slug;
               const isExpanded = expandedCats.has(cat.slug) || isActive;
+              const families = cat.families.filter((f) => f._count.products > 0);
 
               return (
                 <div key={cat.id}>
                   <button
                     onClick={() => selectCategory(cat.slug)}
-                    className={`w-full text-left px-3 py-2 rounded-lg text-sm font-medium transition-colors flex items-center justify-between ${
+                    className={`w-full text-left px-3 py-2 rounded-lg text-sm font-medium transition-colors flex items-center justify-between gap-2 ${
                       isActive && !activeFam ? "bg-purple-50 text-purple-700" : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
                     }`}
                   >
-                    <span>{getName(cat)}</span>
-                    {cat.families.length > 0 && (
-                      <svg className={`w-3.5 h-3.5 text-gray-400 transition-transform ${isExpanded ? "rotate-90" : ""}`} fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                    <span className="min-w-0 truncate">
+                      {getName(cat)}
+                      <span className={`ml-1.5 text-xs ${isActive && !activeFam ? "text-purple-400" : "text-gray-400"}`}>
+                        {cat._count.products}
+                      </span>
+                    </span>
+                    {families.length > 0 && (
+                      <svg className={`w-3.5 h-3.5 shrink-0 text-gray-400 transition-transform duration-300 ${isExpanded ? "rotate-90" : ""}`} fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
                       </svg>
                     )}
                   </button>
 
-                  {isExpanded && cat.families.length > 0 && (
-                    <div className="ml-3 border-l-2 border-gray-100 pl-2">
-                      {cat.families.map((fam) => (
-                        <div key={fam.id}>
-                          <button
-                            onClick={() => { if (activeCat !== cat.slug) setActiveCat(cat.slug); selectFamily(fam.slug); }}
-                            className={`w-full text-left px-3 py-1.5 rounded-md text-xs font-medium transition-colors ${
-                              activeFam === fam.slug && !activeSf ? "bg-purple-50 text-purple-700" : "text-gray-500 hover:bg-gray-50 hover:text-gray-900"
-                            }`}
-                          >
-                            {getName(fam)}
-                            <span className="text-gray-400 ml-1">({fam._count.products})</span>
-                          </button>
-
-                          {activeFam === fam.slug && fam.subfamilies.length > 0 && (
-                            <div className="ml-3 border-l border-gray-100 pl-2">
-                              {fam.subfamilies.map((sf) => (
+                  {/* Families — animated collapse */}
+                  {families.length > 0 && (
+                    <div
+                      className={`grid transition-all duration-300 ease-out ${
+                        isExpanded ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
+                      }`}
+                    >
+                      <div className="overflow-hidden">
+                        <div className="ml-3 border-l-2 border-gray-100 pl-2 py-0.5">
+                          {families.map((fam) => {
+                            const subfamilies = fam.subfamilies.filter((sf) => sf._count.products > 0);
+                            const famOpen = activeFam === fam.slug;
+                            return (
+                              <div key={fam.id}>
                                 <button
-                                  key={sf.id}
-                                  onClick={() => selectSubfamily(sf.slug)}
-                                  className={`w-full text-left px-3 py-1 rounded-md text-xs transition-colors ${
-                                    activeSf === sf.slug ? "bg-purple-50 text-purple-700 font-medium" : "text-gray-500 hover:bg-gray-50 hover:text-gray-900"
+                                  onClick={() => { if (activeCat !== cat.slug) setActiveCat(cat.slug); selectFamily(fam.slug); }}
+                                  className={`w-full text-left px-3 py-1.5 rounded-md text-xs font-medium transition-colors ${
+                                    famOpen && !activeSf ? "bg-purple-50 text-purple-700" : "text-gray-500 hover:bg-gray-50 hover:text-gray-900"
                                   }`}
                                 >
-                                  {getName(sf)}
-                                  <span className="text-gray-400 ml-1">({sf._count.products})</span>
+                                  {getName(fam)}
+                                  <span className={`ml-1 ${famOpen && !activeSf ? "text-purple-400" : "text-gray-400"}`}>({fam._count.products})</span>
                                 </button>
-                              ))}
-                            </div>
-                          )}
+
+                                {/* Subfamilies — animated collapse */}
+                                {subfamilies.length > 0 && (
+                                  <div
+                                    className={`grid transition-all duration-300 ease-out ${
+                                      famOpen ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
+                                    }`}
+                                  >
+                                    <div className="overflow-hidden">
+                                      <div className="ml-3 border-l border-gray-100 pl-2 py-0.5">
+                                        {subfamilies.map((sf) => (
+                                          <button
+                                            key={sf.id}
+                                            onClick={() => selectSubfamily(sf.slug)}
+                                            className={`w-full text-left px-3 py-1 rounded-md text-xs transition-colors ${
+                                              activeSf === sf.slug ? "bg-purple-50 text-purple-700 font-medium" : "text-gray-500 hover:bg-gray-50 hover:text-gray-900"
+                                            }`}
+                                          >
+                                            {getName(sf)}
+                                            <span className={`ml-1 ${activeSf === sf.slug ? "text-purple-400" : "text-gray-400"}`}>({sf._count.products})</span>
+                                          </button>
+                                        ))}
+                                      </div>
+                                    </div>
+                                  </div>
+                                )}
+                              </div>
+                            );
+                          })}
                         </div>
-                      ))}
+                      </div>
                     </div>
                   )}
                 </div>
@@ -221,27 +286,6 @@ export default function ProductsPage() {
           </nav>
         </div>
 
-        {/* Guest CTA */}
-        {!isAuthenticated && (
-          <div className="mt-5 bg-purple-50 border border-purple-100 rounded-2xl p-5">
-            <p className="text-sm text-gray-900 font-semibold mb-1.5">
-              {language === "fr" ? "Besoin d'un devis ?" : "Need a quote?"}
-            </p>
-            <p className="text-xs text-gray-500 leading-relaxed mb-4">
-              {language === "fr"
-                ? "Nos tarifs professionnels sont établis sur devis. Contactez-nous ou créez votre compte pour faire une demande."
-                : "Our professional pricing is quote-based. Contact us or create an account to request one."}
-            </p>
-            <div className="flex flex-col gap-2">
-              <Link href="/contact" className="btn-primary px-4 py-2 text-xs">
-                {language === "fr" ? "Demander un devis" : "Request a quote"}
-              </Link>
-              <Link href="/signin" className="btn-outline px-4 py-2 text-xs">
-                {language === "fr" ? "Espace client" : "Client area"}
-              </Link>
-            </div>
-          </div>
-        )}
       </>
     );
   }

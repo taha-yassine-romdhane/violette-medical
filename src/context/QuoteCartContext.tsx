@@ -80,7 +80,8 @@ export function QuoteCartProvider({ children }: { children: ReactNode }) {
 
   const clear = useCallback(() => setItems([]), []);
 
-  const count = items.reduce((sum, i) => sum + i.qty, 0);
+  // Number of distinct products (not summed quantities) — what badges display
+  const count = items.length;
 
   return (
     <QuoteCartContext.Provider value={{ items, count, add, setQty, remove, clear }}>

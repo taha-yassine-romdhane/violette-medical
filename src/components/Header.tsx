@@ -69,12 +69,17 @@ export default function Header() {
   const [cartItems, setCartItems] = useState<CartPreviewItem[]>([]);
   const [cartLoading, setCartLoading] = useState(false);
   const { data: session, status } = useSession();
-  const { count: quoteCount } = useQuoteCart();
+  const { items: quoteItems, count: quoteCount, setQty: setQuoteQty, remove: removeQuoteItem } = useQuoteCart();
+  const [isQuoteOpen, setIsQuoteOpen] = useState(false);
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [progress, setProgress] = useState(0);
   const userMenuRef = useRef<HTMLDivElement>(null);
   const cartRef = useRef<HTMLDivElement>(null);
+  const quoteRef = useRef<HTMLDivElement>(null);
+  // The mobile quote sheet lives OUTSIDE <header> (its backdrop-blur creates a
+  // containing block that would trap fixed children), so it needs its own ref.
+  const quoteSheetRef = useRef<HTMLDivElement>(null);
 
   // Elevate the header once scrolled + track reading progress
   useEffect(() => {
@@ -115,6 +120,13 @@ export default function Header() {
       }
       if (cartRef.current && !cartRef.current.contains(e.target as Node)) {
         setIsCartOpen(false);
+      }
+      if (
+        quoteRef.current &&
+        !quoteRef.current.contains(e.target as Node) &&
+        !(quoteSheetRef.current && quoteSheetRef.current.contains(e.target as Node))
+      ) {
+        setIsQuoteOpen(false);
       }
     }
     document.addEventListener("mousedown", handleClickOutside);
@@ -197,6 +209,130 @@ export default function Header() {
     { href: "/contact", label: t.nav.contact },
   ];
 
+  /* Shared body of the guest quote panel — rendered inside the desktop
+     dropdown AND the mobile bottom sheet. */
+  const quotePanelContent = (
+    <div className="relative">
+      {/* Header */}
+      <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100">
+        <div>
+          <p className="text-sm font-semibold text-gray-900">
+            {language === "fr" ? "Ma demande de devis" : "My quote request"}
+          </p>
+          {quoteCount > 0 && (
+            <p className="text-xs text-gray-500 mt-0.5">
+              {quoteCount} {language === "fr" ? `produit${quoteCount !== 1 ? "s" : ""}` : `product${quoteCount !== 1 ? "s" : ""}`}
+            </p>
+          )}
+        </div>
+        <button
+          onClick={() => setIsQuoteOpen(false)}
+          aria-label={language === "fr" ? "Fermer" : "Close"}
+          className="sm:hidden w-8 h-8 rounded-full bg-gray-100 text-gray-500 flex items-center justify-center active:scale-95 transition-all"
+        >
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+        </button>
+      </div>
+
+      {/* Items */}
+      <div className="max-h-[300px] sm:max-h-[280px] overflow-y-auto">
+        {quoteItems.length === 0 ? (
+          <div className="py-10 text-center px-6">
+            <svg className="w-10 h-10 mx-auto text-gray-200 mb-3" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007z" />
+            </svg>
+            <p className="text-sm text-gray-400 mb-4">
+              {language === "fr" ? "Votre demande est vide" : "Your request is empty"}
+            </p>
+            <Link
+              href="/products"
+              onClick={() => setIsQuoteOpen(false)}
+              className="inline-flex text-xs font-semibold text-gray-900 hover:underline"
+            >
+              {language === "fr" ? "Parcourir les produits →" : "Browse products →"}
+            </Link>
+          </div>
+        ) : (
+          <div className="divide-y divide-gray-50">
+            {quoteItems.map((item) => (
+              <div key={item.id} className="flex items-center gap-3 px-5 py-3">
+                <Link
+                  href={`/products/${item.slug}`}
+                  onClick={() => setIsQuoteOpen(false)}
+                  className="w-11 h-11 rounded-lg bg-gray-50 border border-gray-100 shrink-0 overflow-hidden"
+                >
+                  {item.thumbnail ? (
+                    <Image src={item.thumbnail} alt={item.nameFr} width={44} height={44} className="w-full h-full object-cover" />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center text-gray-300">
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                      </svg>
+                    </div>
+                  )}
+                </Link>
+                <div className="flex-1 min-w-0">
+                  <p className="text-[13px] font-medium text-gray-800 truncate">
+                    {language === "fr" ? item.nameFr : item.nameEn || item.nameFr}
+                  </p>
+                  {item.reference && (
+                    <p className="text-[10px] text-gray-400 font-mono">REF: {item.reference}</p>
+                  )}
+                </div>
+                {/* Mini qty stepper */}
+                <div className="flex items-center border border-gray-200 rounded-lg shrink-0">
+                  <button
+                    onClick={() => setQuoteQty(item.id, item.qty - 1)}
+                    aria-label="-"
+                    className="w-6 h-7 flex items-center justify-center text-gray-500 hover:bg-gray-50 rounded-l-lg text-sm transition-colors"
+                  >
+                    −
+                  </button>
+                  <span className="w-6 text-center text-xs font-semibold text-gray-900 tabular-nums">{item.qty}</span>
+                  <button
+                    onClick={() => setQuoteQty(item.id, item.qty + 1)}
+                    aria-label="+"
+                    className="w-6 h-7 flex items-center justify-center text-gray-500 hover:bg-gray-50 rounded-r-lg text-sm transition-colors"
+                  >
+                    +
+                  </button>
+                </div>
+                <button
+                  onClick={() => removeQuoteItem(item.id)}
+                  aria-label={language === "fr" ? "Retirer" : "Remove"}
+                  className="w-7 h-7 rounded-lg text-gray-300 hover:text-red-600 hover:bg-red-50 flex items-center justify-center transition-colors shrink-0"
+                >
+                  <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth={1.8} viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* Footer */}
+      {quoteItems.length > 0 && (
+        <div className="border-t border-gray-100 px-5 pt-4 pb-[max(1rem,env(safe-area-inset-bottom))] sm:pb-4 bg-gray-50/40">
+          <p className="text-xs text-gray-500 mb-3 leading-relaxed">
+            {language === "fr"
+              ? "Sans engagement — les tarifs seront précisés dans votre devis."
+              : "No commitment — pricing will be detailed in your quote."}
+          </p>
+          <Link
+            href="/devis"
+            onClick={() => setIsQuoteOpen(false)}
+            className="btn-primary w-full py-2.5 text-sm"
+          >
+            {language === "fr" ? "Finaliser ma demande" : "Complete my request"}
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+          </Link>
+        </div>
+      )}
+    </div>
+  );
+
   return (
     <>
       <header
@@ -256,20 +392,33 @@ export default function Header() {
                 </span>
               </button>
 
-              {/* Guest quote basket — visible as soon as it has items */}
-              {!session?.user && quoteCount > 0 && (
-                <Link
-                  href="/devis"
-                  aria-label={language === "fr" ? "Ma demande de devis" : "My quote request"}
-                  className="relative w-10 h-10 rounded-xl border border-gray-200 bg-white text-gray-600 flex items-center justify-center hover:border-gray-400 hover:text-gray-900 active:scale-95 transition-all"
-                >
-                  <svg className="w-[22px] h-[22px]" fill="none" stroke="currentColor" strokeWidth={1.8} viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007zM8.625 10.5a.375.375 0 11-.75 0 .375.375 0 01.75 0zm7.5 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
-                  </svg>
-                  <span className="absolute -top-0.5 -right-0.5 min-w-[18px] h-[18px] bg-gray-900 text-white text-[10px] font-bold rounded-full flex items-center justify-center px-1">
-                    {quoteCount > 99 ? "99+" : quoteCount}
-                  </span>
-                </Link>
+              {/* Guest quote basket — dropdown on desktop, bottom sheet on mobile */}
+              {!session?.user && (
+                <div className="relative" ref={quoteRef}>
+                  <button
+                    onClick={() => { setIsQuoteOpen(!isQuoteOpen); setIsUserMenuOpen(false); }}
+                    aria-label={language === "fr" ? "Ma demande de devis" : "My quote request"}
+                    aria-expanded={isQuoteOpen}
+                    className="relative w-10 h-10 rounded-xl border border-gray-200 bg-white text-gray-600 flex items-center justify-center hover:border-gray-400 hover:text-gray-900 active:scale-95 transition-all"
+                  >
+                    <svg className="w-[22px] h-[22px]" fill="none" stroke="currentColor" strokeWidth={1.8} viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007zM8.625 10.5a.375.375 0 11-.75 0 .375.375 0 01.75 0zm7.5 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
+                    </svg>
+                    {quoteCount > 0 && (
+                      <span className="absolute -top-0.5 -right-0.5 min-w-[18px] h-[18px] bg-gray-900 text-white text-[10px] font-bold rounded-full flex items-center justify-center px-1">
+                        {quoteCount > 99 ? "99+" : quoteCount}
+                      </span>
+                    )}
+                  </button>
+
+                  {/* Desktop dropdown — anchored to the icon */}
+                  {isQuoteOpen && (
+                    <div className="hidden sm:block absolute right-0 top-full mt-3 w-[340px] bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden z-50">
+                      <div className="absolute -top-2 right-4 w-4 h-4 bg-white border-l border-t border-gray-100 rotate-45" />
+                      {quotePanelContent}
+                    </div>
+                  )}
+                </div>
               )}
 
               {/* Cart icon + dropdown */}
@@ -532,6 +681,26 @@ export default function Header() {
         />
       </header>
 
+      {/* Mobile quote sheet — outside <header> because its backdrop-blur creates
+          a containing block that would pin fixed children to the header. */}
+      {isQuoteOpen && !session?.user && (
+        <div className="fixed inset-0 z-[70] sm:hidden">
+          <div
+            className="absolute inset-0 bg-gray-950/40 backdrop-blur-sm animate-backdrop-in"
+            onClick={() => setIsQuoteOpen(false)}
+          />
+          <div
+            ref={quoteSheetRef}
+            className="absolute inset-x-0 bottom-0 bg-white rounded-t-3xl shadow-2xl overflow-hidden animate-sheet-up"
+          >
+            <div className="pt-2.5 flex justify-center">
+              <span className="w-10 h-1 rounded-full bg-gray-200" />
+            </div>
+            {quotePanelContent}
+          </div>
+        </div>
+      )}
+
       {/* Mobile drawer */}
       {isMenuOpen && (
         <div className="fixed inset-0 z-[60] lg:hidden">
@@ -610,6 +779,36 @@ export default function Header() {
                   );
                 })}
               </nav>
+
+              {/* Quote basket shortcut (guests with items) */}
+              {!session?.user && quoteCount > 0 && (
+                <Link
+                  href="/devis"
+                  onClick={() => setIsMenuOpen(false)}
+                  className="mt-5 flex items-center gap-3.5 rounded-2xl bg-gray-900 text-white px-4 py-3.5 shadow-lg shadow-gray-900/20 active:scale-[0.98] transition-transform animate-[menu-item-in_0.4s_ease-out_backwards]"
+                  style={{ animationDelay: "320ms" }}
+                >
+                  <span className="relative w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center shrink-0">
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={1.8} viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007z" />
+                    </svg>
+                    <span className="absolute -top-1 -right-1 min-w-[16px] h-4 bg-white text-gray-900 text-[9px] font-bold rounded-full flex items-center justify-center px-1">
+                      {quoteCount}
+                    </span>
+                  </span>
+                  <span className="flex-1 min-w-0">
+                    <span className="block text-sm font-bold leading-tight">
+                      {language === "fr" ? "Ma demande de devis" : "My quote request"}
+                    </span>
+                    <span className="block text-[11px] text-gray-300 mt-0.5">
+                      {quoteCount} {language === "fr" ? "produit" : "product"}{quoteCount > 1 ? "s" : ""} · {language === "fr" ? "finaliser ma demande" : "complete my request"}
+                    </span>
+                  </span>
+                  <svg className="w-4 h-4 text-gray-400 shrink-0" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                  </svg>
+                </Link>
+              )}
 
               {/* Quick contact actions */}
               <div className="mt-5 animate-[menu-item-in_0.4s_ease-out_backwards]" style={{ animationDelay: "350ms" }}>

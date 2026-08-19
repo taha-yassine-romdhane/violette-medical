@@ -127,18 +127,18 @@ export default function Products() {
                 {fr ? "Les plus demandés" : "Most requested"}
               </h3>
             </div>
-            <div className="hidden sm:flex items-center gap-2">
+            <div className="flex items-center gap-2 shrink-0">
               <button
                 onClick={() => scrollRail(-1)}
                 aria-label="Précédent"
-                className="w-10 h-10 rounded-full bg-white border border-gray-200 flex items-center justify-center text-gray-500 hover:text-purple-700 hover:border-purple-300 transition-colors"
+                className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white border border-gray-200 flex items-center justify-center text-gray-500 hover:text-purple-700 hover:border-purple-300 active:scale-95 transition-all"
               >
                 <svg className="w-4.5 h-4.5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" /></svg>
               </button>
               <button
                 onClick={() => scrollRail(1)}
                 aria-label="Suivant"
-                className="w-10 h-10 rounded-full bg-white border border-gray-200 flex items-center justify-center text-gray-500 hover:text-purple-700 hover:border-purple-300 transition-colors"
+                className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white border border-gray-200 flex items-center justify-center text-gray-500 hover:text-purple-700 hover:border-purple-300 active:scale-95 transition-all"
               >
                 <svg className="w-4.5 h-4.5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg>
               </button>

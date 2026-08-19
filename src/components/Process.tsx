@@ -81,7 +81,7 @@ export default function Process() {
                   <div className="w-11 h-11 sm:w-[52px] sm:h-[52px] rounded-xl sm:rounded-2xl bg-white border border-purple-100 shadow-md shadow-purple-900/5 flex items-center justify-center text-purple-600 group-hover:bg-gradient-to-b group-hover:from-purple-600 group-hover:to-purple-700 group-hover:text-white group-hover:scale-110 transition-all duration-300 relative z-10">
                     {step.icon}
                   </div>
-                  <span className="absolute -top-2 -right-2 z-20 w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-gray-950 text-white text-[10px] sm:text-[11px] font-bold flex items-center justify-center">
+                  <span className="absolute -top-2 -right-2 z-20 w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-white text-gray-900 ring-1 ring-gray-900/10 shadow-sm text-[10px] sm:text-[11px] font-bold flex items-center justify-center">
                     {i + 1}
                   </span>
                 </div>
